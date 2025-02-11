@@ -1,6 +1,8 @@
 
 import './App.css'
-import FinancialFrame from './components/FinancialFrame'
+import FinancialManager from './components/FinancialManager'
+
+
 
 function App() {
 
@@ -8,7 +10,7 @@ function App() {
   return (
     <>
     
-    <FinancialFrame/>
+    <FinancialManager/>
     
     </>
   )
