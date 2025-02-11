@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AddSchedule from "./AddSchedule";
 import ScheduleList from "./ScheduleList";
+import ScheduleDate from "./ScheduleDate.jsx";
 
 const DUMMY_SCHEDULES =[
   {id:1, title: '금오름 가기', date: "2024-01-01", time: "8:00" },
@@ -22,6 +23,8 @@ const ScheduleManager = () => {
     setSchedules([...schedules, newSchedule]);
   };
 
+
+
   // 일정 삭제 함수
   const removeSchedule = (id) => {
     setSchedules(schedules.filter((schedule) => schedule.id !== id));
@@ -30,9 +33,8 @@ const ScheduleManager = () => {
 
   return (
     <div>
-      <h2>📅 여행 일정 관리</h2>
       <AddSchedule addSchedule={addSchedule}/>
-      <ScheduleList  schedules={schedules} removeSchedule={removeSchedule} />
+      <ScheduleList  schedules={schedules} removeSchedule={removeSchedule}  />
     </div>
   );
 };
