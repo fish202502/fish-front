@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import './FinancialList.css'
+import FinancialDutch from "./FinancialDutch";
+import ErrorModal from "./ErrorModal";
 
 const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const [editingId, setEditingId] = useState(null);
@@ -30,7 +32,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
 
   
   return (
-    
+    <>
     <div className="Frame">
       
       <ul>
@@ -69,7 +71,11 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
       <div className="Amount">
         <div> 지출 금액: {totalAmount} 원</div>
       </div>
+      
     </div>
+     <FinancialDutch financial={financials} />
+
+     </>
   );
 };
 

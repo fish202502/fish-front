@@ -17,8 +17,6 @@ const AddFinancial = ({ addFinancial }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("이름:", enteredName);
-    console.log("금액:", enteredExpense);
 
     if (!enteredName.trim()) {
       alert("이름을 입력하세요!");

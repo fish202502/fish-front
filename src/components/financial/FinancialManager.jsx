@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddFinancial from "./AddFinancial";
 import FinancialList from "./FinancialList";
 import './FinancialManager.css'
+import FinancialDutch from "./FinancialDutch";
 
 
 const DUMMY_Financials =[
@@ -41,11 +42,11 @@ const FinancialManager = () => {
   };
 
   return (
-    <div>
+    <div className="frame">
       <h2>📅 여행 N빵 지출 관리</h2>
       <AddFinancial addFinancial={addFinancial}/>
       <FinancialList  financials={financials} removeFinancial={removeFinancial} modifyFinancial={modifyFinancial}/>
-      
+     
     </div>
   );
 };

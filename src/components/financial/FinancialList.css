@@ -36,21 +36,6 @@ li {
   gap: 5px;
 }
 
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-  white-space: nowrap; /* 버튼 크기 고정 */
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
 .Amount {
   text-align: center;
   font-size: 18px;
@@ -62,7 +47,7 @@ button:hover {
 }
 
 button {
-  background-color: #007bff;
+  background-color: #ff8f8f;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -72,5 +57,5 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #f1a5a5;
 }
