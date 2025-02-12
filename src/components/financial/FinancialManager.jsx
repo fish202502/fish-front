@@ -43,7 +43,7 @@ const FinancialManager = () => {
 
   return (
     <div className="frame">
-      <h2>📅 여행 N빵 지출 관리</h2>
+      <h2 className="main-title">📅 여행 N빵 지출 관리</h2>
       <AddFinancial addFinancial={addFinancial}/>
       <FinancialList  financials={financials} removeFinancial={removeFinancial} modifyFinancial={modifyFinancial}/>
      

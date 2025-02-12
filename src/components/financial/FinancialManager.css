@@ -4,9 +4,11 @@
   height: 90%;
   border: 1px solid #000;
 }
-h2 {
+.main-title {
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
   color: #333;
   margin-bottom: 20px;
+  text-align: center;
+  
 }
