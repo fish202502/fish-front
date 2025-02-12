@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import AddFinancial from "./AddFinancial";
 import FinancialList from "./FinancialList";
+import './FinancialManager.css'
+
 
 const DUMMY_Financials =[
   {id:1, name:'김철수' ,title: '금오름 가기',expense: 50000, date: "2024-01-01", time: "8:00" },
@@ -40,9 +42,10 @@ const FinancialManager = () => {
 
   return (
     <div>
-      <h2>📅 여행 일정 관리</h2>
+      <h2>📅 여행 N빵 지출 관리</h2>
       <AddFinancial addFinancial={addFinancial}/>
       <FinancialList  financials={financials} removeFinancial={removeFinancial} modifyFinancial={modifyFinancial}/>
+      
     </div>
   );
 };

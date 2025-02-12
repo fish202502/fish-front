@@ -18,9 +18,37 @@ li {
   padding: 10px;
   border-radius: 8px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 10px; /* 간격 유지 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-content {
+  flex-grow: 1;  /* 제목이 길어도 버튼을 밀어내지 않음 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+}
+
+.button-group {
+  display: flex;
+  gap: 5px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  white-space: nowrap; /* 버튼 크기 고정 */
+}
+
+button:hover {
+  background-color: #0056b3;
 }
 
 .Amount {
