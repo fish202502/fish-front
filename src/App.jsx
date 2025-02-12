@@ -1,6 +1,7 @@
 
 import './App.css'
-import FinancialManager from './components/FinancialManager'
+import FinancialManager from './components/financial/FinancialManager'
+
 
 
 
