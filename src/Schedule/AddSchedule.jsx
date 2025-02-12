@@ -4,7 +4,7 @@ import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 import DdayCounter from "./DdayCounter.jsx";
 import ScheduleDate from "./ScheduleDate.jsx";
 
-const AddSchedule = ({addSchedule}) => {
+const AddSchedule = ({addSchedule, onDaySelect}) => {
 
 
   const [enteredTitle,setEnteredTitle] = useState("");
@@ -59,7 +59,7 @@ const AddSchedule = ({addSchedule}) => {
     <>
       {error && <ErrorModal title = {error.title} message= {error.message} onClose = {closeModal}/>}
       <form>
-        <ScheduleDate />
+        <ScheduleDate onDaySelect={onDaySelect} />
         <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
         <input type="time" onInput={handleTimeInput} value={enteredTime}/>
         <button type="submit" onClick={handleSubmit}>➕ 추가</button>

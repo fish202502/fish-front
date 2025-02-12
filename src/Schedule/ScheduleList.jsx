@@ -9,7 +9,7 @@ const ScheduleList = ({ schedules, removeSchedule }) => {
       ) : (
         schedules.map((schedule) => (
           <li key={schedule.id}>
-            📅 {schedule.time} - {schedule.title}
+            📅  {schedule.time} - {schedule.title}
             <button onClick={() => removeSchedule(schedule.id)}>❌ 삭제</button>
             <button>✏️수정</button>
           </li>

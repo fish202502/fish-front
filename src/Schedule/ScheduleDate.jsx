@@ -2,11 +2,10 @@ import React, {useState} from 'react';
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 import DdayCounter from "./DdayCounter.jsx";
 
-const ScheduleDate = ({addDate}) => {
+const ScheduleDate = ({addDate ,onAddDay, onDaySelect}) => {
 
   const [startDate,setStartDate] = useState(null);
   const [endDate,setEndDate] = useState(null);
-  const [selectedDay, setSelectedDay] = useState("");
 
 
   // 에러의 데이터를 관리하는 상태변수
@@ -55,9 +54,8 @@ const ScheduleDate = ({addDate}) => {
              onChange={(e) => setEndDate(e.target.value)}
              min={startDate}/>
       {startDate && endDate && <p>✈️여행 기간: {startDate} ~ {endDate}</p>}
-      {startDate && endDate && <DdayCounter startDate={startDate} endDate={endDate} onDaySelect={setSelectedDay}/>}
+      {startDate && endDate && <DdayCounter startDate={startDate} endDate={endDate} onDaySelect={onDaySelect} />}
 
-      {selectedDay && <p>Day: {selectedDay}</p>}
 
     </>
   );
