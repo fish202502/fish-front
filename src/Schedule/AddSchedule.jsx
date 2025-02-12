@@ -9,6 +9,12 @@ const AddSchedule = ({addSchedule, onDaySelect}) => {
 
   const [enteredTitle,setEnteredTitle] = useState("");
   const [enteredTime,setEnteredTime] =useState("");
+  const [enteredDate,setEnteredDate] =useState("");
+
+  const [startDate,setStartDate] = useState(null);
+  const [endDate,setEndDate] = useState(null);
+
+
 
 
   // 에러의 데이터를 관리하는 상태변수
@@ -19,6 +25,14 @@ const AddSchedule = ({addSchedule, onDaySelect}) => {
   };
   const handleTimeInput = e => {
     setEnteredTime(e.target.value);
+  }
+  const handleDateInput = e => {
+    setEnteredDate(e.target.value);
+  }
+
+  const handleDateRangeChange = (start,end) => {
+    setStartDate(start);
+    setEndDate(end);
   }
 
 
@@ -33,6 +47,15 @@ const AddSchedule = ({addSchedule, onDaySelect}) => {
       return;
     }
 
+    if(!enteredDate.trim()){
+      setError({
+        title: '유효하지 않은 시간',
+        message: '시간을 입력해주세요.'
+      });
+      return;
+    }
+
+
 
     if(!enteredTime.trim()){
       setError({
@@ -43,10 +66,11 @@ const AddSchedule = ({addSchedule, onDaySelect}) => {
     }
 
 
-    addSchedule(enteredTitle,enteredTime);
+    addSchedule(enteredTitle,enteredDate,enteredTime);
 
     setEnteredTitle('');
     setEnteredTime('');
+    setEnteredDate('');
 
   }
 
@@ -59,8 +83,9 @@ const AddSchedule = ({addSchedule, onDaySelect}) => {
     <>
       {error && <ErrorModal title = {error.title} message= {error.message} onClose = {closeModal}/>}
       <form>
-        <ScheduleDate onDaySelect={onDaySelect} />
+        <ScheduleDate onDaySelect={onDaySelect} onDateRangeChange={handleDateRangeChange}/>
         <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
+        <input type= "date" onInput={handleDateInput} value={enteredDate} min={startDate} max={endDate} />
         <input type="time" onInput={handleTimeInput} value={enteredTime}/>
         <button type="submit" onClick={handleSubmit}>➕ 추가</button>
       </form>
