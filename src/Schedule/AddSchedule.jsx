@@ -9,7 +9,7 @@ const AddSchedule = ({addSchedule}) => {
 
   const [enteredTitle,setEnteredTitle] = useState("");
   const [enteredTime,setEnteredTime] =useState("");
-  const [enteredDate,setEnteredDate] = useState("");
+
 
   // 에러의 데이터를 관리하는 상태변수
   const [error,setError] = useState(null);
@@ -20,9 +20,7 @@ const AddSchedule = ({addSchedule}) => {
   const handleTimeInput = e => {
     setEnteredTime(e.target.value);
   }
-  const handleDateInput = e => {
-    setEnteredDate(e.target.value);
-  }
+
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -35,13 +33,6 @@ const AddSchedule = ({addSchedule}) => {
       return;
     }
 
-    if(!enteredDate.trim()){
-      setError({
-        title: '유효하지 않은 날짜',
-        message: '날짜를 입력해주세요.'
-      });
-      return;
-    }
 
     if(!enteredTime.trim()){
       setError({
@@ -52,11 +43,11 @@ const AddSchedule = ({addSchedule}) => {
     }
 
 
-    addSchedule(enteredTitle,enteredDate,enteredTime);
+    addSchedule(enteredTitle,enteredTime);
 
     setEnteredTitle('');
     setEnteredTime('');
-    setEnteredDate('');
+
   }
 
   // 에러모달을 닫아주는 함수
@@ -70,7 +61,6 @@ const AddSchedule = ({addSchedule}) => {
       <form>
         <ScheduleDate />
         <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
-        <input type="date" onInput={handleDateInput} value={enteredDate}/>
         <input type="time" onInput={handleTimeInput} value={enteredTime}/>
         <button type="submit" onClick={handleSubmit}>➕ 추가</button>
       </form>
