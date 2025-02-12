@@ -29,12 +29,20 @@ const FinancialManager = () => {
     setFinancials(financials.filter((financial) => financial.id !== id));
   };
 
+  // 일정 변경 함수
+  const modifyFinancial = (id, updatedData) => {
+    setFinancials(
+      financials.map((financial) =>
+        financial.id === id ? { ...financial, ...updatedData } : financial
+      )
+    );
+  };
 
   return (
     <div>
       <h2>📅 여행 일정 관리</h2>
       <AddFinancial addFinancial={addFinancial}/>
-      <FinancialList  financials={financials} removeFinancial={removeFinancial} />
+      <FinancialList  financials={financials} removeFinancial={removeFinancial} modifyFinancial={modifyFinancial}/>
     </div>
   );
 };
