@@ -42,12 +42,17 @@ const FinancialManager = () => {
   };
 
   return (
+    <>
+    <div className="main-frame">
+    <h2 className="main-title">📅 여행 N빵 지출 관리</h2>
     <div className="frame">
-      <h2 className="main-title">📅 여행 N빵 지출 관리</h2>
+     
       <AddFinancial addFinancial={addFinancial}/>
       <FinancialList  financials={financials} removeFinancial={removeFinancial} modifyFinancial={modifyFinancial}/>
      
     </div>
+    </div>
+    </>
   );
 };
 

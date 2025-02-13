@@ -1,8 +1,14 @@
+.main-frame{
+  border: 1px solid #000;
+  width: 90%;
+  margin: 0 auto;
+}
+
 .frame{
   display: flex;
-  width: 80%;
+  width: 100%;
   height: 90%;
-  border: 1px solid #000;
+  
 }
 .main-title {
   text-align: center;

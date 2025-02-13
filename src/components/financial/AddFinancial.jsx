@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import './AddFinancial.css';
+import "./AddFinancial.css";
+import ErrorModal from "./ErrorModal";
 
 const AddFinancial = ({ addFinancial }) => {
   const [enteredName, setEnteredName] = useState("");
@@ -7,40 +8,48 @@ const AddFinancial = ({ addFinancial }) => {
   const [enteredExpense, setEnteredExpense] = useState("");
   const [enteredTime, setEnteredTime] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
-
-  const handleNameInput = (e) => setEnteredName(e.target.value);
-  const handleTitleInput = (e) => setEnteredTitle(e.target.value);
-  const handleExpenseInput = (e) => setEnteredExpense(Number(e.target.value)); // 숫자로 변환
-  const handleTimeInput = (e) => setEnteredTime(e.target.value);
-  const handleDateInput = (e) => setEnteredDate(e.target.value);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
-    if (!enteredName.trim()) {
-      alert("이름을 입력하세요!");
+    if (!enteredName.trim() || enteredExpense < 1) {
+      alert("이름과 금액을 올바르게 입력하세요!");
       return;
     }
+    setModalOpen(true); // 모달 열기
+  };
 
+  const handleConfirmAdd = () => {
     addFinancial(enteredName, enteredTitle, enteredExpense, enteredDate, enteredTime);
-    
     setEnteredName('');
     setEnteredTitle('');
     setEnteredExpense('');
     setEnteredTime('');
     setEnteredDate('');
+    setModalOpen(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="이름" onChange={handleNameInput} value={enteredName} />
-      <input type="text" placeholder="일정 제목" onChange={handleTitleInput} value={enteredTitle} />
-      <input type="number" placeholder="금액" onChange={handleExpenseInput} value={enteredExpense} />
-      <input type="date" onChange={handleDateInput} value={enteredDate} />
-      <input type="time" onChange={handleTimeInput} value={enteredTime} />
-      <button type="submit">➕ 추가</button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <input type="text" placeholder="이름" value={enteredName} onChange={(e) => setEnteredName(e.target.value)} />
+        <input type="text" placeholder="일정 제목" value={enteredTitle} onChange={(e) => setEnteredTitle(e.target.value)} />
+        <input type="number" placeholder="금액" value={enteredExpense} onChange={(e) => setEnteredExpense(Number(e.target.value))} />
+        <input type="date" value={enteredDate} onChange={(e) => setEnteredDate(e.target.value)} />
+        <input type="time" value={enteredTime} onChange={(e) => setEnteredTime(e.target.value)} />
+        <button type="submit">➕ 추가</button>
+      </form>
+
+      {modalOpen && (
+        <ErrorModal 
+          title="추가 확인" 
+          message="정말 추가하시겠습니까?" 
+          closeModal={() => setModalOpen(false)} 
+          onConfirm={handleConfirmAdd} 
+        />
+      )}
+
+    </>
   );
 };
 

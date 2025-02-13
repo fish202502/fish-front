@@ -1,38 +1,25 @@
-import React, { useRef, useState } from 'react'
-import './ErrorModal.css'
+import React from "react";
+import "./ErrorModal.css";
 
-const ErrorModal = () => {
-  const[modalOpen, setModalOpen] = useState('');
-  const modalBackground = useRef();
-
+const ErrorModal = ({ title, message, closeModal, onConfirm }) => {
   return (
-    <>
-   <div className={'btn-wrapper'}>
-        
-        <button className={'modal-open-btn'} onClick={() => setModalOpen(true)}>
-          모달 열기
-        </button>
-      </div>
-      {
-        modalOpen &&
-        <div className={'modal-container'} ref={modalBackground} onClick={e => {
-          if (e.target === modalBackground.current) {
-            setModalOpen(false);
-          }
-        }}>
-          <div className={'modal-content'}>
-          <header title ={title}>
-          
-        </header>
-            <p>리액트로 모달 구현하기</p>
-            <button className={'modal-close-btn'} onClick={() => setModalOpen(false)}>
-              모달 닫기
+    <div className="modal-background" onClick={closeModal}>
+      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-content">
+          <h2>{title}</h2>
+          <p>{message}</p>
+          <div className="button-group">
+            <button className="modal-close-btn" onClick={closeModal}>
+              취소
+            </button>
+            <button className="modal-confirm-btn" onClick={onConfirm}>
+              확인
             </button>
           </div>
         </div>
-      }
-  </>
-  )
-}
+      </div>
+    </div>
+  );
+};
 
-export default ErrorModal
+export default ErrorModal;
