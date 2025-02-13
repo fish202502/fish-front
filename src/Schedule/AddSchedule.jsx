@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import './AddSchedule.css'
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 import DdayCounter from "./DdayCounter.jsx";
@@ -78,8 +78,11 @@ const AddSchedule = ({addSchedule, startDate, endDate}) => {
     <>
       {error && <ErrorModal title = {error.title} message= {error.message} onClose = {closeModal}/>}
       <form>
+        <label>일정 제목: </label>
         <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
-        <input type= "date" onInput={handleDateInput} value={enteredDate} min={startDate} max={endDate} />
+        <label> 날짜: </label>
+        <input type="date" onInput={handleDateInput} value={enteredDate} min={startDate} max={endDate}/>
+        <label> 시간: </label>
         <input type="time" onInput={handleTimeInput} value={enteredTime}/>
         <button type="submit" onClick={handleSubmit}>➕ 추가</button>
       </form>
