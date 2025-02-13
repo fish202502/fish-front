@@ -4,15 +4,15 @@ import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 import DdayCounter from "./DdayCounter.jsx";
 import ScheduleDate from "./ScheduleDate.jsx";
 
-const AddSchedule = ({addSchedule, onDaySelect}) => {
+const AddSchedule = ({addSchedule, startDate, endDate}) => {
 
 
   const [enteredTitle,setEnteredTitle] = useState("");
   const [enteredTime,setEnteredTime] =useState("");
   const [enteredDate,setEnteredDate] =useState("");
 
-  const [startDate,setStartDate] = useState(null);
-  const [endDate,setEndDate] = useState(null);
+  // const [startDate,setStartDate] = useState(null);
+  // const [endDate,setEndDate] = useState(null);
 
 
 
@@ -28,11 +28,6 @@ const AddSchedule = ({addSchedule, onDaySelect}) => {
   }
   const handleDateInput = e => {
     setEnteredDate(e.target.value);
-  }
-
-  const handleDateRangeChange = (start,end) => {
-    setStartDate(start);
-    setEndDate(end);
   }
 
 
@@ -83,7 +78,6 @@ const AddSchedule = ({addSchedule, onDaySelect}) => {
     <>
       {error && <ErrorModal title = {error.title} message= {error.message} onClose = {closeModal}/>}
       <form>
-        <ScheduleDate onDaySelect={onDaySelect} onDateRangeChange={handleDateRangeChange}/>
         <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
         <input type= "date" onInput={handleDateInput} value={enteredDate} min={startDate} max={endDate} />
         <input type="time" onInput={handleTimeInput} value={enteredTime}/>

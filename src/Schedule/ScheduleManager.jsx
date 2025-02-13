@@ -12,11 +12,13 @@ const DUMMY_SCHEDULES =[
 ];
 
 
-const ScheduleManager = () => {
+const ScheduleManager = ({onDaySelect}) => {
 
 
   const [schedules, setSchedules] = useState(DUMMY_SCHEDULES);
   const [selectedDay, setSelectedDay] = useState("");
+  const [startDate,setStartDate] = useState(null);
+  const [endDate,setEndDate] = useState(null);
 
 
 
@@ -39,12 +41,21 @@ const ScheduleManager = () => {
   const handleDaySelect = (day) => {
     setSelectedDay(day); // 선택된 날짜 상태 업데이트
     console.log("📅 선택한 날짜:", day);
+
   };
+  const handleDateRange = (start,end) => {
+    setStartDate(start);
+    setEndDate(end);
+  }
+
+
+
 
 
   return (
     <div>
-      <AddSchedule addSchedule={addSchedule} onDaySelect={handleDaySelect}/>
+      <ScheduleDate onDaySelect={onDaySelect} onDateRangeChange={handleDateRange} />
+      <AddSchedule addSchedule={addSchedule} onDaySelect={handleDaySelect} startDate={startDate} endDate={endDate}/>
       <ScheduleList schedules={schedules} removeSchedule={removeSchedule} selectedDay={selectedDay}  />
 
     </div>
