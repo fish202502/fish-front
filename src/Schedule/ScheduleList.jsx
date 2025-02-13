@@ -40,7 +40,7 @@ const ScheduleList = ({ schedules, removeSchedule, modifySchedule ,startDate,end
 
                     ):(
                       <>
-                    📅 {schedule.date} {schedule.time} - {schedule.title}
+                    📌 {schedule.date} {schedule.time} - {schedule.title}
                     <button onClick={() => removeSchedule(schedule.id)}>❌ 삭제</button>
                     <button onClick={() => handleEditClick(schedule)}>✏️수정</button>
 
