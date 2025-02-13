@@ -49,11 +49,13 @@ const ScheduleManager = ({onDaySelect}) => {
     setEndDate(end);
   }
 
-  const modifySchedule = (id, updatedData) => {
-    setSchedules((prevSchedules) =>
-      prevSchedules.map((schedule) =>
-        schedule.id === id ? { ...schedule, ...updatedData } : schedule
+
+  const modifySchedule = (id,updatedData) =>{
+    setSchedules(
+      schedules.map((schedule) =>
+        schedule.id === id ? {...schedule, ...updatedData} : schedule
       )
+
     );
   };
 
