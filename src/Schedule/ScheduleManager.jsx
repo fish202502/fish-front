@@ -29,8 +29,9 @@ const ScheduleManager = ({onDaySelect}) => {
       title,
       date,
       time,
-    };
-    setSchedules([...schedules, newSchedule]);
+    }
+    setSchedules((schedules) =>
+      [ ...schedules,newSchedule].sort((a,b) => {}));
   };
 
   // 일정 삭제 함수
@@ -48,6 +49,14 @@ const ScheduleManager = ({onDaySelect}) => {
     setEndDate(end);
   }
 
+  const modifySchedule = (id, updatedData) => {
+    setSchedules((prevSchedules) =>
+      prevSchedules.map((schedule) =>
+        schedule.id === id ? { ...schedule, ...updatedData } : schedule
+      )
+    );
+  };
+
 
 
 
@@ -55,8 +64,8 @@ const ScheduleManager = ({onDaySelect}) => {
   return (
     <div>
       <ScheduleDate onDaySelect={onDaySelect} onDateRangeChange={handleDateRange} />
-      <AddSchedule addSchedule={addSchedule} onDaySelect={handleDaySelect} startDate={startDate} endDate={endDate}/>
-      <ScheduleList schedules={schedules} removeSchedule={removeSchedule} selectedDay={selectedDay}  />
+      {startDate && endDate && <AddSchedule addSchedule={addSchedule} onDaySelect={handleDaySelect} startDate={startDate} endDate={endDate}/>}
+      <ScheduleList schedules={schedules} removeSchedule={removeSchedule} selectedDay={selectedDay} modifySchedule ={modifySchedule} startDate={startDate} endDate={endDate}/>
 
     </div>
   );
