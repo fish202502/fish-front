@@ -25,11 +25,11 @@ const GalleryManager = () => {
 
   const [photos,setPhotos] = useState(DUMMY_PHOTOS);
 
-  const handleAddPhoto = (url,uploadedAt) =>{
+  const handleAddPhoto = (fileURL) =>{
     const newPhoto = {
       id:photos.length + 1,
-      url:url,
-      uploadedAt: uploadedAt
+      url:fileURL,
+      uploadedAt: Date.now()
     };
     setPhotos((photos) =>
     [...photos,newPhoto])
