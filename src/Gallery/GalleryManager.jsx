@@ -8,6 +8,7 @@ import horse from '../assets/img/horse.jpg';
 import rock from '../assets/img/rock.jpg';
 import tea from '../assets/img/tea.jpg';
 import wave from '../assets/img/wave.jpg';
+import PhotoDetailModal from "./PhotoDetailModal.jsx";
 
 
 const DUMMY_PHOTOS = [
@@ -24,6 +25,7 @@ const DUMMY_PHOTOS = [
 const GalleryManager = () => {
 
   const [photos,setPhotos] = useState(DUMMY_PHOTOS);
+  const [selectedPhoto,setSelectedPhoto] =useState(null);
 
   const handleAddPhoto = (fileURL) =>{
     const newPhoto = {
@@ -41,9 +43,11 @@ const GalleryManager = () => {
 
   return (
     <>
-      <h1 >📸 Photo Book</h1>
       <PhotoUpload handleAddPhoto = {handleAddPhoto}/>
-      <PhotoList photos ={photos} removePhoto ={removePhoto} />
+      <PhotoList photos ={photos} removePhoto ={removePhoto} onPhotoClick = {setSelectedPhoto}/>
+      {selectedPhoto && (
+          <PhotoDetailModal  photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
+      )}
     </>
   );
 };

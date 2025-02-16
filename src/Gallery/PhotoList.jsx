@@ -1,7 +1,7 @@
 import React from 'react';
 import PhotoItem from "./PhotoItem.jsx";
 
-const PhotoList = ({photos, removePhoto }) => {
+const PhotoList = ({photos, removePhoto, onPhotoClick }) => {
 
   return (
     <>
@@ -10,7 +10,7 @@ const PhotoList = ({photos, removePhoto }) => {
         ): (
           <div>
             {photos.map((photo) => (
-          <PhotoItem key={photo.id} photo={photo} onDelete={() => removePhoto(photo.id)}/>
+          <PhotoItem key={photo.id} photo={photo} onDelete={() => removePhoto(photo.id)} onPhotoClick ={onPhotoClick}/>
         ))}
       </div>
 
