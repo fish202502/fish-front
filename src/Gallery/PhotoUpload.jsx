@@ -61,7 +61,7 @@ const PhotoUpload = ({handleAddPhoto}) => {
     <>
       {error && <ErrorModal title = {error.title} message= {error.message} onClose = {closeModal}/>}
       <h1>Photo Book </h1>
-      <input type="file" onChange = {fileChangeHandler} />
+      <input type="file" onChange = {fileChangeHandler} ref ={fileInputRef} />
         <button onClick ={handleSubmit}>
         업로드
         </button>
