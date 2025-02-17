@@ -32,3 +32,17 @@ form {
     background-color: #218838;
   }
   
+  .image-preview {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .preview-image {
+    width: 100px; 
+    height: 100px; 
+    object-fit: cover; 
+    border-radius: 8px; 
+    border: 1px solid #ccc;
+  }
+  

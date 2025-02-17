@@ -66,6 +66,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                     <input type="number" name="expense" value={editData.expense} onChange={handleChange} />
                     <input type="date" name="date" value={editData.date} onChange={handleChange} />
                     <input type="time" name="time" value={editData.time} onChange={handleChange} />
+                    
                     <div className="button-group">
                       <button onClick={handleSave}>💾 저장</button>
                       <button onClick={() => setEditingId(null)}>❌ 취소</button>

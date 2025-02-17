@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import AddFinancial from "./AddFinancial";
 import FinancialList from "./FinancialList";
 import './FinancialManager.css'
-import FinancialDutch from "./FinancialDutch";
 
 
 const DUMMY_Financials =[
@@ -15,7 +14,7 @@ const FinancialManager = () => {
   const [financials, setFinancials] = useState(DUMMY_Financials);
 
   // 일정 추가 함수
-  const addFinancial = (name, title,expense, date, time) => {
+  const addFinancial = (name, title,expense, date, time,img) => {
     const newFinancial = {
       id: Date.now(),
       name,
@@ -23,6 +22,7 @@ const FinancialManager = () => {
       expense,
       date,
       time,
+      img,
     };
     setFinancials([...financials, newFinancial]);
   };

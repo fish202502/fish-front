@@ -8,7 +8,24 @@ const AddFinancial = ({ addFinancial }) => {
   const [enteredExpense, setEnteredExpense] = useState("");
   const [enteredTime, setEnteredTime] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
+  const [postImg, setPostImg] = useState([]);
+  const [previewImg, setPreviewImg] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // 이미지 선택 시 실행되는 함수
+  const handlePreview = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPostImg(file);
+      setPreviewImg(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    e.target.value = ""; // 같은 파일 선택 시 onChange 동작하도록 초기화
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,12 +37,14 @@ const AddFinancial = ({ addFinancial }) => {
   };
 
   const handleConfirmAdd = () => {
-    addFinancial(enteredName, enteredTitle, enteredExpense, enteredDate, enteredTime);
+    addFinancial(enteredName, enteredTitle, enteredExpense, enteredDate, enteredTime, postImg);
     setEnteredName('');
     setEnteredTitle('');
     setEnteredExpense('');
     setEnteredTime('');
     setEnteredDate('');
+    setPostImg([]);
+    setPreviewImg([]);
     setModalOpen(false);
   };
 
@@ -37,6 +56,14 @@ const AddFinancial = ({ addFinancial }) => {
         <input type="number" placeholder="금액" value={enteredExpense} onChange={(e) => setEnteredExpense(Number(e.target.value))} />
         <input type="date" value={enteredDate} onChange={(e) => setEnteredDate(e.target.value)} />
         <input type="time" value={enteredTime} onChange={(e) => setEnteredTime(e.target.value)} />
+        {/* 이미지 업로드 */}
+      <input type="file" accept="image/*" onChange={handlePreview} />
+      {previewImg && (
+        <div>
+          <img src={previewImg} alt="미리보기" className="preview-image" />
+          <button onClick={() => { setPostImg(null); setPreviewImg(null); }}>❌ 삭제</button>
+        </div>
+      )}
         <button type="submit">➕ 추가</button>
       </form>
 
@@ -48,7 +75,6 @@ const AddFinancial = ({ addFinancial }) => {
           onConfirm={handleConfirmAdd} 
         />
       )}
-
     </>
   );
 };
