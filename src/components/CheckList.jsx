@@ -2,24 +2,24 @@ import { useState } from "react";
 import styles from "./CheckList.module.scss";
 
 const CheckList = ({ category, items, onAddItem, onToggleComplete, onDeleteItem, onUpdateItem }) => {
-  const [newItem, setNewItem] = useState({ text: "", assignee: "" });
+  const [newItem, setNewItem] = useState({ text: "", name: "" });
   const [editingItemId, setEditingItemId] = useState(null);
-  const [editedItem, setEditedItem] = useState({ text: "", assignee: "" });
+  const [editedItem, setEditedItem] = useState({ text: "", name: "" });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newItem.text.trim() && newItem.assignee.trim()) {
+    if (newItem.text.trim() && newItem.name.trim()) {
       onAddItem(category, {
         text: newItem.text.trim(),
-        assignee: newItem.assignee.trim(),
+        name: newItem.name.trim(),
       });
-      setNewItem({ text: "", assignee: "" });
+      setNewItem({ text: "", name: "" });
     }
   };
 
   const handleEditClick = (item) => {
     setEditingItemId(item.id);
-    setEditedItem({ text: item.text, assignee: item.assignee });
+    setEditedItem({ text: item.text, name: item.name });
   };
 
   const handleSaveEdit = (itemId) => {
@@ -33,9 +33,9 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete, onDeleteItem,
       <form onSubmit={handleSubmit} className={styles.formContainer}>
         <input
           type="text"
-          value={newItem.assignee}
+          value={newItem.name}
           onChange={(e) =>
-            setNewItem({ ...newItem, assignee: e.target.value })
+            setNewItem({ ...newItem, name: e.target.value })
           }
           placeholder="담당자"
           className={styles.inputField}
@@ -50,7 +50,7 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete, onDeleteItem,
         <button
           type="submit"
           className={styles.addButton}
-          disabled={!newItem.text.trim() || !newItem.assignee.trim()}
+          disabled={!newItem.text.trim() || !newItem.name.trim()}
         >
           추가
         </button>
@@ -68,8 +68,8 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete, onDeleteItem,
                 <>
                   <input
                     type="text"
-                    value={editedItem.assignee}
-                    onChange={(e) => setEditedItem({ ...editedItem, assignee: e.target.value })}
+                    value={editedItem.name}
+                    onChange={(e) => setEditedItem({ ...editedItem, name: e.target.value })}
                     className={styles.inputField}
                   />
                   <input
@@ -82,7 +82,7 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete, onDeleteItem,
                 </>
               ) : (
                 <span>
-                  담당: {item.assignee} | 할일: {item.text}
+                  담당: {item.name} | 할일: {item.text}
                   <button onClick={() => handleEditClick(item)} className={styles.editButton}>수정</button>
                   <button onClick={() => onDeleteItem(category, item.id)} className={styles.deleteButton}>삭제</button>
                 </span>

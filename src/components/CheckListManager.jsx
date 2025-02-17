@@ -3,6 +3,7 @@ import CheckListAdd from './CheckListAdd';
 import CheckList from './CheckList';
 import CheckSidebar from './CheckSidebar';
 import styles from './CheckListManager.module.scss';
+import CheckListSearch from './CheckListSearch';
 
 const CheckListManager = () => {
   const [categories, setCategories] = useState([]);
@@ -20,7 +21,7 @@ const CheckListManager = () => {
       [category]: [...(checklistItems[category] || []), {
         id: Date.now(),
         text: item.text,
-        assignee: item.assignee,
+        name: item.name,
         completed: false
       }]
     });
@@ -62,9 +63,14 @@ const CheckListManager = () => {
         />
         <CheckListAdd onAddCategory={handleAddCategory} />
       </div>
+      <div>
+        <CheckListSearch/>
+      </div>
       <div className={styles.content}>
         {selectedCategory && (
+         
          <CheckList
+         
          category={selectedCategory}
          items={checklistItems[selectedCategory] || []}
          onAddItem={handleAddChecklistItem}
