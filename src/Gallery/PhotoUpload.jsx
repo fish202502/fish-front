@@ -33,10 +33,21 @@ const PhotoUpload = ({handleAddPhoto}) => {
     if(!enteredFile){
       setError({
         title: '유효하지 않은 입력값',
-        message: '제목을 입력해주세요.'
+        message: '이미지를 선택해주세요'
       });
       return;
     }
+
+    if(!enteredFile.type.startsWith("image/")){
+      setError({
+        title: '유효하지 않은 입력값',
+        message: '이미지 파일만 업로드 할 수 있습니다.'
+      });
+      fileInputRef.current.value = "";
+      return;
+    }
+
+
 
     const fileURL = URL.createObjectURL(enteredFile);
 
