@@ -5,13 +5,13 @@
   border-right: 1px solid #ddd;
 }
 
-ul {
+.categoryul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-li {
+.categoryli {
   padding: 10px 12px;
   margin-bottom: 8px;
   border-radius: 5px;
@@ -41,17 +41,7 @@ ul {
   margin: 0;
 }
 
-li {
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
 
-  &:hover {
-    background-color: #e9ecef;
-  }
-}
 
 .selected {
   background-color: #007bff;

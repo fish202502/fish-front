@@ -4,12 +4,15 @@ import styles from "./CheckListAdd.module.scss";
 const CheckListAdd = ({ onAddCategory }) => {
   const [newCategory, setNewCategory] = useState("");
 
+  
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     if (newCategory.trim()) {
       onAddCategory(newCategory.trim());
       setNewCategory("");
     }
+    
   };
 
   return (
