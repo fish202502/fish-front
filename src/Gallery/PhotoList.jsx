@@ -1,5 +1,6 @@
 import React from 'react';
 import PhotoItem from "./PhotoItem.jsx";
+import styles from "./PhotoList.module.css"
 
 const PhotoList = ({photos, removePhoto, onPhotoClick }) => {
 
@@ -8,7 +9,7 @@ const PhotoList = ({photos, removePhoto, onPhotoClick }) => {
       {photos.length === 0 ?(
         <p>공유할 사진을 올려주세요</p>
         ): (
-          <div>
+          <div className={styles.photo_list}>
             {photos.map((photo) => (
           <PhotoItem key={photo.id} photo={photo} onDelete={() => removePhoto(photo.id)} onPhotoClick ={onPhotoClick}/>
         ))}

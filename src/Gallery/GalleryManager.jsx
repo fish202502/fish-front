@@ -9,6 +9,7 @@ import rock from '../assets/img/rock.jpg';
 import tea from '../assets/img/tea.jpg';
 import wave from '../assets/img/wave.jpg';
 import PhotoDetailModal from "./PhotoDetailModal.jsx";
+import styles from "./GalleryManager.module.css"
 
 
 const DUMMY_PHOTOS = [
@@ -43,11 +44,15 @@ const GalleryManager = () => {
 
   return (
     <>
+      <div className={styles.full_container}>
+
       <PhotoUpload handleAddPhoto = {handleAddPhoto}/>
       <PhotoList photos ={photos} removePhoto ={removePhoto} onPhotoClick = {setSelectedPhoto}/>
       {selectedPhoto && (
           <PhotoDetailModal  photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
       )}
+
+      </div>
     </>
   );
 };
