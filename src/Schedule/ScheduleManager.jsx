@@ -28,6 +28,15 @@ const ScheduleManager = ({onDaySelect}) => {
     setError({title,message});
 
   }
+  //  일정 목록을 정렬하는 함수 (날짜 + 시간 기준 정렬)
+  const sortSchedules = (schedules) => {
+    return [...schedules].sort((a, b) => {
+      const dateTimeA = new Date(`${a.date}T${a.time}`);
+      const dateTimeB = new Date(`${b.date}T${b.time}`);
+      return dateTimeA - dateTimeB;
+    });
+  };
+
 
 
   // 일정 추가 함수
@@ -54,19 +63,14 @@ const ScheduleManager = ({onDaySelect}) => {
       date,
       time,
     }
-    setSchedules((prevSchedules) =>
-        [...prevSchedules, newSchedule].sort((a, b) => {
-          const dateTimeA = new Date(`${a.date}T${a.time}`);
-          const dateTimeB = new Date(`${b.date}T${b.time}`);
-          return dateTimeA - dateTimeB;
-        })
-    );
+    setSchedules((prevSchedules) => sortSchedules([...prevSchedules, newSchedule]));
   };
 
   // 일정 삭제 함수
   const removeSchedule = (id) => {
-    setSchedules(schedules.filter((schedule) => schedule.id !== id));
+    setSchedules((prevSchedules) => prevSchedules.filter((schedule) => schedule.id !== id));
   };
+
 
   const handleDaySelect = (day) => {
     setSelectedDay(day); // 선택된 날짜 상태 업데이트
@@ -78,13 +82,11 @@ const ScheduleManager = ({onDaySelect}) => {
     setEndDate(end);
   }
 
-
-  const modifySchedule = (id,updatedData) =>{
-    setSchedules(
-      schedules.map((schedule) =>
-        schedule.id === id ? {...schedule, ...updatedData} : schedule
+  const modifySchedule = (id, updatedData) => {
+    setSchedules((prevSchedules) =>
+      sortSchedules(
+        prevSchedules.map((schedule) => (schedule.id === id ? { ...schedule, ...updatedData } : schedule))
       )
-
     );
   };
 
