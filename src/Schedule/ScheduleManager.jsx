@@ -43,7 +43,7 @@ const ScheduleManager = ({onDaySelect}) => {
   const addSchedule = (title,date,time) => {
 
     if (!title.trim()) {
-      handleError("입력 오류", "스케줄 제목을 입력해야 합니다.");
+      handleError("입력 오류", "일정 제목을 입력해야 합니다.");
       return;
     }
     if (!date) {
