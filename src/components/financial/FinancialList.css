@@ -59,3 +59,10 @@ button {
 button:hover {
   background-color: #f1a5a5;
 }
+
+.list-image{
+  
+  width: 60px;
+  height: 60px;
+
+}

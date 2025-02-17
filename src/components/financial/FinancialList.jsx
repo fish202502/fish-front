@@ -5,7 +5,8 @@ import ErrorModal from "./ErrorModal";
 
 const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({ name: "", title: "", expense: 0, date: "", time: "" });
+  const [editData, setEditData] = useState({ name: "", title: "", expense: 0, date: "", time: "", img: null });
+  const [previewImg, setPreviewImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null); // 삭제할 아이템 저장
 
@@ -13,11 +14,25 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const handleEditClick = (financial) => {
     setEditingId(financial.id);
     setEditData(financial);
+    setPreviewImg(financial.img || null); // 기존 이미지 미리보기
   };
 
   // 입력 변경 핸들러
   const handleChange = (e) => {
     setEditData({ ...editData, [e.target.name]: e.target.value });
+  };
+
+  // 이미지 업로드 핸들러
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setEditData({ ...editData, img: reader.result }); // Base64 이미지 저장
+      setPreviewImg(reader.result); // 미리보기용 이미지 저장
+    };
+    reader.readAsDataURL(file);
   };
 
   // 저장 버튼 클릭 시
@@ -66,7 +81,16 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                     <input type="number" name="expense" value={editData.expense} onChange={handleChange} />
                     <input type="date" name="date" value={editData.date} onChange={handleChange} />
                     <input type="time" name="time" value={editData.time} onChange={handleChange} />
-                    
+
+                    {/* 이미지 업로드 */}
+                    <input type="file" accept="image/*" onChange={handleImageUpload} />
+                    {previewImg && (
+                      <div>
+                        <img src={previewImg} alt="미리보기" className="preview-image" />
+                        <button type="button" onClick={() => { setEditData({ ...editData, img: null }); setPreviewImg(null); }}>❌ 삭제</button>
+                      </div>
+                    )}
+
                     <div className="button-group">
                       <button onClick={handleSave}>💾 저장</button>
                       <button onClick={() => setEditingId(null)}>❌ 취소</button>
@@ -77,11 +101,13 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                     <span className="financial-text">
                       📅 {financial.name} {financial.expense}원 {financial.date} {financial.time} - {financial.title}
                     </span>
+                    {financial.img && <img src={financial.img} alt="이미지" className="list-image" />} {/* 저장된 이미지 표시 */}
+  
                     <div className="button-group">
                       <button onClick={() => handleEditClick(financial)}>✏ 수정</button>
                       <button onClick={() => handleDeleteClick(financial.id)}>❌ 삭제</button>
                     </div>
-                  </div>
+                    </div>                
                 )}
               </li>
             ))
