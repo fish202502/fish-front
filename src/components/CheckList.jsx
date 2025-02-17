@@ -1,8 +1,10 @@
 import { useState } from "react";
 import styles from "./CheckList.module.scss";
 
-const CheckList = ({ category, items, onAddItem, onToggleComplete }) => {
+const CheckList = ({ category, items, onAddItem, onToggleComplete, onDeleteItem, onUpdateItem }) => {
   const [newItem, setNewItem] = useState({ text: "", assignee: "" });
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [editedItem, setEditedItem] = useState({ text: "", assignee: "" });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,6 +15,16 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete }) => {
       });
       setNewItem({ text: "", assignee: "" });
     }
+  };
+
+  const handleEditClick = (item) => {
+    setEditingItemId(item.id);
+    setEditedItem({ text: item.text, assignee: item.assignee });
+  };
+
+  const handleSaveEdit = (itemId) => {
+    onUpdateItem(category, itemId, editedItem);
+    setEditingItemId(null);
   };
 
   return (
@@ -46,18 +58,35 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete }) => {
       <ul className={styles.listContainer}>
         {items.map((item) => (
           <li key={item.id} className={`${styles.listItem} ${item.completed ? styles.completed : ""}`}>
-            <div className="">
+            <div>
               <input
                 type="checkbox"
                 checked={item.completed}
                 onChange={() => onToggleComplete(category, item.id)}
-                className=""
               />
-              <span>
-                담당: {item.assignee} | 할일: {item.text}
-                <button>수정</button>
-                <button>삭제</button>
-              </span>
+              {editingItemId === item.id ? (
+                <>
+                  <input
+                    type="text"
+                    value={editedItem.assignee}
+                    onChange={(e) => setEditedItem({ ...editedItem, assignee: e.target.value })}
+                    className={styles.inputField}
+                  />
+                  <input
+                    type="text"
+                    value={editedItem.text}
+                    onChange={(e) => setEditedItem({ ...editedItem, text: e.target.value })}
+                    className={styles.inputField}
+                  />
+                  <button onClick={() => handleSaveEdit(item.id)} className={styles.saveButton}>저장</button>
+                </>
+              ) : (
+                <span>
+                  담당: {item.assignee} | 할일: {item.text}
+                  <button onClick={() => handleEditClick(item)} className={styles.editButton}>수정</button>
+                  <button onClick={() => onDeleteItem(category, item.id)} className={styles.deleteButton}>삭제</button>
+                </span>
+              )}
             </div>
           </li>
         ))}
@@ -65,4 +94,5 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete }) => {
     </div>
   );
 };
+
 export default CheckList;

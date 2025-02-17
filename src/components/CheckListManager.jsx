@@ -26,6 +26,23 @@ const CheckListManager = () => {
     });
   };
 
+  const handleDeleteItem = (category, itemId) => {
+    setChecklistItems({
+      ...checklistItems,
+      [category]: checklistItems[category].filter(item => item.id !== itemId),
+    });
+  };
+  
+  const handleUpdateItem = (category, itemId, updatedItem) => {
+    setChecklistItems({
+      ...checklistItems,
+      [category]: checklistItems[category].map(item =>
+        item.id === itemId ? { ...item, ...updatedItem } : item
+      ),
+    });
+  };
+  
+
   const handleToggleComplete = (category, itemId) => {
     setChecklistItems({
       ...checklistItems,
@@ -47,12 +64,15 @@ const CheckListManager = () => {
       </div>
       <div className={styles.content}>
         {selectedCategory && (
-          <CheckList
-            category={selectedCategory}
-            items={checklistItems[selectedCategory] || []}
-            onAddItem={handleAddChecklistItem}
-            onToggleComplete={handleToggleComplete}
-          />
+         <CheckList
+         category={selectedCategory}
+         items={checklistItems[selectedCategory] || []}
+         onAddItem={handleAddChecklistItem}
+         onToggleComplete={handleToggleComplete}
+         onDeleteItem={handleDeleteItem}
+         onUpdateItem={handleUpdateItem}
+       />
+       
         )}
       </div>
     </div>
