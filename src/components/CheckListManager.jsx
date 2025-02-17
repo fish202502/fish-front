@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CheckListAdd from './CheckListAdd';
 import CheckList from './CheckList';
 import CheckSidebar from './CheckSidebar';
+import styles from './CheckListManager.module.scss';
 
 const CheckListManager = () => {
   const [categories, setCategories] = useState([]);
@@ -35,8 +36,8 @@ const CheckListManager = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      <div className="w-64 border-r">
+    <div className={styles.mainContainer}>
+      <div className={styles.sidebar}>
         <CheckSidebar 
           categories={categories}
           selectedCategory={selectedCategory}
@@ -44,7 +45,7 @@ const CheckListManager = () => {
         />
         <CheckListAdd onAddCategory={handleAddCategory} />
       </div>
-      <div className="flex-1 p-4">
+      <div className={styles.content}>
         {selectedCategory && (
           <CheckList
             category={selectedCategory}
@@ -57,4 +58,5 @@ const CheckListManager = () => {
     </div>
   );
 };
+
 export default CheckListManager;
