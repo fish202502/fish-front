@@ -5,7 +5,7 @@ import ErrorModal from "./ErrorModal";
 
 const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({ name: "", title: "", expense: 0, date: "", time: "", img: null });
+  const [editData, setEditData] = useState({ name: "", title: "", expense: 0, date: "", time: "", img: "" });
   const [previewImg, setPreviewImg] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null); // 삭제할 아이템 저장
@@ -87,7 +87,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                     {previewImg && (
                       <div>
                         <img src={previewImg} alt="미리보기" className="preview-image" />
-                        <button type="button" onClick={() => { setEditData({ ...editData, img: null }); setPreviewImg(null); }}>❌ 삭제</button>
+                        <button type="button" onClick={() => { setEditData({ ...editData, img: "" }); setPreviewImg(null); }}>❌ 삭제</button>
                       </div>
                     )}
 
@@ -102,12 +102,11 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       📅 {financial.name} {financial.expense}원 {financial.date} {financial.time} - {financial.title}
                     </span>
                     {financial.img && <img src={financial.img} alt="이미지" className="list-image" />} {/* 저장된 이미지 표시 */}
-  
                     <div className="button-group">
                       <button onClick={() => handleEditClick(financial)}>✏ 수정</button>
                       <button onClick={() => handleDeleteClick(financial.id)}>❌ 삭제</button>
                     </div>
-                    </div>                
+                  </div>
                 )}
               </li>
             ))

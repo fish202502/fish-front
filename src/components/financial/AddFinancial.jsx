@@ -8,8 +8,8 @@ const AddFinancial = ({ addFinancial }) => {
   const [enteredExpense, setEnteredExpense] = useState("");
   const [enteredTime, setEnteredTime] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
-  const [postImg, setPostImg] = useState([]);
-  const [previewImg, setPreviewImg] = useState([]);
+  const [postImg, setPostImg] = useState(null); // 파일을 배열 대신 객체로 설정
+  const [previewImg, setPreviewImg] = useState(null); // 미리보기 이미지를 하나의 파일로 처리
   const [modalOpen, setModalOpen] = useState(false);
 
   // 이미지 선택 시 실행되는 함수
@@ -19,8 +19,8 @@ const AddFinancial = ({ addFinancial }) => {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPostImg(file);
-      setPreviewImg(reader.result);
+      setPostImg(file); // 하나의 파일 객체를 저장
+      setPreviewImg(reader.result); // Base64로 미리보기 이미지 설정
     };
     reader.readAsDataURL(file);
 
@@ -43,8 +43,8 @@ const AddFinancial = ({ addFinancial }) => {
     setEnteredExpense('');
     setEnteredTime('');
     setEnteredDate('');
-    setPostImg([]);
-    setPreviewImg([]);
+    setPostImg(null); // 이미지 초기화
+    setPreviewImg(null); // 미리보기 이미지 초기화
     setModalOpen(false);
   };
 
@@ -56,14 +56,18 @@ const AddFinancial = ({ addFinancial }) => {
         <input type="number" placeholder="금액" value={enteredExpense} onChange={(e) => setEnteredExpense(Number(e.target.value))} />
         <input type="date" value={enteredDate} onChange={(e) => setEnteredDate(e.target.value)} />
         <input type="time" value={enteredTime} onChange={(e) => setEnteredTime(e.target.value)} />
+
         {/* 이미지 업로드 */}
-      <input type="file" accept="image/*" onChange={handlePreview} />
-      {previewImg && (
-        <div>
-          <img src={previewImg} alt="미리보기" className="preview-image" />
-          <button onClick={() => { setPostImg(null); setPreviewImg(null); }}>❌ 삭제</button>
-        </div>
-      )}
+        <input type="file" accept="image/*" onChange={handlePreview} />
+        
+        {/* 미리보기 이미지 */}
+        {previewImg && (
+          <div>
+            <img src={previewImg} alt="미리보기" className="preview-image" />
+            <button type="button" onClick={() => { setPostImg(null); setPreviewImg(null); }}>❌ 삭제</button>
+          </div>
+        )}
+        
         <button type="submit">➕ 추가</button>
       </form>
 
