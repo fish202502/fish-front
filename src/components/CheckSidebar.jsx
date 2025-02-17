@@ -1,15 +1,15 @@
+import styles from './CheckSidebar.module.scss';
+
 const CheckSidebar = ({ categories, selectedCategory, onSelectCategory }) => {
   return (
-    <div className="p-4">
+    <div className={styles.leftContainer}>
       <h2 className="text-xl font-bold mb-4">카테고리</h2>
       <ul>
         {categories.map(category => (
           <li
             key={category.id}
             onClick={() => onSelectCategory(category.name)}
-            className={`p-2 cursor-pointer rounded ${
-              selectedCategory === category.name ? 'bg-blue-100' : ''
-            }`}
+            className={`${selectedCategory === category.name ? styles.selected : ''}`}
           >
             {category.name}
           </li>
@@ -18,4 +18,5 @@ const CheckSidebar = ({ categories, selectedCategory, onSelectCategory }) => {
     </div>
   );
 };
-export default CheckSidebar
+
+export default CheckSidebar;
