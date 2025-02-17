@@ -17,8 +17,6 @@ const AddSchedule = ({addSchedule, startDate, endDate}) => {
 
 
 
-  // 에러의 데이터를 관리하는 상태변수
-  const [error,setError] = useState(null);
 
   const handleTitleInput = e =>{
     setEnteredTitle(e.target.value);
@@ -34,31 +32,31 @@ const AddSchedule = ({addSchedule, startDate, endDate}) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    if(!enteredTitle.trim()){
-      setError({
-        title: '유효하지 않은 입력값',
-      message: '제목을 입력해주세요.'
-      });
-      return;
-    }
-
-    if(!enteredDate.trim()){
-      setError({
-        title: '유효하지 않은 시간',
-        message: '시간을 입력해주세요.'
-      });
-      return;
-    }
-
-
-
-    if(!enteredTime.trim()){
-      setError({
-        title: '유효하지 않은 시간',
-        message: '시간을 입력해주세요.'
-      });
-      return;
-    }
+    // if(!enteredTitle.trim()){
+    //   onError({
+    //     title: '유효하지 않은 입력값',
+    //   message: '제목을 입력해주세요.'
+    //   });
+    //   return;
+    // }
+    //
+    // if(!enteredDate.trim()){
+    //   onError({
+    //     title: '유효하지 않은 시간',
+    //     message: '시간을 입력해주세요.'
+    //   });
+    //   return;
+    // }
+    //
+    //
+    //
+    // if(!enteredTime.trim()){
+    //   onError({
+    //     title: '유효하지 않은 시간',
+    //     message: '시간을 입력해주세요.'
+    //   });
+    //   return;
+    // }
 
 
     addSchedule(enteredTitle,enteredDate,enteredTime);
@@ -69,14 +67,10 @@ const AddSchedule = ({addSchedule, startDate, endDate}) => {
 
   }
 
-  // 에러모달을 닫아주는 함수
-  const closeModal = () =>{
-    setError(null)
-  };
 
   return (
     <>
-      {error && <ErrorModal title = {error.title} message= {error.message} onClose = {closeModal}/>}
+
       <form>
         <label>일정 제목: </label>
         <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>

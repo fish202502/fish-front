@@ -2,6 +2,7 @@ import { useState } from "react";
 import AddSchedule from "./AddSchedule";
 import ScheduleList from "./ScheduleList";
 import ScheduleDate from "./ScheduleDate.jsx";
+import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 
 
 
@@ -20,10 +21,33 @@ const ScheduleManager = ({onDaySelect}) => {
   const [startDate,setStartDate] = useState(null);
   const [endDate,setEndDate] = useState(null);
 
+  // 에러의 데이터를 관리하는 상태변수
+  const [error,setError] = useState(null);
+
+  const handleError = (title, message) => {
+    setError({title,message});
+
+  }
 
 
   // 일정 추가 함수
-  const addSchedule = (title,date ,time) => {
+  const addSchedule = (title,date,time) => {
+
+    if (!title.trim()) {
+      handleError("입력 오류", "스케줄 제목을 입력해야 합니다.");
+      return;
+    }
+    if (!date) {
+      handleError("입력 오류", "날짜를 선택해야 합니다.");
+      return;
+    }
+    if(!time.trim()){
+      handleError("입력 오류", "시간을 선택해야 합니다.");
+      return;
+    }
+
+
+
     const newSchedule = {
       id: Date.now(),
       title,
@@ -70,8 +94,9 @@ const ScheduleManager = ({onDaySelect}) => {
 
   return (
     <div>
+      {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
       <ScheduleDate onDaySelect={onDaySelect} onDateRangeChange={handleDateRange} />
-      {startDate && endDate && <AddSchedule addSchedule={addSchedule} onDaySelect={handleDaySelect} startDate={startDate} endDate={endDate}/>}
+      {startDate && endDate && <AddSchedule addSchedule={addSchedule} onDaySelect={handleDaySelect} startDate={startDate} endDate={endDate} onError = {handleError}/>}
       <ScheduleList schedules={schedules} removeSchedule={removeSchedule} selectedDay={selectedDay} modifySchedule ={modifySchedule} startDate={startDate} endDate={endDate}/>
 
     </div>
