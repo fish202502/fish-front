@@ -9,7 +9,7 @@ const ErrorModal = ({ title, message, closeModal, onConfirm }) => {
           <h2>{title}</h2>
           <p>{message}</p>
           <div className="button-group">
-            <button className="modal-close-btn" onClick={closeModal}>
+            <button className="modal-close-btn"  onClick={closeModal}>
               취소
             </button>
             <button className="modal-confirm-btn" onClick={onConfirm}>

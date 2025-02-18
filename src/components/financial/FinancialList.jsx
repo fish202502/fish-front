@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./FinancialList.css";
 import FinancialDutch from "./FinancialDutch";
 import ErrorModal from "./ErrorModal";
+import "./FinancialList.css"
 
 const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const [editingId, setEditingId] = useState(null);
@@ -24,16 +25,17 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
 
   // 이미지 업로드 핸들러
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setEditData({ ...editData, img: reader.result }); // Base64 이미지 저장
-      setPreviewImg(reader.result); // 미리보기용 이미지 저장
-    };
-    reader.readAsDataURL(file);
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    setEditData({ ...editData, img: reader.result }); // Base64 저장
+    setPreviewImg(reader.result); // 미리보기용 이미지 저장
   };
+  reader.readAsDataURL(file); // Base64 변환
+};
+
 
   // 저장 버튼 클릭 시
   const handleSave = () => {
@@ -63,7 +65,8 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   };
 
   // 총 지출 금액 계산
-  const totalAmount = financials.reduce((sum, financial) => sum + Number(financial.expense), 0);
+  const totalAmount = financials.reduce((sum, financial) => sum + Number(financial.expense), 0).toLocaleString('ko-KR');
+
 
   return (
     <>
@@ -87,24 +90,25 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                     {previewImg && (
                       <div>
                         <img src={previewImg} alt="미리보기" className="preview-image" />
-                        <button type="button" onClick={() => { setEditData({ ...editData, img: "" }); setPreviewImg(null); }}>❌ 삭제</button>
+                        <button type="button" onClick={() => { setEditData({ ...editData, img: "" }); setPreviewImg(null); }} className="financialButton">❌ 삭제</button>
                       </div>
                     )}
 
                     <div className="button-group">
-                      <button onClick={handleSave}>💾 저장</button>
-                      <button onClick={() => setEditingId(null)}>❌ 취소</button>
+                      <button onClick={handleSave}  className="financialButton">💾 저장</button>
+                      <button onClick={() => setEditingId(null)} className="financialButton">❌ 취소</button>
                     </div>
                   </div>
                 ) : (
                   <div className="financial-content">
                     <span className="financial-text">
-                      📅 {financial.name} {financial.expense}원 {financial.date} {financial.time} - {financial.title}
+                      📅 {financial.name} {Number(financial.expense).toLocaleString('ko-KR')}원 {financial.date} {financial.time} - {financial.title}
+
                     </span>
                     {financial.img && <img src={financial.img} alt="이미지" className="list-image" />} {/* 저장된 이미지 표시 */}
                     <div className="button-group">
-                      <button onClick={() => handleEditClick(financial)}>✏ 수정</button>
-                      <button onClick={() => handleDeleteClick(financial.id)}>❌ 삭제</button>
+                      <button onClick={() => handleEditClick(financial)} className="financialButton">✏ 수정</button>
+                      <button onClick={() => handleDeleteClick(financial.id)} className="financialButton">❌ 삭제</button>
                     </div>
                   </div>
                 )}
