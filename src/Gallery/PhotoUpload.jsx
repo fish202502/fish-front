@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react';
 import ErrorModal from "../ui/Modal/ErrorModal.jsx"
-import PhotoDetailModal from "./PhotoDetailModal.jsx";
+import styles from "./PhotoUpload.module.css"
 
 
 
@@ -70,12 +70,30 @@ const PhotoUpload = ({handleAddPhoto}) => {
 
   return (
     <>
-      {error && <ErrorModal title = {error.title} message= {error.message} onClose = {closeModal}/>}
-      <h1>Photo Book </h1>
-      <input type="file" onChange = {fileChangeHandler} ref ={fileInputRef} />
-        <button onClick ={handleSubmit}>
-        업로드
+      {error && <ErrorModal title={error.title} message={error.message} onClose={closeModal}/>}
+
+      <div className={styles.container}>
+      <h1 className={styles.title}>Photo Book </h1>
+
+      <div className={styles.addContainer}>
+        {/* 파일 업로드 라벨 추가 */}
+        <label htmlFor="fileUpload" className={styles.uploadLabel}>
+          파일 선택
+        </label>
+        <input
+          id="fileUpload"
+          type="file"
+          onChange={fileChangeHandler}
+          ref={fileInputRef}
+        />
+
+        <button className={styles.uploadBtn} onClick={handleSubmit}>
+          추가
         </button>
+      </div>
+
+
+      </div>
 
     </>
   );

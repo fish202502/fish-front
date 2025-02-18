@@ -3,6 +3,18 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    z-index: 1;
 
+
+}
+
+
+
+.uploadContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding-right: 20px;
+    z-index: 10;
 }

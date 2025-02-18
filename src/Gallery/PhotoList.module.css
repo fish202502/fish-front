@@ -1,20 +1,9 @@
 .photo_list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     justify-content: center;
     padding: 20px;
 
 }
 
-@media (max-width: 1024px) {
-    .photo_list {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .photo_list {
-        grid-template-columns: repeat(1, 1fr);
-    }
-}

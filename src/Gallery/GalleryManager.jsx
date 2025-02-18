@@ -10,7 +10,6 @@ import tea from '../assets/img/tea.jpg';
 import wave from '../assets/img/wave.jpg';
 import PhotoDetailModal from "./PhotoDetailModal.jsx";
 import styles from "./GalleryManager.module.css"
-import deleteConfirmModal from "../ui/Modal/DeleteConfirmModal.jsx";
 import DeleteConfirmModal from "../ui/Modal/DeleteConfirmModal.jsx";
 
 
@@ -58,18 +57,20 @@ const GalleryManager = () => {
   }
 
   return (
-    <>
+    <div className={styles.full_container}>
       {deletePhoto !== null && (
         <DeleteConfirmModal onConfirm={removePhoto} onCancel={() => setDeletePhoto(null)}/>
       )}
-      <PhotoUpload handleAddPhoto = {handleAddPhoto}/>
-      <PhotoList photos ={photos} removePhoto ={confirmDeletePhoto} onPhotoClick = {setSelectedPhoto}/>
+      <div className={styles.uploadContainer}>
+        <PhotoUpload handleAddPhoto={handleAddPhoto}/>
+      </div>
+
+      <PhotoList photos={photos} removePhoto={confirmDeletePhoto} onPhotoClick={setSelectedPhoto}/>
+
       {selectedPhoto && (
-          <PhotoDetailModal  photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
+        <PhotoDetailModal photo={selectedPhoto} onClose={() => setSelectedPhoto(null)}/>
       )}
-
-
-    </>
+    </div>
   );
 };
 

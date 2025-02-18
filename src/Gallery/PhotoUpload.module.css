@@ -1,0 +1,78 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addContainer {
+    gap: 15px;
+    padding: 20px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    width: 230px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+
+
+
+.title {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+
+input[type="file"] {
+    display: none;
+}
+
+
+.uploadBtn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.uploadBtn:hover {
+    background-color: #0056b3;
+}
+
+.uploadBtn:active {
+    background-color: #004099;
+}
+
+
+.uploadLabel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.uploadLabel:hover {
+    background-color: #d6d6d6;
+}
+
+.uploadLabel::before {
+    content: "📁";
+    font-size: 18px;
+}
