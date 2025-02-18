@@ -46,17 +46,19 @@ li {
   border-radius: 8px;
 }
 
-button {
+.financialButton {
+  margin-top: 10px;
   background-color: #ff8f8f;
   color: white;
+  font-size: 16px;
+  padding: 10px;
   border: none;
-  padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s;
+    cursor: pointer;
 }
 
-button:hover {
+.financialButton:hover {
   background-color: #f1a5a5;
 }
 

@@ -4,9 +4,19 @@
   margin-top: 5rem;
 }
 
-.modal-open-button, .modal-close-btn {
+.modal-open-button, .modal-close-btn ,.modal-confirm-btn {
+  margin-top: 10px;
+  background-color: #ff8f8f;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  margin-left: auto;
+    cursor: pointer;
+}
+.modal-close-btn:hover {
+  background-color: #f1a5a5;
 }
 
 .modal-container {
