@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './PhotoItem.module.css'
 
 const PhotoItem = ({photo,onDelete,onPhotoClick}) => {
+
   return (
     <>
 

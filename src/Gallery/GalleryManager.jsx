@@ -10,6 +10,8 @@ import tea from '../assets/img/tea.jpg';
 import wave from '../assets/img/wave.jpg';
 import PhotoDetailModal from "./PhotoDetailModal.jsx";
 import styles from "./GalleryManager.module.css"
+import deleteConfirmModal from "../ui/Modal/DeleteConfirmModal.jsx";
+import DeleteConfirmModal from "../ui/Modal/DeleteConfirmModal.jsx";
 
 
 const DUMMY_PHOTOS = [
@@ -27,6 +29,9 @@ const GalleryManager = () => {
 
   const [photos,setPhotos] = useState(DUMMY_PHOTOS);
   const [selectedPhoto,setSelectedPhoto] =useState(null);
+  const [deletePhoto,setDeletePhoto] = useState(null);
+
+
 
   const handleAddPhoto = (fileURL) =>{
     const newPhoto = {
@@ -38,21 +43,32 @@ const GalleryManager = () => {
     [...photos,newPhoto])
   };
 
+  const confirmDeletePhoto =(id) =>{
+    setDeletePhoto(id);
+  }
+
   const removePhoto = (id) => {
-    setPhotos(photos.filter((photo) => photo.id !== id));
+    if(deletePhoto !== null){
+      setPhotos(photos.filter((photo) => photo.id !== deletePhoto));
+      setDeletePhoto(null);
+
+    }
+
+
   }
 
   return (
     <>
-      <div className={styles.full_container}>
-
+      {deletePhoto !== null && (
+        <DeleteConfirmModal onConfirm={removePhoto} onCancel={() => setDeletePhoto(null)}/>
+      )}
       <PhotoUpload handleAddPhoto = {handleAddPhoto}/>
-      <PhotoList photos ={photos} removePhoto ={removePhoto} onPhotoClick = {setSelectedPhoto}/>
+      <PhotoList photos ={photos} removePhoto ={confirmDeletePhoto} onPhotoClick = {setSelectedPhoto}/>
       {selectedPhoto && (
           <PhotoDetailModal  photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
       )}
 
-      </div>
+
     </>
   );
 };
