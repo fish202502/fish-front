@@ -11,12 +11,6 @@ const AddSchedule = ({addSchedule, startDate, endDate}) => {
   const [enteredTime,setEnteredTime] =useState("");
   const [enteredDate,setEnteredDate] =useState("");
 
-  // const [startDate,setStartDate] = useState(null);
-  // const [endDate,setEndDate] = useState(null);
-
-
-
-
 
   const handleTitleInput = e =>{
     setEnteredTitle(e.target.value);

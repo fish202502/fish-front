@@ -7,9 +7,7 @@ import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 
 
 const DUMMY_SCHEDULES =[
-  {id:1, title: '금오름 가기',date:'2025-02-27', time: "08:00"},
-  {id:2, title: '점심먹기',date:'2025-02-28', time: "12:00"},
-  {id:3, title: '오설록 티 뮤지엄 가기',date:'2025-02-28', time: "15:30"},
+
 ];
 
 
@@ -28,6 +26,8 @@ const ScheduleManager = ({onDaySelect}) => {
     setError({title,message});
 
   }
+
+
   //  일정 목록을 정렬하는 함수 (날짜 + 시간 기준 정렬)
   const sortSchedules = (schedules) => {
     return [...schedules].sort((a, b) => {
@@ -56,12 +56,22 @@ const ScheduleManager = ({onDaySelect}) => {
     }
 
 
+    let dayLabel = "";
+    if (startDate) {
+      const start = new Date(startDate);
+      const selected = new Date(date);
+      const dayDifference = Math.floor((selected - start) / (1000 * 60 * 60 * 24));
+      dayLabel = `Day${dayDifference + 1}`;
+    }
+
+
 
     const newSchedule = {
       id: Date.now(),
       title,
       date,
       time,
+      dayLabel
     }
     setSchedules((prevSchedules) => sortSchedules([...prevSchedules, newSchedule]));
   };

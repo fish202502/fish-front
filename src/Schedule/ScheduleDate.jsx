@@ -38,7 +38,7 @@ const ScheduleDate = ({onDateRangeChange , onDaySelect }) => {
         <label>종료일:</label>
         <input type="date" value={endDate || ""} onChange={handleEndDateChange} min={startDate} />
         {startDate && endDate && <p>✈️ 여행 기간: {startDate} ~ {endDate}</p>}
-        {startDate && endDate && <DdayCounter startDate={startDate} endDate={endDate} onDaySelect={onDaySelect} />}
+        {/*{startDate && endDate && <DdayCounter startDate={startDate} endDate={endDate} onDaySelect={onDaySelect} />}*/}
       </>
 
   );
