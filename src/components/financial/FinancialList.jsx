@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./FinancialList.css";
 import FinancialDutch from "./FinancialDutch";
 import ErrorModal from "./ErrorModal";
+import ImageModal from "./ImageModal";
 
 const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const [editingId, setEditingId] = useState(null);
@@ -16,6 +17,22 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const [imageFile, setImageFile] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  
+  // 이미지 모달 상태
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  // 이미지 클릭 핸들러
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setImageModalOpen(true);
+  };
+
+  // 이미지 모달 닫기
+  const closeImageModal = () => {
+    setImageModalOpen(false);
+    setSelectedImage(null);
+  };
 
   // 수정 버튼 클릭 시
   const handleEditClick = (financial) => {
@@ -28,12 +45,15 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
       spender: financial.spender,
       description: financial.description,
       amount: financial.amount,
-      spendAt: formattedSpendAt
+      spendAt: formattedSpendAt,
+      images: financial.images || []
     });
     
     // 이미지가 있는 경우 미리보기 설정
     if (financial.images && financial.images.length > 0) {
       setPreviewImg(financial.images[0]); // 첫 번째 이미지를 미리보기로 표시
+    } else {
+      setPreviewImg(null);
     }
   };
 
@@ -62,6 +82,13 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
     };
     reader.readAsDataURL(file);
   };
+  
+  // 이미지 삭제 핸들러
+  const handleImageDelete = () => {
+    setPreviewImg(null);
+    setImageFile(null);
+    setEditData({...editData, images: []});
+  };
 
   // 저장 버튼 클릭 시
   const handleSave = () => {
@@ -73,8 +100,14 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
     submitFormData.append('amount', editData.amount);
     submitFormData.append('spendAt', editData.spendAt);
     
+    // 이미지 상태 처리
     if (imageFile) {
+      // 새 이미지가 있으면 추가
       submitFormData.append('images', imageFile);
+    } else {
+      // 이미지를 삭제했거나 변경하지 않았을 경우
+      // 삭제 여부를 나타내는 플래그 추가
+      submitFormData.append('removeImage', previewImg ? 'false' : 'true');
     }
 
     modifyFinancial(editingId, submitFormData);
@@ -169,10 +202,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                         />
                         <button 
                           type="button" 
-                          onClick={() => { 
-                            setPreviewImg(null); 
-                            setImageFile(null);
-                          }} 
+                          onClick={handleImageDelete}
                           className="financialButton"
                         >
                           ❌ 삭제
@@ -206,7 +236,10 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       <img 
                         src={financial.images[0]} 
                         alt="지출 이미지" 
-                        className="list-image" 
+                        className="list-image"
+                        onClick={() => handleImageClick(financial.images[0])}
+                        style={{ cursor: 'pointer' }}
+                        title="클릭하여 확대"
                       />
                     )}
                     
@@ -237,12 +270,21 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
 
       <FinancialDutch financials={financials} />
 
+      {/* 삭제 확인 모달 */}
       {modalOpen && (
         <ErrorModal 
           title="삭제" 
           message="정말 삭제하시겠습니까?" 
           closeModal={closeModal} 
           onConfirm={confirmDelete} 
+        />
+      )}
+      
+      {/* 이미지 확대 모달 */}
+      {imageModalOpen && selectedImage && (
+        <ImageModal 
+          imageUrl={selectedImage}
+          closeModal={closeImageModal}
         />
       )}
     </>
