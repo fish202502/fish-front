@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./FinancialList.css";
 import FinancialDutch from "./FinancialDutch";
 import ErrorModal from "../ui/Modal/ErrorModal"
-import ImageModal from "./ImageModal";
+import ImageModal from "../ui/Modal/ImageModal";
 
 const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const [editingId, setEditingId] = useState(null);
