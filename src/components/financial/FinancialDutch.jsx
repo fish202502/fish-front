@@ -3,10 +3,10 @@ import React from "react";
 const FinancialDutch = ({ financials }) => {
   const financialList = financials || [];
 
-  // 이름별로 금액을 합산하는 함수
+  // 이름별로 금액을 합산하는 함수 (spender 필드 사용)
   const groupExpensesByName = (transactions) => {
     return transactions.reduce((acc, curr) => {
-      acc[curr.name] = (acc[curr.name] || 0) + Number(curr.expense);
+      acc[curr.spender] = (acc[curr.spender] || 0) + Number(curr.amount);
       return acc;
     }, {});
   };
@@ -20,7 +20,7 @@ const FinancialDutch = ({ financials }) => {
     0
   );
   const numPeople = Object.keys(groupedExpenses).length;
-  const equalShare = totalAmount / numPeople; // 1인당 부담 금액
+  const equalShare = numPeople > 0 ? totalAmount / numPeople : 0; // 1인당 부담 금액
 
   // 각 사람이 얼마를 더 내야 하는지 or 받아야 하는지 계산
   const balance = Object.entries(groupedExpenses).map(([name, totalExpense]) => ({
@@ -42,15 +42,19 @@ const FinancialDutch = ({ financials }) => {
     const receiver = receivers[receiverIndex];
 
     const transferAmount = Math.min(-payer.amount, receiver.amount); // 송금할 금액 결정
-    transactions.push(`${payer.name} ➡ ${receiver.name}: ${transferAmount.toLocaleString()}원`);
+    const roundedAmount = Math.round(transferAmount); // 정수로 반올림
+    
+    if (roundedAmount > 0) {
+      transactions.push(`${payer.name} ➡ ${receiver.name}: ${roundedAmount.toLocaleString()}원`);
+    }
 
     // 금액 조정
     payer.amount += transferAmount;
     receiver.amount -= transferAmount;
 
     // 금액이 0이면 다음 사람으로 이동
-    if (payer.amount === 0) payerIndex++;
-    if (receiver.amount === 0) receiverIndex++;
+    if (Math.abs(payer.amount) < 1) payerIndex++;
+    if (Math.abs(receiver.amount) < 1) receiverIndex++;
   }
 
   return (
@@ -72,7 +76,7 @@ const FinancialDutch = ({ financials }) => {
         {financialList.length > 0 && (
           <div>
             <p>총 금액: {totalAmount.toLocaleString()}원</p>
-            <p>1인당 부담 금액: {equalShare.toLocaleString()}원</p>
+            <p>1인당 부담 금액: {Math.round(equalShare).toLocaleString()}원</p>
           </div>
         )}
       </div>
