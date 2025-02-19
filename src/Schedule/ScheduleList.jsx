@@ -26,7 +26,7 @@ const ScheduleList = ({ schedules, removeSchedule, modifySchedule }) => {
     // 처음 등장한 dayX일 경우 새로운 그룹을 만든다.
     if (!acc[schedule.dayLabel]) {
       acc[schedule.dayLabel] = {
-        date: schedule.date, // 가장 첫 일정 날짜 저장
+        date: schedule.startDateTime.split("T")[0], // 가장 첫 일정 날짜 저장
         schedules: [],
       };
     }
@@ -60,7 +60,8 @@ const ScheduleList = ({ schedules, removeSchedule, modifySchedule }) => {
                               </>
                             ) : (
                               <>
-                                🕒 {schedule.time} - {schedule.title}
+                                <span>🕒시작: {schedule.startDateTime.replace("T", " ")} -⏳ 종료: {schedule.endDateTime.replace("T", " ")} </span>
+                                <span>{schedule.title}</span>
                                 <section>
                                   <button onClick={() => removeSchedule(schedule.id)}>❌ 삭제</button>
                                   <button onClick={() => handleEditClick(schedule)}>✏️ 수정</button>
