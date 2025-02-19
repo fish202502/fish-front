@@ -14,7 +14,6 @@ const CheckListManager = () => {
     const newCategoryObj = { id: Date.now(), name: newCategory };
     setCategories([...categories, newCategoryObj]);
     setChecklistItems({ ...checklistItems, [newCategory]: [] });
-    // 새 카테고리 생성 후 자동으로 선택
     setSelectedCategory(newCategory);
   };
 
@@ -68,9 +67,7 @@ const CheckListManager = () => {
           categories={categories}
         />
       </div>
-      <div>
-        <CheckListSearch/>
-      </div>
+     
       <div className={styles.content}>
         {selectedCategory && (
           <CheckList
@@ -82,6 +79,12 @@ const CheckListManager = () => {
             onUpdateItem={handleUpdateItem}
           />
         )}
+      </div>
+      <div className={styles.searchContainer}>
+        <CheckListSearch 
+          categories={categories}
+          onSelectCategory={setSelectedCategory}
+        />
       </div>
     </div>
   );
