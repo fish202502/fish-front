@@ -7,30 +7,32 @@ import './FinancialManager.css';
 // 샘플 데이터 (API 연동 전까지 사용)
 const DUMMY_Financials = [
   {
-    id: 1, 
-    spender: '김철수',
-    description: '금오름 가기', 
-    amount: 50000, 
-    spendAt: "2024-01-01T08:00:00", 
-    images: ["https://velog.velcdn.com/images/juneyj1/post/3c47578a-99b7-4a6d-b4b0-3f189021c91c/image.jpeg"]
+      expenseId: "1c48d8bb-a4fa-4477-829e-06a56c514457",
+      spender: "지수",
+      amount: 15000.00,
+      description: "케이크",
+      spendAt: "2025-02-22T14:30:00",
+      receiptList: [
+          {
+              receiptId: "022325ec-9cf5-4eff-b639-5456a3563371",
+              url: "/uploads/d8bffb19-4eaf-4e8b-8c05-874ed15e3b00_favicon.png"
+          }
+      ]
   },
   {
-    id: 2, 
-    spender: '이장군',
-    description: '점심먹기', 
-    amount: 40000, 
-    spendAt: "2024-01-01T12:00:00",
-    images: []
-  },
-  {
-    id: 3, 
-    spender: '박혁거',
-    description: '오설록 티 뮤지엄 가기', 
-    amount: 50000, 
-    spendAt: "2024-01-02T15:30:00", 
-    images: []
-  },
-];
+      expenseId: "16a2e958-6cdf-48e0-9062-87c821cc5d1b",
+      spender: "지수",
+      amount: 15000.00,
+      description: "케이크",
+      spendAt: "2025-02-22T14:30:00",
+      receiptList: [
+          {
+              receiptId: "847aa86e-27dc-429f-a888-abfb3a6d87a8",
+              url: "/uploads/3739c9e9-e655-425b-a7c5-7d50899e31f4_favicon.png"
+          }
+      ]
+  }
+]
 
 const FinancialManager = () => {
   const [financials, setFinancials] = useState(DUMMY_Financials);

@@ -145,6 +145,8 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const formatDateTime = (dateTimeStr) => {
     if (!dateTimeStr) return "";
     const date = new Date(dateTimeStr);
+    console.log("ddd:", date);
+    
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
   };
 
