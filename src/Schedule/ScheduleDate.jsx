@@ -4,23 +4,23 @@ import styles from "./ScheduleDate.module.css"
 
 const ScheduleDate = ({onDateRangeChange }) => {
 
-  const [startDate,setStartDate] = useState(null);
-  const [endDate,setEndDate] = useState(null);
+  const [tripStartDate,setTripStartDate] = useState(null);
+  const [tripEndDate,setTripEndDate] = useState(null);
 
 
   // 에러의 데이터를 관리하는 상태변수
   const [error,setError] = useState(null);
 
-  const handleStartDateChange = (e) => {
-    const newStartDate = e.target.value;
-    setStartDate(newStartDate);
-    onDateRangeChange(newStartDate, endDate);
+  const handleTripStartDateChange = (e) => {
+    const newTripStartDate = e.target.value;
+    setTripStartDate(newTripStartDate);
+    onDateRangeChange(newTripStartDate, tripEndDate);
   };
 
-  const handleEndDateChange = (e) => {
-    const newEndDate = e.target.value;
-    setEndDate(newEndDate);
-    onDateRangeChange(startDate, newEndDate);
+  const handleTripEndDateChange = (e) => {
+    const newTripEndDate = e.target.value;
+    setTripEndDate(newTripEndDate);
+    onDateRangeChange(tripStartDate, newTripEndDate);
   };
 
 
@@ -33,12 +33,12 @@ const ScheduleDate = ({onDateRangeChange }) => {
       <>
         {error && <ErrorModal title={error.title} message={error.message} onClose={closeModal} />}
         <h2>📅 여행 일정 관리</h2>
-        {(!startDate || !endDate) &&<p className={styles.beforeComment}> 일정을 짜기 전, 여행 시작일과 종료일을 입력해주세요</p>}
-        {startDate && endDate && <p className={styles.beforeComment}>✈️ 여행 기간: {startDate} ~ {endDate}</p>}
+        {(!tripStartDate || !tripEndDate) &&<p className={styles.beforeComment}> 일정을 짜기 전, 여행 시작일과 종료일을 입력해주세요</p>}
+        {tripStartDate && tripEndDate && <p className={styles.beforeComment}>✈️ 여행 기간: {tripStartDate} ~ {tripEndDate}</p>}
         <label>여행 시작일:</label>
-        <input type="date" value={startDate || ""} onChange={handleStartDateChange} />
+        <input type="date" value={tripStartDate || ""} onChange={handleTripStartDateChange} />
         <label className={styles.endDate}>여행 종료일:</label>
-        <input type="date" value={endDate || ""} onChange={handleEndDateChange} min={startDate} />
+        <input type="date" value={tripEndDate || ""} onChange={handleTripEndDateChange} min={tripStartDate} />
 
 
 

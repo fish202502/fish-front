@@ -4,7 +4,7 @@ import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 
 import ScheduleDate from "./ScheduleDate.jsx";
 
-const AddSchedule = ({addSchedule, startDate, endDate}) => {
+const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
 
 
   const [enteredTitle,setEnteredTitle] = useState("");
@@ -42,7 +42,7 @@ const AddSchedule = ({addSchedule, startDate, endDate}) => {
         <label>일정 제목: </label>
         <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
         <label> 날짜: </label>
-        <input type="date" onInput={handleDateInput} value={enteredDate} min={startDate} max={endDate}/>
+        <input type="date" onInput={handleDateInput} value={enteredDate} min={tripStartDate} max={tripEndDate}/>
         <label> 시간: </label>
         <input type="time" onInput={handleTimeInput} value={enteredTime}/>
         <button type="submit" onClick={handleSubmit}>➕ 추가</button>

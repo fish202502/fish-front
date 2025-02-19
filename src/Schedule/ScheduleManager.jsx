@@ -14,8 +14,8 @@ const ScheduleManager = () => {
 
 
   const [schedules, setSchedules] = useState(DUMMY_SCHEDULES);
-  const [startDate,setStartDate] = useState(null);
-  const [endDate,setEndDate] = useState(null);
+  const [tripStartDate,setTripStartDate] = useState(null);
+  const [tripEndDate,setTripEndDate] = useState(null);
 
   // 에러의 데이터를 관리하는 상태변수
   const [error,setError] = useState(null);
@@ -55,8 +55,8 @@ const ScheduleManager = () => {
 
 
     let dayLabel = "";
-    if (startDate) {
-      const start = new Date(startDate);
+    if (tripStartDate) {
+      const start = new Date(tripStartDate);
       const selected = new Date(date);
       const dayDifference = Math.floor((selected - start) / (1000 * 60 * 60 * 24));
       dayLabel = `Day${dayDifference + 1}`;
@@ -82,8 +82,8 @@ const ScheduleManager = () => {
 
 
   const handleDateRange = (start,end) => {
-    setStartDate(start);
-    setEndDate(end);
+    setTripStartDate(start);
+    setTripEndDate(end);
   }
 
   const modifySchedule = (id, updatedData) => {
@@ -102,8 +102,8 @@ const ScheduleManager = () => {
     <div className={styles.container}>
       {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
       <ScheduleDate  onDateRangeChange={handleDateRange} />
-      {startDate && endDate && <AddSchedule addSchedule={addSchedule}  startDate={startDate} endDate={endDate} onError = {handleError}/>}
-      <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} startDate={startDate} endDate={endDate}/>
+      {tripStartDate && tripEndDate && <AddSchedule addSchedule={addSchedule}  tripStartDate={tripStartDate} tripEndDate={tripEndDate} onError = {handleError}/>}
+      <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} />
 
     </div>
   );

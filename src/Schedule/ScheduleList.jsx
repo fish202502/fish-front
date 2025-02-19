@@ -3,7 +3,7 @@ import {useState} from "react";
 import App from "../App.jsx";
 import AddSchedule from "./AddSchedule.jsx";
 
-const ScheduleList = ({ schedules, removeSchedule, modifySchedule ,startDate,endDate }) => {
+const ScheduleList = ({ schedules, removeSchedule, modifySchedule }) => {
   const [editingId,setEditingId] = useState(null);
   const [editData, setEditData] = useState({title:"",date:"",time:""});
 
