@@ -11,8 +11,11 @@ const CheckListManager = () => {
   const [checklistItems, setChecklistItems] = useState({});
 
   const handleAddCategory = (newCategory) => {
-    setCategories([...categories, { id: Date.now(), name: newCategory }]);
+    const newCategoryObj = { id: Date.now(), name: newCategory };
+    setCategories([...categories, newCategoryObj]);
     setChecklistItems({ ...checklistItems, [newCategory]: [] });
+    // 새 카테고리 생성 후 자동으로 선택
+    setSelectedCategory(newCategory);
   };
 
   const handleAddChecklistItem = (category, item) => {
@@ -43,7 +46,6 @@ const CheckListManager = () => {
     });
   };
   
-
   const handleToggleComplete = (category, itemId) => {
     setChecklistItems({
       ...checklistItems,
@@ -61,24 +63,24 @@ const CheckListManager = () => {
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
         />
-        <CheckListAdd onAddCategory={handleAddCategory} />
+        <CheckListAdd 
+          onAddCategory={handleAddCategory} 
+          categories={categories}
+        />
       </div>
       <div>
         <CheckListSearch/>
       </div>
       <div className={styles.content}>
         {selectedCategory && (
-         
-         <CheckList
-         
-         category={selectedCategory}
-         items={checklistItems[selectedCategory] || []}
-         onAddItem={handleAddChecklistItem}
-         onToggleComplete={handleToggleComplete}
-         onDeleteItem={handleDeleteItem}
-         onUpdateItem={handleUpdateItem}
-       />
-       
+          <CheckList
+            category={selectedCategory}
+            items={checklistItems[selectedCategory] || []}
+            onAddItem={handleAddChecklistItem}
+            onToggleComplete={handleToggleComplete}
+            onDeleteItem={handleDeleteItem}
+            onUpdateItem={handleUpdateItem}
+          />
         )}
       </div>
     </div>
