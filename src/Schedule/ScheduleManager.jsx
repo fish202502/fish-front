@@ -14,11 +14,11 @@ const ScheduleManager = () => {
 
 
   const [schedules, setSchedules] = useState(DUMMY_SCHEDULES);
-  const [tripStartDate,setTripStartDate] = useState(null);
-  const [tripEndDate,setTripEndDate] = useState(null);
+  const [tripStartDate,setTripStartDate] = useState('');
+  const [tripEndDate,setTripEndDate] = useState('');
 
   // 에러의 데이터를 관리하는 상태변수
-  const [error,setError] = useState(null);
+  const [error,setError] = useState('');
 
   const handleError = (title, message) => {
     setError({title,message});
@@ -29,35 +29,33 @@ const ScheduleManager = () => {
   //  일정 목록을 정렬하는 함수 (날짜 + 시간 기준 정렬)
   const sortSchedules = (schedules) => {
     return [...schedules].sort((a, b) => {
-      const dateTimeA = new Date(`${a.date}T${a.time}`);
-      const dateTimeB = new Date(`${b.date}T${b.time}`);
-      return dateTimeA - dateTimeB;
+      return new Date(a.dateTime) - new Date(b.dateTime);
     });
   };
 
 
 
   // 일정 추가 함수
-  const addSchedule = (title,date,time) => {
+  const addSchedule = (title,startDate,startTime,endDate,endTime) => {
 
     if (!title.trim()) {
       handleError("입력 오류", "일정 제목을 입력해야 합니다.");
       return;
     }
-    if (!date) {
-      handleError("입력 오류", "날짜를 선택해야 합니다.");
+    if (!startDate || !startTime) {
+      handleError("입력 오류", "일정 시작날짜와 시간은 필수입니다.");
       return;
     }
-    if(!time.trim()){
-      handleError("입력 오류", "시간을 선택해야 합니다.");
-      return;
-    }
+
+    // 날짜와 시간을 합쳐 ISO 형식 (YYYY-MM-DDTHH:MM)으로 변환
+    const startDateTime = `${startDate}T${startTime}`;
+    const endDateTime = `${endDate}T${endTime}`;
 
 
     let dayLabel = "";
     if (tripStartDate) {
       const start = new Date(tripStartDate);
-      const selected = new Date(date);
+      const selected = new Date(startDate);
       const dayDifference = Math.floor((selected - start) / (1000 * 60 * 60 * 24));
       dayLabel = `Day${dayDifference + 1}`;
     }
@@ -67,11 +65,13 @@ const ScheduleManager = () => {
     const newSchedule = {
       id: Date.now(),
       title,
-      date,
-      time,
+      startDateTime,
+      endDateTime,
       dayLabel
     }
+    console.log(newSchedule);
     setSchedules((prevSchedules) => sortSchedules([...prevSchedules, newSchedule]));
+
   };
 
   // 일정 삭제 함수

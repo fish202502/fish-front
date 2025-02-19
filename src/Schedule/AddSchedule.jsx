@@ -8,10 +8,10 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
 
 
   const [enteredTitle,setEnteredTitle] = useState("");
-  const [enteredStartDate,setEnteredStartDate] =useState(null);
-  const [enteredStartTime,setEnteredStartTime] =useState(null);
-  const [enteredEndDate,setEnteredEndDate] =useState(null);
-  const [enteredEndTime,setEnteredEndTime] =useState(null);
+  const [enteredStartDate,setEnteredStartDate] =useState('');
+  const [enteredStartTime,setEnteredStartTime] =useState('');
+  const [enteredEndDate,setEnteredEndDate] =useState('');
+  const [enteredEndTime,setEnteredEndTime] =useState('');
 
 
 
@@ -57,7 +57,7 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
         <label> 시작시간: </label>
         <input type="time" onChange={handleStartTimeInput} value={enteredStartTime}/>
         <label> 종료날짜: </label>
-        <input type="date" onChange={handleEndDateInput} value={enteredEndDate} min={tripStartDate} max={tripEndDate}/>
+        <input type="date" onChange={handleEndDateInput} value={enteredEndDate} min={enteredStartDate} max={tripEndDate}/>
         <label> 종료시간: </label>
         <input type="time" onChange={handleEndTimeInput} value={enteredEndTime}/>
         <button type="submit">➕ 추가</button>
