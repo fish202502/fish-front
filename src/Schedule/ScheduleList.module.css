@@ -1,0 +1,48 @@
+/* 일정 리스트 스타일 */
+.scheduleList {
+    margin-top: 20px;
+}
+
+.scheduleList h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* DayX 헤더 스타일 */
+.dayGroup {
+    background-color: #e3f2fd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+/* 일정 항목 스타일 */
+.scheduleItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background-color: white;
+    border-radius: 5px;
+    margin: 5px 0;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 수정 & 삭제 버튼 스타일 */
+
+
+
+.scheduleItem button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    transition: color 0.2s ease;
+}
+
+.scheduleItem button:hover {
+    color: #d9534f;
+}
+

@@ -3,19 +3,17 @@ import AddSchedule from "./AddSchedule";
 import ScheduleList from "./ScheduleList";
 import ScheduleDate from "./ScheduleDate.jsx";
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
-
-
+import styles from "./ScheduleManager.module.css";
 
 const DUMMY_SCHEDULES =[
 
 ];
 
 
-const ScheduleManager = ({onDaySelect}) => {
+const ScheduleManager = () => {
 
 
   const [schedules, setSchedules] = useState(DUMMY_SCHEDULES);
-  const [selectedDay, setSelectedDay] = useState("");
   const [startDate,setStartDate] = useState(null);
   const [endDate,setEndDate] = useState(null);
 
@@ -82,11 +80,7 @@ const ScheduleManager = ({onDaySelect}) => {
   };
 
 
-  const handleDaySelect = (day) => {
-    setSelectedDay(day); // 선택된 날짜 상태 업데이트
-    console.log("📅 선택한 날짜:", day);
 
-  };
   const handleDateRange = (start,end) => {
     setStartDate(start);
     setEndDate(end);
@@ -105,11 +99,11 @@ const ScheduleManager = ({onDaySelect}) => {
 
 
   return (
-    <div>
+    <div className={styles.container}>
       {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
-      <ScheduleDate onDaySelect={onDaySelect} onDateRangeChange={handleDateRange} />
-      {startDate && endDate && <AddSchedule addSchedule={addSchedule} onDaySelect={handleDaySelect} startDate={startDate} endDate={endDate} onError = {handleError}/>}
-      <ScheduleList schedules={schedules} removeSchedule={removeSchedule} selectedDay={selectedDay} modifySchedule ={modifySchedule} startDate={startDate} endDate={endDate}/>
+      <ScheduleDate  onDateRangeChange={handleDateRange} />
+      {startDate && endDate && <AddSchedule addSchedule={addSchedule}  startDate={startDate} endDate={endDate} onError = {handleError}/>}
+      <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} startDate={startDate} endDate={endDate}/>
 
     </div>
   );

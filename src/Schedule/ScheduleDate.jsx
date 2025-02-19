@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
-import DdayCounter from "./DdayCounter.jsx";
+import styles from "./ScheduleDate.module.css"
 
-const ScheduleDate = ({onDateRangeChange , onDaySelect }) => {
+const ScheduleDate = ({onDateRangeChange }) => {
 
   const [startDate,setStartDate] = useState(null);
   const [endDate,setEndDate] = useState(null);
@@ -33,12 +33,15 @@ const ScheduleDate = ({onDateRangeChange , onDaySelect }) => {
       <>
         {error && <ErrorModal title={error.title} message={error.message} onClose={closeModal} />}
         <h2>📅 여행 일정 관리</h2>
-        <label>시작일:</label>
+        {(!startDate || !endDate) &&<p className={styles.beforeComment}> 일정을 짜기 전, 여행 시작일과 종료일을 입력해주세요</p>}
+        {startDate && endDate && <p className={styles.beforeComment}>✈️ 여행 기간: {startDate} ~ {endDate}</p>}
+        <label>여행 시작일:</label>
         <input type="date" value={startDate || ""} onChange={handleStartDateChange} />
-        <label>종료일:</label>
+        <label className={styles.endDate}>여행 종료일:</label>
         <input type="date" value={endDate || ""} onChange={handleEndDateChange} min={startDate} />
-        {startDate && endDate && <p>✈️ 여행 기간: {startDate} ~ {endDate}</p>}
-        {/*{startDate && endDate && <DdayCounter startDate={startDate} endDate={endDate} onDaySelect={onDaySelect} />}*/}
+
+
+
       </>
 
   );

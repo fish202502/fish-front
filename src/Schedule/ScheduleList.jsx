@@ -1,7 +1,9 @@
-import './ScheduleList.css'
+import styles from './ScheduleList.module.css'
 import {useState} from "react";
+import App from "../App.jsx";
+import AddSchedule from "./AddSchedule.jsx";
 
-const ScheduleList = ({ schedules, removeSchedule, modifySchedule ,startDate,endDate,selectedDay }) => {
+const ScheduleList = ({ schedules, removeSchedule, modifySchedule ,startDate,endDate }) => {
   const [editingId,setEditingId] = useState(null);
   const [editData, setEditData] = useState({title:"",date:"",time:""});
 
@@ -21,50 +23,57 @@ const ScheduleList = ({ schedules, removeSchedule, modifySchedule ,startDate,end
   };
 
   const groupedSchedules = schedules.reduce((acc, schedule) => {
+    // 처음 등장한 dayX일 경우 새로운 그룹을 만든다.
     if (!acc[schedule.dayLabel]) {
       acc[schedule.dayLabel] = {
-        date: schedule.date, // DayX 그룹의 대표 날짜 (가장 첫 일정 날짜)
+        date: schedule.date, // 가장 첫 일정 날짜 저장
         schedules: [],
       };
     }
+    // 같은 Day에 속하는 일정들은 해당 그룹에 추가
     acc[schedule.dayLabel].schedules.push(schedule);
     return acc;
   }, {});
 
 
   return (
-      <form>
+      <form className={styles.scheduleList}>
         {Object.keys(groupedSchedules).length === 0 ? (
             <p>등록된 일정이 없습니다.</p>
         ) : (
             Object.keys(groupedSchedules).map((dayLabel) => (
-                <div key={dayLabel}>
-                  {/* ✅ DayX + 대표 날짜 출력 */}
+                <div className={styles.dayGroup} key={dayLabel}>
+                  {/*  Day + Day의 해당날짜 출력 */}
                   <h2> {dayLabel} <span style={{ fontSize: "14px", color: "#888" }}>({groupedSchedules[dayLabel].date})</span></h2>
                   <ul>
-                    {groupedSchedules[dayLabel].schedules.map((schedule) => (
-                        <li key={schedule.id}>
-                          {editingId === schedule.id ? (
+                        {groupedSchedules[dayLabel].schedules.map((schedule) => (
+                          <li key={schedule.id} className={styles.scheduleItem}>
+                            {editingId === schedule.id ? (
                               <>
-                                <input type="text" name="title" value={editData.title} onChange={handleChange} />
-                                <input type="date" name="date" value={editData.date} onChange={handleChange} min={startDate} max={endDate} />
-                                <input type="time" name="time" value={editData.time} onChange={handleChange} />
-                                <button onClick={(e) => handleSave(e)}>💾 저장</button>
-                                <button onClick={() => setEditingId(null)}>❌ 취소</button>
+                                <input type="text" name="title" value={editData.title} onChange={handleChange}/>
+                                <input type="time" name="time" value={editData.time} onChange={handleChange}/>
+                                <section className={styles.buttonContainer}>
+                                  <button onClick={(e) => handleSave(e)}>💾 저장</button>
+                                  <button onClick={() => setEditingId(null)}>❌ 취소</button>
+
+                                </section>
                               </>
-                          ) : (
+                            ) : (
                               <>
                                 🕒 {schedule.time} - {schedule.title}
-                                <button onClick={() => removeSchedule(schedule.id)}>❌ 삭제</button>
-                                <button onClick={() => handleEditClick(schedule)}>✏️ 수정</button>
+                                <section>
+                                  <button onClick={() => removeSchedule(schedule.id)}>❌ 삭제</button>
+                                  <button onClick={() => handleEditClick(schedule)}>✏️ 수정</button>
+
+                                </section>
                               </>
-                          )}
-                        </li>
-                    ))}
+                            )}
+                          </li>
+                        ))}
                   </ul>
                 </div>
-            ))
-        )}
+          ))
+          )}
       </form>
   );
 };

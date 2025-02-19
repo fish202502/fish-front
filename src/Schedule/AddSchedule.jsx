@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import './AddSchedule.css'
+import styles from './AddSchedule.module.css'
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
-import DdayCounter from "./DdayCounter.jsx";
+
 import ScheduleDate from "./ScheduleDate.jsx";
 
 const AddSchedule = ({addSchedule, startDate, endDate}) => {
@@ -26,33 +26,6 @@ const AddSchedule = ({addSchedule, startDate, endDate}) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    // if(!enteredTitle.trim()){
-    //   onError({
-    //     title: '유효하지 않은 입력값',
-    //   message: '제목을 입력해주세요.'
-    //   });
-    //   return;
-    // }
-    //
-    // if(!enteredDate.trim()){
-    //   onError({
-    //     title: '유효하지 않은 시간',
-    //     message: '시간을 입력해주세요.'
-    //   });
-    //   return;
-    // }
-    //
-    //
-    //
-    // if(!enteredTime.trim()){
-    //   onError({
-    //     title: '유효하지 않은 시간',
-    //     message: '시간을 입력해주세요.'
-    //   });
-    //   return;
-    // }
-
-
     addSchedule(enteredTitle,enteredDate,enteredTime);
 
     setEnteredTitle('');
@@ -65,7 +38,7 @@ const AddSchedule = ({addSchedule, startDate, endDate}) => {
   return (
     <>
 
-      <form>
+      <form className={styles.addScheduleContainer}>
         <label>일정 제목: </label>
         <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
         <label> 날짜: </label>
