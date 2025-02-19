@@ -61,6 +61,7 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete, onDeleteItem,
             <div>
               <input
                 type="checkbox"
+                className={styles.checkListCheckBox}
                 checked={item.completed}
                 onChange={() => onToggleComplete(category, item.id)}
               />
@@ -78,7 +79,7 @@ const CheckList = ({ category, items, onAddItem, onToggleComplete, onDeleteItem,
                     onChange={(e) => setEditedItem({ ...editedItem, text: e.target.value })}
                     className={styles.inputField}
                   />
-                  <button onClick={() => handleSaveEdit(item.id)} className={styles.saveButton}>저장</button>
+                  <button onClick={() => handleSaveEdit(item.id)} className={styles.modifyButton}>저장</button>
                 </>
               ) : (
                 <span>

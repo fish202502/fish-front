@@ -5,6 +5,13 @@ import CheckSidebar from './CheckSidebar';
 import styles from './CheckListManager.module.scss';
 import CheckListSearch from './CheckListSearch';
 
+const DUMMY_CheckList = [
+  {
+    text: "밥",
+    name: "name",
+    completed: true
+  }
+]
 const CheckListManager = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
