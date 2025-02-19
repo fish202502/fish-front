@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./AddFinancial.css";
-import ErrorModal from "./ErrorModal";
+import ErrorModal from "../ui/Modal/ErrorModal"
 
 
 const AddFinancial = ({ addFinancial }) => {

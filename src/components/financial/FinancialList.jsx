@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./FinancialList.css";
 import FinancialDutch from "./FinancialDutch";
-import ErrorModal from "./ErrorModal";
+import ErrorModal from "../ui/Modal/ErrorModal"
 import ImageModal from "./ImageModal";
 
 const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
@@ -274,7 +274,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
 
       {/* 삭제 확인 모달 */}
       {modalOpen && (
-        <ErrorModal 
+        <ErrorModal
           title="삭제" 
           message="정말 삭제하시겠습니까?" 
           closeModal={closeModal} 
@@ -284,7 +284,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
       
       {/* 이미지 확대 모달 */}
       {imageModalOpen && selectedImage && (
-        <ImageModal 
+        <ImageModal
           imageUrl={selectedImage}
           closeModal={closeImageModal}
         />
