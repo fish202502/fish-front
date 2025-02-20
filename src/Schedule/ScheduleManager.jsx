@@ -29,7 +29,7 @@ const ScheduleManager = () => {
   //  일정 목록을 정렬하는 함수 (날짜 + 시간 기준 정렬)
   const sortSchedules = (schedules) => {
     return [...schedules].sort((a, b) => {
-      return new Date(a.dateTime) - new Date(b.dateTime);
+      return new Date(a.startDateTime) - new Date(b.startDateTime);
     });
   };
 
