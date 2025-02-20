@@ -103,11 +103,15 @@ const ScheduleManager = () => {
     );
   };
 
+  const resetSchedules = () => {
+    setSchedules([]);
+  };
+
 
   return (
     <div className={styles.container}>
       {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
-      <ScheduleDate  onDateRangeChange={handleDateRange} />
+      <ScheduleDate  onDateRangeChange={handleDateRange} onResetSchedules={resetSchedules} />
       {tripStartDate && tripEndDate && <AddSchedule addSchedule={addSchedule} tripStartDate={tripStartDate} tripEndDate={tripEndDate}  />}
       <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} />
       <button>일정 저장</button>
