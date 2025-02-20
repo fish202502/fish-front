@@ -21,6 +21,7 @@ const ScheduleManager = () => {
   const [error,setError] = useState('');
 
 
+
   const handleError = (title, message) => {
     setError({title,message});
 
@@ -59,6 +60,7 @@ const ScheduleManager = () => {
 
 
     let dayLabel = "";
+
     if (tripStartDate) {
       const start = new Date(tripStartDate);
       const selected = new Date(startDate);
@@ -102,15 +104,14 @@ const ScheduleManager = () => {
   };
 
 
-
-
-
   return (
     <div className={styles.container}>
       {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
       <ScheduleDate  onDateRangeChange={handleDateRange} />
-      {tripStartDate && tripEndDate && <AddSchedule addSchedule={addSchedule}  tripStartDate={tripStartDate} tripEndDate={tripEndDate}  />}
+      {tripStartDate && tripEndDate && <AddSchedule addSchedule={addSchedule} tripStartDate={tripStartDate} tripEndDate={tripEndDate}  />}
       <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} />
+      <button>일정 저장</button>
+
 
     </div>
   );
