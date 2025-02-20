@@ -60,7 +60,7 @@ const ScheduleList = ({ schedules, removeSchedule, modifySchedule }) => {
                               </>
                             ) : (
                               <>
-                                <span>🕒시작: {schedule.startDateTime.replace("T", " ")} -⏳ 종료: {schedule.endDateTime.replace("T", " ")} </span>
+                                <span>🕒시작: {schedule.startDateTime.replace("T", " ")} - 종료: {schedule.endDateTime.replace("T", " ")} </span>
                                 <span>{schedule.title}</span>
                                 <section>
                                   <button onClick={() => removeSchedule(schedule.id)}>❌ 삭제</button>

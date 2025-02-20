@@ -20,6 +20,7 @@ const ScheduleManager = () => {
   // 에러의 데이터를 관리하는 상태변수
   const [error,setError] = useState('');
 
+
   const handleError = (title, message) => {
     setError({title,message});
 
@@ -40,16 +41,21 @@ const ScheduleManager = () => {
 
     if (!title.trim()) {
       handleError("입력 오류", "일정 제목을 입력해야 합니다.");
-      return;
+      return false;
     }
     if (!startDate || !startTime) {
       handleError("입력 오류", "일정 시작날짜와 시간은 필수입니다.");
-      return;
+      return false;
     }
 
     // 날짜와 시간을 합쳐 ISO 형식 (YYYY-MM-DDTHH:MM)으로 변환
     const startDateTime = `${startDate}T${startTime}`;
     const endDateTime = `${endDate}T${endTime}`;
+
+    if(endDateTime < startDateTime) {
+      handleError("입력오류", "일정종료시간은 시작시간보다 나중이어야 합니다.")
+      return false;
+    }
 
 
     let dayLabel = "";
@@ -72,6 +78,7 @@ const ScheduleManager = () => {
     console.log(newSchedule);
     setSchedules((prevSchedules) => sortSchedules([...prevSchedules, newSchedule]));
 
+    return true;
   };
 
   // 일정 삭제 함수
@@ -102,7 +109,7 @@ const ScheduleManager = () => {
     <div className={styles.container}>
       {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
       <ScheduleDate  onDateRangeChange={handleDateRange} />
-      {tripStartDate && tripEndDate && <AddSchedule addSchedule={addSchedule}  tripStartDate={tripStartDate} tripEndDate={tripEndDate} onError = {handleError}/>}
+      {tripStartDate && tripEndDate && <AddSchedule addSchedule={addSchedule}  tripStartDate={tripStartDate} tripEndDate={tripEndDate}  />}
       <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} />
 
     </div>

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import styles from './AddSchedule.module.css'
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 
 import ScheduleDate from "./ScheduleDate.jsx";
+import error from "eslint-plugin-react/lib/util/error.js";
 
 const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
 
@@ -35,13 +36,21 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    addSchedule(enteredTitle,enteredStartDate,enteredStartTime,enteredEndDate,enteredEndTime);
+    const isSuccess= addSchedule(enteredTitle,enteredStartDate,enteredStartTime,enteredEndDate,enteredEndTime);
+
+    if(isSuccess){
 
     setEnteredTitle('');
     setEnteredStartDate('');
     setEnteredStartTime('');
     setEnteredEndDate('');
     setEnteredEndTime('');
+
+    };
+
+
+
+
 
   }
 
