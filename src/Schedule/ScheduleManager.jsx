@@ -97,9 +97,23 @@ const ScheduleManager = () => {
 
   const modifySchedule = (id, updatedData) => {
     setSchedules((prevSchedules) =>
-      sortSchedules(
-        prevSchedules.map((schedule) => (schedule.id === id ? { ...schedule, ...updatedData } : schedule))
-      )
+        sortSchedules(
+            prevSchedules.map((schedule) => {
+              if (schedule.id === id) {
+                const startDateTime = `${updatedData.startDate}T${updatedData.startTime}`;
+                const endDateTime = `${updatedData.endDate}T${updatedData.endTime}`;
+                let dayLabel = "";
+                if (tripStartDate) {
+                  const start = new Date(tripStartDate);
+                  const selected = new Date(updatedData.startDate);
+                  const dayDifference = Math.floor((selected - start) / (1000 * 60 * 60 * 24));
+                  dayLabel = `Day${dayDifference + 1}`;
+                }
+                return { ...schedule, ...updatedData, startDateTime, endDateTime, dayLabel };
+              }
+              return schedule;
+            })
+        )
     );
   };
 
@@ -113,7 +127,7 @@ const ScheduleManager = () => {
       {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
       <ScheduleDate  onDateRangeChange={handleDateRange} onResetSchedules={resetSchedules} />
       {tripStartDate && tripEndDate && <AddSchedule addSchedule={addSchedule} tripStartDate={tripStartDate} tripEndDate={tripEndDate}  />}
-      <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} />
+      <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} tripStartDate={tripStartDate} tripEndDate={tripEndDate} />
       <button>일정 저장</button>
 
 

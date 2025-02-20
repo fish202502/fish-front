@@ -1,15 +1,22 @@
 import styles from './ScheduleList.module.css'
 import {useState} from "react";
-import App from "../App.jsx";
 import AddSchedule from "./AddSchedule.jsx";
+import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 
-const ScheduleList = ({ schedules, removeSchedule, modifySchedule }) => {
-  const [editingId,setEditingId] = useState(null);
-  const [editData, setEditData] = useState({title:"",date:"",time:""});
+const ScheduleList = ({ schedules, removeSchedule,modifySchedule, tripStartDate, tripEndDate }) => {
+  const [editingId, setEditingId] = useState(null);
+  const [editData, setEditData] = useState({title: "", startDate: "", startTime: "", endDate: "", endTime: ""});
+  const [error, setError] = useState(null);
 
   const handleEditClick = (schedule) => {
     setEditingId(schedule.id);
-    setEditData(schedule);
+    setEditData({
+      title: schedule.title,
+      startDate: schedule.startDateTime.split('T')[0],
+      startTime: schedule.startDateTime.split('T')[1],
+      endDate: schedule.endDateTime.split('T')[0],
+      endTime: schedule.endDateTime.split('T')[1]
+    });
   };
 
   const handleChange = (e) => {
@@ -18,64 +25,75 @@ const ScheduleList = ({ schedules, removeSchedule, modifySchedule }) => {
 
   const handleSave = (e) => {
     e.preventDefault();
+    const startDateTime = `${editData.startDate}T${editData.startTime}`;
+    const endDateTime = `${editData.endDate}T${editData.endTime}`;
+
+    if (endDateTime < startDateTime) {
+      setError("일정 종료시간은 시작시간보다 나중이어야 합니다.");
+      return;
+    }
+
     modifySchedule(editingId, editData);
     setEditingId(null);
   };
 
+  const closeErrorModal = () => {
+    setError(null);
+  };
+
   const groupedSchedules = schedules.reduce((acc, schedule) => {
-    // 처음 등장한 dayX일 경우 새로운 그룹을 만든다.
     if (!acc[schedule.dayLabel]) {
       acc[schedule.dayLabel] = {
-        date: schedule.startDateTime.split("T")[0], // 가장 첫 일정 날짜 저장
+        date: schedule.startDateTime.split("T")[0],
         schedules: [],
       };
     }
-    // 같은 Day에 속하는 일정들은 해당 그룹에 추가
     acc[schedule.dayLabel].schedules.push(schedule);
     return acc;
   }, {});
 
-
   return (
-      <form className={styles.scheduleList}>
+      <div className={styles.scheduleList}>
+        {error && <ErrorModal title="입력 오류" message={error} onClose={closeErrorModal} />}
         {Object.keys(groupedSchedules).length === 0 ? (
             <p>등록된 일정이 없습니다.</p>
         ) : (
             Object.keys(groupedSchedules).map((dayLabel) => (
                 <div className={styles.dayGroup} key={dayLabel}>
-                  {/*  Day + Day의 해당날짜 출력 */}
                   <h2> {dayLabel} <span style={{ fontSize: "14px", color: "#888" }}>({groupedSchedules[dayLabel].date})</span></h2>
                   <ul>
-                        {groupedSchedules[dayLabel].schedules.map((schedule) => (
-                          <li key={schedule.id} className={styles.scheduleItem}>
-                            {editingId === schedule.id ? (
+                    {groupedSchedules[dayLabel].schedules.map((schedule) => (
+                        <li key={schedule.id} className={styles.scheduleItem}>
+                          {editingId === schedule.id ? (
                               <>
+                                <input type="date" name="startDate" value={editData.startDate} min={tripStartDate} max={tripEndDate} onChange={handleChange}/>
+                                <input type="time" name="startTime" value={editData.startTime} onChange={handleChange}/>
+                                <input type="date" name="endDate" value={editData.endDate} min={editData.startDate} max={tripEndDate} onChange={handleChange}/>
+                                <input type="time" name="endTime" value={editData.endTime} onChange={handleChange}/>
                                 <input type="text" name="title" value={editData.title} onChange={handleChange}/>
-                                <input type="time" name="time" value={editData.time} onChange={handleChange}/>
-                                <section className={styles.buttonContainer}>
-                                  <button onClick={(e) => handleSave(e)}>💾 저장</button>
-                                  <button onClick={() => setEditingId(null)}>❌ 취소</button>
 
+                                <section className={styles.buttonContainer}>
+                                  <button onClick={(e) => handleSave(e)}>확인</button>
+                                  <button onClick={() => setEditingId(null)}>❌ 취소</button>
                                 </section>
                               </>
-                            ) : (
+                          ) : (
                               <>
-                                <span>🕒시작: {schedule.startDateTime.replace("T", " ")} - 종료: {schedule.endDateTime.replace("T", " ")} </span>
+                                <span>🕒 시작: {schedule.startDateTime.replace("T", " ")} - 종료: {schedule.endDateTime.replace("T", " ")} </span>
                                 <span>{schedule.title}</span>
                                 <section>
                                   <button onClick={() => removeSchedule(schedule.id)}>❌ 삭제</button>
                                   <button onClick={() => handleEditClick(schedule)}>✏️ 수정</button>
-
                                 </section>
                               </>
-                            )}
-                          </li>
-                        ))}
+                          )}
+                        </li>
+                    ))}
                   </ul>
                 </div>
-          ))
-          )}
-      </form>
+            ))
+        )}
+      </div>
   );
 };
 

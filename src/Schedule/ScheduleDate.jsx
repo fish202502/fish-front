@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 import styles from "./ScheduleDate.module.css"
+import DeleteConfirmModal from "../ui/Modal/DeleteConfirmModal.jsx";
 
 const ScheduleDate = ({onDateRangeChange, onResetSchedules }) => {
 
@@ -38,9 +39,6 @@ const ScheduleDate = ({onDateRangeChange, onResetSchedules }) => {
     setShowConfirmModal(true);
   };
 
-  const closeConfirmModal = () => {
-    setShowConfirmModal(false);
-  };
 
 
   const resetDates = () => {
@@ -53,14 +51,13 @@ const ScheduleDate = ({onDateRangeChange, onResetSchedules }) => {
 
   // 모달 컴포넌트 정리
   const ConfirmModal = showConfirmModal && (
-    <ErrorModal
+    <DeleteConfirmModal
       title="여행 일정 수정"
       message="정말로 여행 기간을 수정하시겠습니까? 기록했던 모든 일정들이 사라집니다."
-      onClose={closeConfirmModal}
     >
       <button onClick={resetDates}>확인</button>
-      <button onClick={closeConfirmModal}>취소</button>
-    </ErrorModal>
+      <button >취소</button>
+    </DeleteConfirmModal>
   );
 
 
