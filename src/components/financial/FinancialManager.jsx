@@ -3,123 +3,184 @@ import AddFinancial from "./AddFinancial";
 import FinancialList from "./FinancialList";
 import './FinancialManager.css';
 
-
-// 샘플 데이터 (API 연동 전까지 사용)
-const DUMMY_Financials = [
-  {
-      expenseId: "1c48d8bb-a4fa-4477-829e-06a56c514457",
-      spender: "지수",
-      amount: 15000.00,
-      description: "케이크",
-      spendAt: "2025-02-22T14:30:00",
-      receiptList: [
-          {
-              receiptId: "022325ec-9cf5-4eff-b639-5456a3563371",
-              url: "/uploads/d8bffb19-4eaf-4e8b-8c05-874ed15e3b00_favicon.png"
-          }
-      ]
-  },
-  {
-      expenseId: "16a2e958-6cdf-48e0-9062-87c821cc5d1b",
-      spender: "지수",
-      amount: 15000.00,
-      description: "케이크",
-      spendAt: "2025-02-22T14:30:00",
-      receiptList: [
-          {
-              receiptId: "847aa86e-27dc-429f-a888-abfb3a6d87a8",
-              url: "/uploads/3739c9e9-e655-425b-a7c5-7d50899e31f4_favicon.png"
-          }
-      ]
-  }
-]
-
 const FinancialManager = () => {
-  const [financials, setFinancials] = useState(DUMMY_Financials);
+  const [financials, setFinancials] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // API에서 데이터 가져오기 (실제 API 연동 시 주석 해제)
-  /*
+  // API 상수
+  const ROOM_CODE = 'd8df09f5';
+  const URL_ID = '1739944073733eb7c6';
+  const API_BASE_URL = 'http://localhost:8999/api/fish/expense';
+
+  // API에서 데이터 가져오기
   useEffect(() => {
     const fetchFinancials = async () => {
+      setIsLoading(true);
+      setError(null);
+      
       try {
-        const response = await axios.get('/api/expenses');
-        setFinancials(response.data);
+        // API 호출
+        const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`);
+        
+        if (!response.ok) {
+          throw new Error('네트워크 응답이 올바르지 않습니다');
+        }
+        
+        const data = await response.json();
+        console.log('불러온 데이터:', data);
+        
+        // 데이터 구조 확인 및 변환
+        if (data && Array.isArray(data) && data.length > 0 && data[0].expenseItemList) {
+          // API 응답 구조에 맞게 데이터 변환
+          const formattedData = data[0].expenseItemList.map(item => ({
+            id: item.expenseItemId || item.id || Math.random().toString(),
+            spender: item.spender,
+            description: item.description,
+            amount: item.amount,
+            spendAt: item.spendAt,
+            images: item.receiptList && item.receiptList.length > 0 
+              ? item.receiptList.map(receipt => receipt.url) 
+              : []
+          }));
+          
+          setFinancials(formattedData);
+        } else {
+          console.log('데이터 형식이 예상과 다릅니다:', data);
+          setError('데이터 형식이 올바르지 않습니다.');
+        }
       } catch (error) {
-        console.error('지출 데이터를 가져오는 중 오류 발생:', error);
-        setError('데이터를 불러오는 데 실패했습니다');
+        console.error('데이터를 불러오는 중 오류 발생:', error);
+        setError('데이터를 불러오는 데 실패했습니다: ' + error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchFinancials();
   }, []);
-  */
 
   // 지출 추가 함수
   const addFinancial = async (formData) => {
     try {
-      // 실제 API 연동 시 사용
-      // const response = await axios.post('/api/expenses', formData);
-      // const newFinancial = response.data;
+      setIsLoading(true);
       
-      // 임시 구현 (API 연동 전)
-      const newFinancial = {
-        id: Date.now(),
-        spender: formData.get('spender'),
-        description: formData.get('description'),
-        amount: Number(formData.get('amount')),
-        spendAt: formData.get('spendAt'),
-        images: formData.get('images') ? [URL.createObjectURL(formData.get('images'))] : [],
-        createdAt: new Date().toISOString()
-      };
+      // API 호출
+      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('항목 추가에 실패했습니다');
+      }
+
+      // 성공적으로 추가된 항목 데이터 받기
+      const result = await response.json();
+      console.log('추가된 항목 응답:', result);
+
+      // 데이터 다시 불러오기 (대안: 응답에서 새 항목 추출하여 상태 업데이트)
+      // API 구조에 따라 상태 업데이트 방식을 결정
+      const refetchResponse = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`);
+      if (!refetchResponse.ok) {
+        throw new Error('데이터 새로고침에 실패했습니다');
+      }
       
-      setFinancials([...financials, newFinancial]);
+      const refetchData = await refetchResponse.json();
+      if (refetchData && Array.isArray(refetchData) && refetchData.length > 0 && refetchData[0].expenseItemList) {
+        const formattedData = refetchData[0].expenseItemList.map(item => ({
+          id: item.expenseItemId || item.id || Math.random().toString(),
+          spender: item.spender,
+          description: item.description,
+          amount: item.amount,
+          spendAt: item.spendAt,
+          images: item.receiptList && item.receiptList.length > 0 
+            ? item.receiptList.map(receipt => receipt.url) 
+            : []
+        }));
+        
+        setFinancials(formattedData);
+      }
     } catch (error) {
       console.error('지출 추가 중 오류 발생:', error);
-      setError('지출 추가에 실패했습니다');
+      setError('지출 추가에 실패했습니다: ' + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // 지출 삭제 함수
   const removeFinancial = async (id) => {
     try {
-      // 실제 API 연동 시 사용
-      // await axios.delete(`/api/expenses/${id}`);
+      setIsLoading(true);
       
-      setFinancials(financials.filter((financial) => financial.id !== id));
+      // API 호출
+      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        throw new Error('항목 삭제에 실패했습니다');
+      }
+
+      // 로컬 상태 업데이트
+      setFinancials(prevFinancials => 
+        prevFinancials.filter(item => item.id !== id)
+      );
+      
     } catch (error) {
       console.error('지출 삭제 중 오류 발생:', error);
-      setError('지출 삭제에 실패했습니다');
+      setError('지출 삭제에 실패했습니다: ' + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // 지출 수정 함수
   const modifyFinancial = async (id, formData) => {
     try {
-      // 실제 API 연동 시 사용
-      // const response = await axios.put(`/api/expenses/${id}`, formData);
-      // const updatedFinancial = response.data;
+      setIsLoading(true);
       
-      // 임시 구현 (API 연동 전)
-      const updatedFinancial = {
-        id: id,
-        spender: formData.get('spender'),
-        description: formData.get('description'),
-        amount: Number(formData.get('amount')),
-        spendAt: formData.get('spendAt'),
-        images: formData.get('images') 
-          ? [URL.createObjectURL(formData.get('images'))] 
-          : financials.find(f => f.id === id)?.images || [],
-      };
+      // API 호출
+      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`, {
+        method: 'PUT',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('항목 수정에 실패했습니다');
+      }
+
+      // 응답 데이터 받기
+      const result = await response.json();
+      console.log('수정된 항목 응답:', result);
+
+      // 데이터 다시 불러오기 (대안: 응답 기반 로컬 상태 업데이트)
+      const refetchResponse = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`);
+      if (!refetchResponse.ok) {
+        throw new Error('데이터 새로고침에 실패했습니다');
+      }
       
-      setFinancials(
-        financials.map((financial) =>
-          financial.id === id ? updatedFinancial : financial
-        )
-      );
+      const refetchData = await refetchResponse.json();
+      if (refetchData && Array.isArray(refetchData) && refetchData.length > 0 && refetchData[0].expenseItemList) {
+        const formattedData = refetchData[0].expenseItemList.map(item => ({
+          id: item.expenseItemId || item.id || Math.random().toString(),
+          spender: item.spender,
+          description: item.description,
+          amount: item.amount,
+          spendAt: item.spendAt,
+          images: item.receiptList && item.receiptList.length > 0 
+            ? item.receiptList.map(receipt => receipt.url) 
+            : []
+        }));
+        
+        setFinancials(formattedData);
+      }
     } catch (error) {
       console.error('지출 수정 중 오류 발생:', error);
-      setError('지출 수정에 실패했습니다');
+      setError('지출 수정에 실패했습니다: ' + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -127,7 +188,13 @@ const FinancialManager = () => {
     <>
       <div className="main-frame">
         <h2 className="main-title">📅 여행 지출 관리</h2>
+        
+        {/* 로딩 표시 */}
+        {isLoading && <div className="loading">데이터를 불러오는 중...</div>}
+        
+        {/* 오류 표시 */}
         {error && <div className="error-message">{error}</div>}
+        
         <div className="frame">
           <AddFinancial addFinancial={addFinancial} />
           <FinancialList  

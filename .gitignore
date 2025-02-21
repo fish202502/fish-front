@@ -1,3 +1,5 @@
+package-lock.json
+package.json
 # Logs
 logs
 *.log
@@ -25,3 +27,7 @@ package.json
 *.njsproj
 *.sln
 *.sw?
+.gitignore
+.gitignore
+package-lock.json
+package.json
