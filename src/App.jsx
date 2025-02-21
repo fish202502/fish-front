@@ -1,12 +1,19 @@
 
 import './App.css'
+import FinancialManager from './components/financial/FinancialManager'
+import Header from './components/layout/Header'
 
 function App() {
 
 
   return (
-    <>
-  <h1>test</h1>
+    <>    
+   <Header/>   
+   <FinancialManager/>
+
+
+
+
     </>
   )
 }
