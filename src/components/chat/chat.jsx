@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Modal from './Modal'; // 모달 컴포넌트 임포트
-import styles from './Chat.module.css'; // CSS 모듈 임포트
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import Modal from "./Modal"; // 모달 컴포넌트 임포트
+import styles from "./Chat.module.css"; // CSS 모듈 임포트
+import { useParams } from "react-router-dom";
 
 function Chat() {
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
-  const [name, setName] = useState('');
+  const [message, setMessage] = useState("");
+  const [name, setName] = useState("");
   const [socket, setSocket] = useState(null);
   const [showModal, setShowModal] = useState(true);
-  const { roomCode } = useParams(); 
+  const { roomCode } = useParams();
 
   // 인풋창에 대한 ref 생성
   const inputRef = useRef(null);
@@ -23,12 +23,12 @@ function Chat() {
     setSocket(ws);
 
     ws.onopen = () => {
-      console.log('WebSocket 연결 완료');
+      console.log("WebSocket 연결 완료");
       if (name) {
         const message = JSON.stringify({
           name: name,
           roomCode: roomCode,
-          messages: ""
+          messages: "",
         });
         ws.send(message); // JSON 문자열로 메시지 전송
       }
@@ -39,11 +39,11 @@ function Chat() {
     };
 
     ws.onerror = (error) => {
-      console.error('WebSocket Error:', error);
+      console.error("WebSocket Error:", error);
     };
 
     ws.onclose = () => {
-      console.log('WebSocket 연결 종료');
+      console.log("WebSocket 연결 종료");
     };
 
     return () => {
@@ -56,10 +56,10 @@ function Chat() {
       const messageToSend = JSON.stringify({
         name: name,
         roomCode: roomCode,
-        message: message // 실제 메시지 내용 추가
+        message: message, // 실제 메시지 내용 추가
       });
       socket.send(messageToSend); // 메시지 내용도 함께 전송
-      setMessage(''); // 메시지 전송 후 입력창 초기화
+      setMessage(""); // 메시지 전송 후 입력창 초기화
     }
   };
 
@@ -70,7 +70,7 @@ function Chat() {
 
   // 엔터키로 메시지 전송
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       sendMessage();
     }
   };
@@ -87,19 +87,36 @@ function Chat() {
     }
   }, [messages, showModal]); // 메시지가 변경될 때마다 실행
 
+  // 메세지 처리
+  const randMessage = (msg, index) => {
+    const [sender, text] = msg.split(":");
+    return (
+      <>
+        <div
+          className={`${styles.sender} ${
+            msg.includes(name) ? styles.myName : styles.otherName
+          }`}
+        >
+          {text ? sender : ""}
+        </div>
+        <div
+          key={index}
+          className={`${styles.message} ${
+            msg.includes(name) ? styles.myMessage : styles.otherMessage
+          }`}
+        >
+          <p>{text ? text : msg}</p>
+        </div>
+      </>
+    );
+  };
+
   return (
     <div className={styles.chatContainer}>
       {showModal && <Modal onNameSubmit={handleNameSubmit} />}
       <h1 className={styles.title}>대화방</h1>
       <div className={styles.messagesContainer}>
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`${styles.message} ${msg.includes(name) ? styles.myMessage : styles.otherMessage}`}
-          >
-            <p>{msg}</p>
-          </div>
-        ))}
+        {messages.map((msg, index) => randMessage(msg, index))}
         {/* 메시지 끝에 빈 div를 추가하여 스크롤이 맨 아래로 이동하도록 함 */}
         <div ref={messagesEndRef} />
       </div>

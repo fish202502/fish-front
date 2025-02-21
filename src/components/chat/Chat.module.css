@@ -1,4 +1,4 @@
-/* 기본 스타일 */
+/* 채팅 전체 컨테이너 */
 .chatContainer {
   max-width: 600px;
   margin: auto;
@@ -14,6 +14,7 @@
   font-family: Arial, sans-serif;
 }
 
+/* 채팅 메시지 영역 */
 .messagesContainer {
   border: 1px solid #ccc;
   padding: 10px;
@@ -24,26 +25,85 @@
   border-radius: 8px;
 }
 
-.message {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 5px;
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+/* 말풍선 공통 스타일 */
+.messageWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
 }
 
-.myMessage {
+.myMessageWrapper {
+  align-items: flex-end;
+}
+
+/* 사용자명 */
+.sender {
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+/* 내 이름 */
+.myName {
   text-align: right;
-  background-color: #d3f8e2;
 }
 
-.otherMessage {
+/* 상대방 이름 */
+.otherName {
   text-align: left;
-  background-color: #eee2e9;
 }
 
+/* 말풍선 스타일 */
+.message {
+  position: relative;
+  padding: 5px 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+/* 내 메시지 */
+.myMessage {
+  background-color: #bfebd1;
+  text-align: right;
+  border-radius: 5;
+  margin-left: auto;
+}
+
+.myMessage::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 15px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #bfebd1;
+}
+
+/* 상대방 메시지 */
+.otherMessage {
+  background-color: #eecadf;
+  text-align: left;
+  border-radius: 5;
+}
+
+.otherMessage::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #eecadf;
+}
+
+/* 입력창 */
 .inputContainer {
   display: flex;
   align-items: center;
@@ -54,21 +114,25 @@
   flex: 1;
   padding: 12px 15px;
   font-size: 16px;
+  height: 44px; /* 버튼과 동일한 높이로 설정 */
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-right: 10px;
   outline: none;
+  box-sizing: border-box; /* 패딩 포함한 크기 계산 */
 }
 
 .sendButton {
   padding: 12px 20px;
   font-size: 16px;
+  height: 44px; /* 인풋과 동일한 높이 */
   background-color: #4A90E2;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
+  box-sizing: border-box; /* 패딩 포함한 크기 계산 */
 }
 
 .sendButton:hover {
