@@ -1,0 +1,24 @@
+/* CreateRoom.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #eef2f3;
+  padding: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;  /* 애니메이션 효과 */
+}
+
+/* 마우스를 올리면 커짐 */
+.title:hover {
+  transform: scale(1.1);  /* 10% 커짐 */
+}

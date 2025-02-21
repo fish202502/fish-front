@@ -1,0 +1,31 @@
+.header-nav {
+  width: 100%;
+  background-color: #f8f5f5;
+  padding: 10px 0;
+}
+
+.nav-list {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-item {
+  padding: 15px 40px;
+  margin-left: -10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.5s ease;
+  cursor: pointer;
+}
+
+/* 마우스를 올리면 위로 살짝 떠오르는 효과 */
+.nav-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* 떠오를 때 그림자 추가 */
+}
