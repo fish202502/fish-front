@@ -152,7 +152,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
 
   return (
     <>
-      <div className="Frame">
+      <div className="listFrame">
         <ul>
           {financials.length === 0 ? (
             <p>📌 등록된 지출이 없습니다.</p>
@@ -162,6 +162,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                 {editingId === financial.id ? (
                   <div className="edit-mode">
                     <input 
+                    className="listInput"
                       type="text" 
                       name="spender" 
                       value={editData.spender} 
@@ -169,6 +170,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       placeholder="지출자"
                     />
                     <input 
+                    className="listInput"
                       type="text" 
                       name="description" 
                       value={editData.description} 
@@ -176,6 +178,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       placeholder="설명"
                     />
                     <input 
+                    className="listInput"
                       type="number" 
                       name="amount" 
                       value={editData.amount} 
@@ -183,6 +186,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       placeholder="금액"
                     />
                     <input 
+                    className="listInput"
                       type="datetime-local" 
                       name="spendAt" 
                       value={editData.spendAt} 

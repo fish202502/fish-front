@@ -80,8 +80,9 @@ const AddFinancial = ({ addFinancial }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form className="addForm"onSubmit={handleSubmit}>
         <input
+          className="addInput"
           type="text"
           name="spender"
           placeholder="지출자 이름"
@@ -89,6 +90,7 @@ const AddFinancial = ({ addFinancial }) => {
           onChange={handleChange}
         />
         <input
+        className="addInput"
           type="text"
           name="description"
           placeholder="지출 내용"
@@ -96,6 +98,7 @@ const AddFinancial = ({ addFinancial }) => {
           onChange={handleChange}
         />
         <input
+        className="addInput"
           type="number"
           name="amount"
           placeholder="금액"
@@ -103,13 +106,19 @@ const AddFinancial = ({ addFinancial }) => {
           onChange={handleChange}
         />
         <input
+        className="addInput"
           type="datetime-local"
           name="spendAt"
           value={formData.spendAt}
           onChange={handleChange}
         />
 
-        <input type="file" accept="image/*" onChange={handlePreview} />
+        <input 
+          type="file" 
+          accept="image/*" 
+          onChange={handlePreview}
+          className="file-upload-input" 
+        />
 
         {previewImg && (
           <div>
