@@ -1,3 +1,4 @@
+import GalleryManager from "./Gallery/GalleryManager.jsx";
 
 import ScheduleManager from "./Schedule/ScheduleManager";
 import './App.css'
@@ -13,6 +14,7 @@ const App = () => {
     <CheckListManager/>
    <FinancialManager/>
     <ScheduleManager />
+      <GalleryManager />
     </>
   );
 };

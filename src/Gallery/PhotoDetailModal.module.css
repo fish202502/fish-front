@@ -1,0 +1,60 @@
+.backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.78);
+}
+
+.modal {
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    right: 30%;
+    bottom: 20%;
+    max-width: 100vw;
+    max-height: 100vh;
+    z-index: 100;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.78);
+}
+
+.image_container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+.image_container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+
+
+}
+
+
+
+.deleteBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.deleteBtn:hover {
+    background-color: rgba(255, 0, 0, 0.7);
+}
