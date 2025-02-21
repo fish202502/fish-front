@@ -1,28 +1,16 @@
 .container{
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
+    justify-content: flex-end;
 }
 
 .addContainer {
     gap: 15px;
     padding: 20px;
-    border: 2px dashed #ddd;
     border-radius: 10px;
-    background-color: #f9f9f9;
+    margin-right: 20px;
     width: 230px;
     transition: border-color 0.3s ease-in-out;
-}
-
-
-
-
-.title {
-    font-size: 40px;
-    font-weight: bold;
-    text-align: center;
-    color: #333;
-    margin-bottom: 15px;
 }
 
 
@@ -33,7 +21,7 @@ input[type="file"] {
 
 .uploadBtn {
     display: inline-block;
-    background-color: #007bff;
+    background-color: #ffd876;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -46,11 +34,11 @@ input[type="file"] {
 }
 
 .uploadBtn:hover {
-    background-color: #0056b3;
+    background-color: #fa902f;
 }
 
 .uploadBtn:active {
-    background-color: #004099;
+    background-color: #ff7c0d;
 }
 
 

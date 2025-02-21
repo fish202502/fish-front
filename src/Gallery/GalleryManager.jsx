@@ -59,17 +59,22 @@ const GalleryManager = () => {
   return (
     <div className={styles.full_container}>
       {deletePhoto !== null && (
-        <DeleteConfirmModal onConfirm={removePhoto} onCancel={() => setDeletePhoto(null)}/>
+        <DeleteConfirmModal title="사진삭제" message="정말로 사진을 삭제하시겠습니까?"  onConfirm={removePhoto} onClose={() => setDeletePhoto(null)}/>
       )}
+      <div className={styles.diaryContainer}>
+
+      <h1 className={styles.title}>Photo Book </h1>
       <div className={styles.uploadContainer}>
         <PhotoUpload handleAddPhoto={handleAddPhoto}/>
+        <PhotoList photos={photos} removePhoto={confirmDeletePhoto} onPhotoClick={setSelectedPhoto}/>
+
+        {selectedPhoto && (
+            <PhotoDetailModal photo={selectedPhoto} onClose={() => setSelectedPhoto(null)}/>
+        )}
       </div>
 
-      <PhotoList photos={photos} removePhoto={confirmDeletePhoto} onPhotoClick={setSelectedPhoto}/>
+      </div>
 
-      {selectedPhoto && (
-        <PhotoDetailModal photo={selectedPhoto} onClose={() => setSelectedPhoto(null)}/>
-      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-.photo_list {
+.photoList {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
@@ -6,4 +6,11 @@
     padding: 20px;
 
 }
+
+.photoListContainer{
+    background: white;
+    margin: 10px 20px;
+    border-radius: 20px;
+}
+
 

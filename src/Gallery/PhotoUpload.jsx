@@ -73,7 +73,7 @@ const PhotoUpload = ({handleAddPhoto}) => {
       {error && <ErrorModal title={error.title} message={error.message} onClose={closeModal}/>}
 
       <div className={styles.container}>
-      <h1 className={styles.title}>Photo Book </h1>
+
 
       <div className={styles.addContainer}>
         {/* 파일 업로드 라벨 추가 */}
