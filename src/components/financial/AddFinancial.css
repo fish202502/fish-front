@@ -19,21 +19,14 @@
     border-radius: 5px;
   }
   
- 
+.file-upload-input{
+  display: block !important;
+  width: 80%;
+}
   
   .image-preview {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-  }
-  
-  /*  이미지 미리보기 크기 조절 */
-  
-  .preview-image {
-    width: 100px; 
-    height: 100px; 
-    object-fit: cover; 
-    border-radius: 8px; 
-    border: 1px solid #ccc;
   }
   
