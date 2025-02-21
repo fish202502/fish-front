@@ -52,20 +52,26 @@ const AddFinancial = ({ addFinancial }) => {
     // FormData 객체 생성
     const submitFormData = new FormData();
     
-    // 데이터 추가
-    submitFormData.append('spender', formData.spender);
-    submitFormData.append('amount', formData.amount);
-    submitFormData.append('description', formData.description);
-    submitFormData.append('spendAt', formData.spendAt);
+    // JSON 데이터 생성
+    const expenseData = {
+      spender: formData.spender,
+      description: formData.description,
+      amount: Number(formData.amount),
+      spendAt: formData.spendAt
+    };
+    
+    // JSON 데이터를 Blob으로 변환하여 application/json 타입으로 추가
+    const jsonBlob = new Blob([JSON.stringify(expenseData)], { type: 'application/json' });
+    submitFormData.append('expense', jsonBlob);
     
     // 이미지가 있는 경우 추가
     if (imageFile) {
-      submitFormData.append('images', imageFile);
+      submitFormData.append('image', imageFile);
     }
-
+  
     // 데이터 전송
     addFinancial(submitFormData);
-
+    
     // 폼 초기화
     setFormData({
       spender: "",

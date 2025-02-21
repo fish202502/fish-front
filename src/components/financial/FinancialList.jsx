@@ -90,31 +90,39 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
     setEditData({...editData, images: []});
   };
 
-  // 저장 버튼 클릭 시
-  const handleSave = () => {
-    // FormData 객체 생성
-    const submitFormData = new FormData();
-    
-    submitFormData.append('spender', editData.spender);
-    submitFormData.append('description', editData.description);
-    submitFormData.append('amount', editData.amount);
-    submitFormData.append('spendAt', editData.spendAt);
-    
-    // 이미지 상태 처리
-    if (imageFile) {
-      // 새 이미지가 있으면 추가
-      submitFormData.append('images', imageFile);
-    } else {
-      // 이미지를 삭제했거나 변경하지 않았을 경우
-      // 삭제 여부를 나타내는 플래그 추가
-      submitFormData.append('removeImage', previewImg ? 'false' : 'true');
-    }
+  // FinancialList.jsx 컴포넌트 내에서 항목 수정 시 FormData 처리 부분 수정
 
-    modifyFinancial(editingId, submitFormData);
-    setEditingId(null);
-    setImageFile(null);
-    setPreviewImg(null);
+// 저장 버튼 클릭 시
+const handleSave = () => {
+  // FormData 객체 생성
+  const submitFormData = new FormData();
+  
+  // JSON 데이터 생성
+  const expenseData = {
+    spender: editData.spender,
+    description: editData.description,
+    amount: Number(editData.amount),
+    spendAt: editData.spendAt
   };
+  
+  // FormData에 expense 키로 JSON 문자열 추가
+  submitFormData.append('expense', JSON.stringify(expenseData));
+  
+  // 이미지 상태 처리
+  if (imageFile) {
+    // 새 이미지가 있으면 추가
+    submitFormData.append('image', imageFile);
+  } else {
+    // 이미지를 삭제했거나 변경하지 않았을 경우
+    // 삭제 여부를 나타내는 플래그 추가
+    submitFormData.append('removeImage', previewImg ? 'false' : 'true');
+  }
+
+  modifyFinancial(editingId, submitFormData);
+  setEditingId(null);
+  setImageFile(null);
+  setPreviewImg(null);
+};
 
   // 삭제 버튼 클릭 시 (모달 열기)
   const handleDeleteClick = (id) => {

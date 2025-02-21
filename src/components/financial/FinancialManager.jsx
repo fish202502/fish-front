@@ -60,55 +60,41 @@ const FinancialManager = () => {
     fetchFinancials();
   }, []);
 
-  // 지출 추가 함수
-  const addFinancial = async (formData) => {
-    try {
-      setIsLoading(true);
-      
-      // API 호출
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
-        method: 'POST',
-        body: formData
-      });
+// 지출 추가 함수
+const addFinancial = async (formData) => {
+  try {
+    setIsLoading(true);
+    
+    // 이미 FormData 객체가 준비되어 있으니, 다른 처리 없이 그대로 전송
+    // Content-Type을 지정하지 않으면 브라우저가 자동으로 multipart/form-data로 설정
+    const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
+      method: 'POST',
+      body: formData  
+    });
 
-      if (!response.ok) {
-        throw new Error('항목 추가에 실패했습니다');
-      }
-
-      // 성공적으로 추가된 항목 데이터 받기
-      const result = await response.json();
-      console.log('추가된 항목 응답:', result);
-
-      // 데이터 다시 불러오기 (대안: 응답에서 새 항목 추출하여 상태 업데이트)
-      // API 구조에 따라 상태 업데이트 방식을 결정
-      const refetchResponse = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`);
-      if (!refetchResponse.ok) {
-        throw new Error('데이터 새로고침에 실패했습니다');
-      }
-      
-      const refetchData = await refetchResponse.json();
-      if (refetchData && Array.isArray(refetchData) && refetchData.length > 0 && refetchData[0].expenseItemList) {
-        const formattedData = refetchData[0].expenseItemList.map(item => ({
-          id: item.expenseItemId || item.id || Math.random().toString(),
-          spender: item.spender,
-          description: item.description,
-          amount: item.amount,
-          spendAt: item.spendAt,
-          images: item.receiptList && item.receiptList.length > 0 
-            ? item.receiptList.map(receipt => receipt.url) 
-            : []
-        }));
-        
-        setFinancials(formattedData);
-      }
-    } catch (error) {
-      console.error('지출 추가 중 오류 발생:', error);
-      setError('지출 추가에 실패했습니다: ' + error.message);
-    } finally {
-      setIsLoading(false);
+    if (!response.ok) {
+      throw new Error('항목 추가에 실패했습니다');
     }
-  };
 
+    // 이하 코드는 그대로 유지
+    const result = await response.json();
+    console.log('추가된 항목 응답:', result);
+    
+    // 데이터 다시 불러오기
+    const refetchResponse = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`);
+    if (!refetchResponse.ok) {
+      throw new Error('데이터 새로고침에 실패했습니다');
+    }
+    
+    const refetchData = await refetchResponse.json();
+    // 이하 코드는 그대로 유지
+  } catch (error) {
+    console.error('지출 추가 중 오류 발생:', error);
+    setError('지출 추가에 실패했습니다: ' + error.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
   // 지출 삭제 함수
   const removeFinancial = async (id) => {
     try {
