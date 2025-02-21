@@ -27,7 +27,5 @@ package.json
 *.njsproj
 *.sln
 *.sw?
-.gitignore
-.gitignore
-package-lock.json
 package.json
+package-lock.json

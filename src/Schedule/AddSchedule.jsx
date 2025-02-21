@@ -46,11 +46,7 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
     setEnteredEndDate('');
     setEnteredEndTime('');
 
-    };
-
-
-
-
+    }
 
   }
 
@@ -59,17 +55,25 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
     <>
 
       <form className={styles.addScheduleContainer} onSubmit={handleSubmit}>
-        <label>일정 제목: </label>
-        <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
+        <label>일정 제목 </label>
+        <input type="text" className={styles.scheduleTitle} placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
+        <div>
+
         <label> 시작날짜: </label>
         <input type="date" onChange={handleStartDateInput} value={enteredStartDate} min={tripStartDate} max={tripEndDate}/>
         <label> 시작시간: </label>
         <input type="time" onChange={handleStartTimeInput} value={enteredStartTime}/>
+
+        </div>
+
+        <div>
         <label> 종료날짜: </label>
         <input type="date" onChange={handleEndDateInput} value={enteredEndDate} min={enteredStartDate} max={tripEndDate}/>
         <label> 종료시간: </label>
         <input type="time" onChange={handleEndTimeInput} value={enteredEndTime}/>
-        <button type="submit">➕ 추가</button>
+
+        </div>
+        <button type="submit"> 추가</button>
       </form>
     </>
   );
