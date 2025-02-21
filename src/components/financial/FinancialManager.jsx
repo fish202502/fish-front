@@ -126,7 +126,7 @@ const FinancialManager = () => {
   return (
     <>
       <div className="main-frame">
-        <h2 className="main-title">📅 여행 N빵 지출 관리</h2>
+        <h2 className="main-title">📅 여행 지출 관리</h2>
         {error && <div className="error-message">{error}</div>}
         <div className="frame">
           <AddFinancial addFinancial={addFinancial} />

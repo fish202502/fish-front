@@ -60,7 +60,7 @@ const FinancialDutch = ({ financials }) => {
 
   return (
     <form className="dutchForm">
-      <h2>💰 N빵 계산기</h2>
+      <h2>💰 더치페이 계산기</h2>
       <div>
         <h3>정산 내용</h3>
         <ul>
