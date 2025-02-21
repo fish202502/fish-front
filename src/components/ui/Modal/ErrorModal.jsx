@@ -6,7 +6,7 @@ const ErrorModal = ({title,message,closeModal,onConfirm}) => {
     <>
       <div onClick={closeModal} className={styles.backdrop}>
 
-      <div className={styles.modal}>
+      <div className={styles.modal} onClick ={(e) =>e.stopPropagation()}>
         <h2 className={styles.title}>{title}</h2>
         <p className ={styles.message}>{message}</p>
         <button className={styles.button} onClick={closeModal}>취소</button>
