@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import Header from "../components/layout/Header";
-import Chat from "../components/chat/chat";
 
 const MainNavigation = () => {
   // NavLink에 className에 바인딩하는 콜백함수

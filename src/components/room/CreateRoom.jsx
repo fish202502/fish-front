@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ShowUrl from "./ShowUrl";
-import "./CreateRoom.css";  // ✅ CSS 연결
+import "./CreateRoom.css"; // ✅ CSS 연결
+import Header from "../layout/Header";
 
 const CreateRoom = () => {
   const [createFlag, setCreateFlag] = useState(false);
@@ -16,15 +17,17 @@ const CreateRoom = () => {
   };
 
   return (
-    <div className="container">
-      {!createFlag ? (
-        <div className="title" onClick={handleCreateBtn}>
-          + 방 만들기
-        </div>
-      ) : (
-        <ShowUrl handlecreateBtn={handleCreateBtn} data={data} />
-      )}
-    </div>
+    <>
+      <div className="container">
+        {!createFlag ? (
+          <div className="title" onClick={handleCreateBtn}>
+            + 방 만들기
+          </div>
+        ) : (
+          <ShowUrl handlecreateBtn={handleCreateBtn} data={data} />
+        )}
+      </div>
+    </>
   );
 };
 
