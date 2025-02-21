@@ -1,0 +1,70 @@
+.Frame {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #fff;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px; /* 간격 유지 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-content {
+  flex-grow: 1;  /* 제목이 길어도 버튼을 밀어내지 않음 */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; 
+}
+
+.button-group {
+  display: flex;
+  gap: 5px;
+}
+
+.Amount {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #e3f2fd;
+  border-radius: 8px;
+}
+
+.financialButton {
+  margin-top: 10px;
+  background-color: #ff8f8f;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+    cursor: pointer;
+}
+
+.financialButton:hover {
+  background-color: #f1a5a5;
+}
+
+.list-image{
+  
+  width: 60px;
+  height: 60px;
+
+}
