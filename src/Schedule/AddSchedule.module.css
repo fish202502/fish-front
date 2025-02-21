@@ -9,9 +9,11 @@
 
 /* 버튼 스타일 */
 .addScheduleContainer button {
-    background-color: #007bff;
+    background-color: #F6D6D6;
     color: white;
-    padding: 10px 15px;
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 10px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -20,5 +22,9 @@
 }
 
 .addScheduleContainer button:hover {
-    background-color: #0056b3;
+    background-color: #ce9090;
+}
+
+.scheduleTitle{
+    width: 450px;
 }
