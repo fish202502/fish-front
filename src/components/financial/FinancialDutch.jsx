@@ -1,4 +1,5 @@
 import React from "react";
+import "./FinancialDutch.css"
 
 const FinancialDutch = ({ financials }) => {
   const financialList = financials || [];
@@ -58,7 +59,7 @@ const FinancialDutch = ({ financials }) => {
   }
 
   return (
-    <form>
+    <form className="dutchForm">
       <h2>💰 N빵 계산기</h2>
       <div>
         <h3>정산 내용</h3>
