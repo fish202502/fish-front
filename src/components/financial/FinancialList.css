@@ -1,5 +1,5 @@
-.Frame {
-  max-width: 600px;
+.listFrame {
+  width: 30%;
   margin: 20px auto;
   padding: 20px;
   background-color: #f8f9fa;
@@ -30,6 +30,17 @@ li {
   white-space: nowrap;
   text-overflow: ellipsis; 
 }
+
+
+.listInput {
+  width: 90%;
+  margin: 8px 0;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
 
 .button-group {
   display: flex;
