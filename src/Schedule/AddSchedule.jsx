@@ -33,10 +33,11 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
   }
 
 
-  const handleSubmit = e => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    const isSuccess= addSchedule(enteredTitle,enteredStartDate,enteredStartTime,enteredEndDate,enteredEndTime);
+    const isSuccess= await addSchedule(
+        enteredTitle,enteredStartDate,enteredStartTime,enteredEndDate,enteredEndTime);
 
     if(isSuccess){
 
@@ -54,9 +55,9 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
   return (
       <>
         <form className={styles.addScheduleContainer} onSubmit={handleSubmit}>
-          {/* 일정 제목 */}
+          <p> Add New Schedule</p>
           <div className={styles.titleContainer}>
-            <label>일정 제목</label>
+            <label className={styles.titleLabel}>Title</label>
             <input
                 type="text"
                 className={styles.scheduleTitle}
