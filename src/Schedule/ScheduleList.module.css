@@ -1,6 +1,7 @@
 /* 일정 리스트 스타일 */
 .scheduleList {
     margin-top: 20px;
+    width: 65%;
 }
 
 .scheduleList h2 {
@@ -9,9 +10,17 @@
     color: #333;
 }
 
+.scheduleList p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #aaaaaa;
+    text-align: center;
+
+}
+
 /* DayX 헤더 스타일 */
 .dayGroup {
-    background-color: #eeb1b1;
+    background-color: #F5F5F5;
     padding: 10px;
     border-radius: 8px;
     margin-top: 15px;
@@ -21,17 +30,19 @@
 .scheduleItem {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 8px 12px;
-    background-color: #ede3e4;
     border-radius: 5px;
     margin: 5px 0;
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+    gap: 10px;
 }
+.scheduleItem input{
+    width: 160px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 
-/* 수정 & 삭제 버튼 스타일 */
-
-
+}
 
 .scheduleItem button {
     background-color: transparent;
@@ -40,9 +51,18 @@
     font-size: 14px;
     color: #555;
     transition: color 0.2s ease;
+    width: 50px;
 }
 
 .scheduleItem button:hover {
     color: #d9534f;
 }
 
+.titleDateContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.title{
+    font-size: 20px;
+}
