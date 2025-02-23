@@ -1,26 +1,39 @@
 /* 전체 컨테이너 스타일 */
 .container {
-    width: 90%;
-    margin: 20px auto;
-    padding: 20px;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: #f8f8f8;
+}
+
+.title {
+    font-size: 35px;
+    text-align: center;
+    font-weight: lighter;
+    color: white;
+    margin-bottom: 15px;
+
 }
 
 /* 일정 입력 폼 스타일 */
-.addScheduleContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+.diaryContainer{
+    width: 90%;
+    background: #F6D6D6;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+    padding-bottom: 30px;
 }
 
+.whiteContainer {
 
-/* 반응형 스타일 (모바일 최적화) */
-@media (max-width: 600px) {
-    .container {
-        width: 95%;
-    }
+    background: white;
+    margin: 10px 20px;
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-top: 30px;
+    padding-right: 20px;
 
 }

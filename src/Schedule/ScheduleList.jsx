@@ -74,7 +74,7 @@ const ScheduleList = ({ schedules, removeSchedule,modifySchedule, tripStartDate,
 
                                 <section className={styles.buttonContainer}>
                                   <button onClick={(e) => handleSave(e)}>확인</button>
-                                  <button onClick={() => setEditingId(null)}>❌ 취소</button>
+                                  <button onClick={() => setEditingId(null)}>취소</button>
                                 </section>
                               </>
                           ) : (

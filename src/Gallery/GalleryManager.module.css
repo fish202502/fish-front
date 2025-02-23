@@ -1,5 +1,4 @@
 .full_container{
-    position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
@@ -8,7 +7,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background: #eee8e8;
+    background: #f8f8f8;
 
 
 }
@@ -23,11 +22,10 @@
 }
 
 
-.uploadContainer {
 
-}
 
 .diaryContainer{
+    width: 90%;
     background: #F6F7C4;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
     padding-bottom: 30px;

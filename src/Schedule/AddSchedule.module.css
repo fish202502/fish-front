@@ -1,30 +1,113 @@
+/* 전체 일정 추가 컨테이너 */
+.addScheduleContainer {
+    background: #F6D6D6;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    width: 70%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.8s ease-in-out;
+}
 
-/* 입력 필드 스타일 */
-.addScheduleContainer input {
+/* 일정 제목 입력 */
+.titleContainer {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+
+}
+
+.titleContainer label{
+    margin-bottom: 5px;
+
+}
+
+.scheduleTitle {
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
     border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+
+}
+
+.scheduleTitle:focus {
+    border-color: #E48F8F;
+    box-shadow: 0 0 5px rgba(228, 143, 143, 0.5);
+}
+
+/* 날짜와 시간 입력을 한 줄에 배치 */
+.formGroup {
+    display: flex;
+    justify-content: space-between; /* 입력 필드를 균형 있게 정렬 */
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* 날짜와 시간 입력 필드 스타일 */
+.dateInputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.dateInputContainer label {
     font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.dateInputContainer input {
+    width: 80%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.dateInputContainer input:focus {
+    border-color: #E48F8F;
+}
+
+/* 버튼 컨테이너 */
+.BtnContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
 }
 
 /* 버튼 스타일 */
-.addScheduleContainer button {
-    background-color: #F6D6D6;
+.submitBtn {
+    background-color: #eeb1b1;
     color: white;
     font-weight: bold;
-    margin-top: 10px;
-    padding: 10px 10px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.2s ease;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100px;
+    text-align: center;
 }
 
-.addScheduleContainer button:hover {
-    background-color: #ce9090;
+/* 버튼 호버 효과 */
+.submitBtn:hover {
+    background-color: #e07878;
+
 }
 
-.scheduleTitle{
-    width: 450px;
-}
+
+
+

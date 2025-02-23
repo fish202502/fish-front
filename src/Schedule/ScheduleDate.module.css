@@ -1,14 +1,75 @@
 .beforeComment{
     font-size: 25px;
+    color: #aaaaaa;
+    font-weight: bold;
 }
 label{
     font-size: 20px;
+
+    color: #aaaaaa;
 }
 input{
     margin-left: 5px;
-    width: 120px;
+    width: 200px;
     height: 25px;
 }
-.endDate{
+input:focus {
+    border-color: #E48F8F;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+
+.confirmBtn{
+    display: inline-block;
+    background-color: #F6D6D6;
+    color: white;
+    border: none;
+    width: 70px;
+    height: 40px;
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
 
 }
+
+.confirmBtn:hover {
+    background-color: #eab0b0;
+    transform: scale(1.05);
+}
+
+.confirmBtn:active {
+    background-color: #cb9393;
+    opacity: 0.8;
+    transform: scale(1);
+}
+
+
+.fixBtn{
+    display: inline-block;
+    background-color: #eeb1b1;
+    color: white;
+    border: none;
+    width: 70px;
+    height: 40px;
+    margin-left: 20px;
+    margin-top: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+
+}
+
+.fixBtn:hover {
+    background-color: #e07878;
+
+}
+
+.fixContainer{
+    display: flex;
+}
+

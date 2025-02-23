@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import AddSchedule from "./AddSchedule";
 import ScheduleList from "./ScheduleList";
 import ScheduleDate from "./ScheduleDate.jsx";
@@ -125,10 +125,20 @@ const ScheduleManager = () => {
   return (
     <div className={styles.container}>
       {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
-      <ScheduleDate  onDateRangeChange={handleDateRange} onResetSchedules={resetSchedules} />
+      <div className={styles.diaryContainer}>
+        <h2 className={styles.title}> Travel Planner </h2>
+        <div className={styles.whiteContainer}>
+
+        <ScheduleDate  onDateRangeChange={handleDateRange} onResetSchedules={resetSchedules} />
+
       {tripStartDate && tripEndDate && <AddSchedule addSchedule={addSchedule} tripStartDate={tripStartDate} tripEndDate={tripEndDate}  />}
       <ScheduleList schedules={schedules} removeSchedule={removeSchedule}  modifySchedule ={modifySchedule} tripStartDate={tripStartDate} tripEndDate={tripEndDate} />
+
+
       <button>일정 저장</button>
+        </div>
+
+      </div>
 
 
     </div>

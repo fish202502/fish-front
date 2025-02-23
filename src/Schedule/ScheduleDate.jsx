@@ -72,20 +72,18 @@ const ScheduleDate = ({onDateRangeChange, onResetSchedules }) => {
       {showConfirmModal && (
         <DeleteConfirmModal
           title="여행 일정 수정"
-          message="정말로 여행 기간을 수정하시겠습니까? 기록했던 모든 일정들이 사라집니다."
+          message="여행기간을 수정하면 기록했던 모든 일정들이 사라집니다. 수정하시겠습니까?"
           onConfirm={handleConfirmEdit}
           onClose={handleCloseModal}
         />
       )}
-      <h2>📅 여행 일정 관리</h2>
-      {(!tripStartDate || !tripEndDate) &&
-        <p className={styles.beforeComment}>일정을 짜기 전, 여행 시작일과 종료일을 입력해주세요</p>
-      }
-      {tripStartDate && tripEndDate &&
-        <p className={styles.beforeComment}>✈️ 여행 기간: {tripStartDate} ~ {tripEndDate}</p>
-      }
+
+
       {!isConfirmed ? (
         <>
+          <p className={styles.beforeComment}>일정을 짜기 전, 여행 시작일과 종료일을 입력해주세요</p>
+          <div className={styles.dateContainer}>
+
           <label>여행 시작일:</label>
           <input
             type="date"
@@ -99,12 +97,22 @@ const ScheduleDate = ({onDateRangeChange, onResetSchedules }) => {
             onChange={handleTripEndDateChange}
             min={tripStartDate}
           />
-          <button onClick={confirmDates}>확인</button>
+          <button onClick={confirmDates} className={styles.confirmBtn}>확인</button>
+          </div>
         </>
       ) : (
+          <>
+            <div className={styles.fixContainer}>
 
-          <button onClick={startDateEdit}>수정</button>
+            {tripStartDate && tripEndDate &&
+                <p className={styles.beforeComment}>✈️ 여행 기간: {tripStartDate} ~ {tripEndDate}</p>
+            }
+          <button onClick={startDateEdit} className={styles.fixBtn}>수정</button>
+
+            </div>
+          </>
       )}
+
     </>
   );
 };
