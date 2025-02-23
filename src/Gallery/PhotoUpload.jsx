@@ -47,11 +47,7 @@ const PhotoUpload = ({handleAddPhoto}) => {
       return;
     }
 
-
-
-    const fileURL = URL.createObjectURL(enteredFile);
-
-    handleAddPhoto(fileURL);
+     handleAddPhoto(enteredFile);
 
     setEnteredFile(null);
 
