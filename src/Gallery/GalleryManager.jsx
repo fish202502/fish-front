@@ -67,7 +67,7 @@ const GalleryManager = () => {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append('image', file);
+      formData.append('images', file);
 
       const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
         method: 'POST',
