@@ -236,8 +236,9 @@ const ScheduleManager = () => {
 
 
 
+
   const modifySchedule = async (id, updatedData) => {
-    // 먼저 시작 시간이 종료 시간보다 늦지 않은지 확인
+    // 날짜와 시간 형식 수정 - 초가 중복되지 않도록 주의
     const startDateTime = `${updatedData.startDate}T${updatedData.startTime}`;
     const endDateTime = `${updatedData.endDate}T${updatedData.endTime}`;
 
@@ -246,67 +247,38 @@ const ScheduleManager = () => {
       return false;
     }
 
-    // 요청 본문 로깅
+    // 요청 본문
     const requestBody = {
-      scheduleId: scheduleId, // 전체 여행 일정 ID (개별 일정 ID가 아닌)
+      scheduleId: id,
       title: updatedData.title,
-      content: updatedData.content || "",
-      startTime: startDateTime,
-      endTime: endDateTime
+      content: "",
+      startTime: startDateTime,  // 이미 정확한 형식인지 확인
+      endTime: endDateTime       // 이미 정확한 형식인지 확인
     };
 
     console.log('수정 요청 본문:', requestBody);
 
-
     try {
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          scheduleId: id,
-          title: updatedData.title,
-          content: updatedData.content || "", // content가 없는 경우 빈 문자열 처리
-          startTime: startDateTime,
-          endTime: endDateTime
-        })
+        body: JSON.stringify(requestBody)
       });
 
       const data = await response.json();
+      console.log('수정 응답:', data);
 
       if (response.ok) {
-        // Day 레이블 다시 계산
-        const start = new Date(tripStartDate);
-        const selected = new Date(updatedData.startDate);
-        const dayDifference = Math.floor((selected - start) / (1000 * 60 * 60 * 24));
-        const dayLabel = `Day${dayDifference + 1}`;
-
-        // 로컬 상태 업데이트
-        setSchedules(prevSchedules =>
-            sortSchedules(
-                prevSchedules.map(schedule => {
-                  if (schedule.id === id) {
-                    return {
-                      ...schedule,
-                      id: data.scheduleItemId, // API 응답의 ID 사용
-                      title: updatedData.title,
-                      startDateTime,
-                      endDateTime,
-                      dayLabel
-                    };
-                  }
-                  return schedule;
-                })
-            )
-        );
-
+        await fetchScheduleData();
         return true;
       } else {
-        handleError("API 오류", "일정 수정에 실패했습니다.");
+        handleError("API 오류", data.message || "일정 수정에 실패했습니다.");
         return false;
       }
     } catch (error) {
+      console.error('수정 중 오류:', error);
       handleError("서버 오류", "일정을 수정하는 중 오류가 발생했습니다.");
       return false;
     }
