@@ -19,49 +19,42 @@ const ScheduleManager = () => {
   const [scheduleId, setScheduleId] = useState(null);
   const [mainScheduleId, setMainScheduleId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasPeriod, setHasPeriod] = useState(false);  // 여행 기간 존재 여부
 
   // 에러의 데이터를 관리하는 상태변수
   const [error,setError] = useState('');
 
-  const ROOM_CODE = 'd8df09f5';
-  const URL_ID = '1739944073733eb7c6';
+  const ROOM_CODE = '7340c7bb';
+  const URL_ID = '174037426298d6e418';
   const API_BASE_URL = 'http://localhost:8999/api/fish/schedule';
+
 
   // 전체 일정 정보를 불러오는 함수
   const fetchScheduleData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`'); // 실제 엔드포인트로 수정 필요
+      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`); // 실제 엔드포인트로 수정 필요
       const data = await response.json();
 
       if (response.ok) {
-        // 여행 기간 정보 설정
-        setMainScheduleId(data.scheduleId);
+        if (data.scheduleId) {  // 여행 기간이 이미 존재하는 경우
+          setMainScheduleId(data.scheduleId);
+          setScheduleId(data.scheduleId);
 
-        // ISO 문자열에서 날짜 부분만 추출
-        const startDate = data.startTime.split('T')[0];
-        const endDate = data.endTime.split('T')[0];
-        setTripStartDate(startDate);
-        setTripEndDate(endDate);
+          const startDate = data.startTime.split('T')[0];
+          const endDate = data.endTime.split('T')[0];
+          setTripStartDate(startDate);
+          setTripEndDate(endDate);
+          setHasPeriod(true);  // 여행 기간 존재 표시
 
-        // 일정 목록을 변환하여 상태에 저장
-        const formattedSchedules = data.scheduleItemList.map(item => {
-          // Day 레이블 계산
-          const start = new Date(startDate);
-          const itemDate = new Date(item.startTime.split('T')[0]);
-          const dayDifference = Math.floor((itemDate - start) / (1000 * 60 * 60 * 24));
-
-          return {
-            id: item.scheduleItemId,
-            title: item.title,
-            content: item.content,
-            startDateTime: item.startTime,
-            endDateTime: item.endTime,
-            dayLabel: `Day${dayDifference + 1}`
-          };
-        });
-
-        setSchedules(sortSchedules(formattedSchedules));
+          // 일정 목록 처리
+          if (data.scheduleItemList) {
+            const formattedSchedules = data.scheduleItemList.map(item => {
+              // ... 기존 매핑 로직
+            });
+            setSchedules(sortSchedules(formattedSchedules));
+          }
+        }
       } else {
         handleError("API 오류", "일정을 불러오는데 실패했습니다.");
       }
@@ -80,7 +73,7 @@ const ScheduleManager = () => {
   //여행기간을 저장하는 API 호출을 처리하는 함수
   const handleDateRange = async (start, end) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {  // 실제 엔드포인트로 수정 필요
+      const response = await fetch(`${API_BASE_URL}/trip/${ROOM_CODE}/${URL_ID}`, {  // 실제 엔드포인트로 수정 필요
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -125,6 +118,10 @@ const ScheduleManager = () => {
   // 일정 추가 함수
   const addSchedule = async (title,startDate,startTime,endDate,endTime) => {
 
+    // 날짜와 시간을 합쳐 ISO 형식 (YYYY-MM-DDTHH:MM:00)으로 변환
+    const startDateTime = `${startDate}T${startTime}:00`;  // 초 단위 추가
+    const endDateTime = `${endDate}T${endTime}:00`;       // 초 단위 추가
+
     if (!title.trim()) {
       handleError("입력 오류", "일정 제목을 입력해야 합니다.");
       return false;
@@ -134,15 +131,19 @@ const ScheduleManager = () => {
       return false;
     }
 
-    // 날짜와 시간을 합쳐 ISO 형식 (YYYY-MM-DDTHH:MM)으로 변환
-    const startDateTime = `${startDate}T${startTime}`;
-    const endDateTime = `${endDate}T${endTime}`;
 
     if(endDateTime < startDateTime) {
       handleError("입력오류", "일정종료시간은 시작시간보다 나중이어야 합니다.")
       return false;
     }
 
+    // 요청 데이터 로깅
+    const requestBody = {
+      title,
+      content:"",
+      startTime: startDateTime,
+      endTime: endDateTime
+    };
 
     try {
       const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
@@ -150,15 +151,11 @@ const ScheduleManager = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          title,
-          content: "", // 필요한 경우 추가
-          startTime: startDateTime,
-          endTime: endDateTime
-        })
+        body: JSON.stringify(requestBody)
       });
 
       const data = await response.json();
+
 
       if (response.ok) {
         // Day 레이블 계산
@@ -169,7 +166,7 @@ const ScheduleManager = () => {
 
         // 새 일정을 로컬 상태에 추가
         const newSchedule = {
-          id: data.scheduleId, // API에서 받은 ID 사용
+          id: data.scheduleItemId, // API에서 받은 ID 사용
           title,
           startDateTime,
           endDateTime,
@@ -291,36 +288,55 @@ const ScheduleManager = () => {
 
   return (
     <div className={styles.container}>
-      {error && <ErrorModal title ={error.title} message={error.message} onClose={() => setError(null)} />}
+      {error && <ErrorModal title={error.title} message={error.message} onClose={() => setError(null)} />}
       <div className={styles.diaryContainer}>
         <h2 className={styles.title}> Travel Planner </h2>
         <div className={styles.whiteContainer}>
-
           {isLoading ? (
-              <p>일정을 불러오는 중...</p>
+            <p>일정을 불러오는 중...</p>
           ) : (
-              <>
+            <>
+              {!hasPeriod ? (
+                // 여행 기간이 없는 경우에만 ScheduleDate 표시
                 <ScheduleDate
-                    onDateRangeChange={handleDateRange}
-                    onResetSchedules={resetSchedules}
-                    initialStartDate={tripStartDate}
-                    initialEndDate={tripEndDate}
+                  onDateRangeChange={handleDateRange}
+                  onResetSchedules={resetSchedules}
+                  initialStartDate={tripStartDate}
+                  initialEndDate={tripEndDate}
                 />
-                {tripStartDate && tripEndDate && (
-                    <AddSchedule
-                        addSchedule={addSchedule}
-                        tripStartDate={tripStartDate}
-                        tripEndDate={tripEndDate}
-                    />
-                )}
-                <ScheduleList
+              ) : (
+                // 여행 기간이 있는 경우 기간 표시
+                <div className={styles.fixContainer}>
+                  <p className={styles.beforeComment}>
+                    ✈ 여행기간: {tripStartDate} ~ {tripEndDate}
+                  </p>
+                  <button
+                    onClick={() => setHasPeriod(false)}
+                    className={styles.fixBtn}
+                  >
+                    수정
+                  </button>
+                </div>
+              )}
+
+              {/* 여행 기간이 있으면 항상 AddSchedule과 ScheduleList 표시 */}
+              {hasPeriod && (
+                <>
+                <AddSchedule
+                    addSchedule={addSchedule}
+                    tripStartDate={tripStartDate}
+                    tripEndDate={tripEndDate}
+                  />
+                  <ScheduleList
                     schedules={schedules}
                     removeSchedule={removeSchedule}
                     modifySchedule={modifySchedule}
                     tripStartDate={tripStartDate}
                     tripEndDate={tripEndDate}
-                />
-              </>
+                  />
+                </>
+              )}
+            </>
           )}
         </div>
       </div>
