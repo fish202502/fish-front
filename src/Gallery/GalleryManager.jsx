@@ -26,14 +26,14 @@ const DUMMY_PHOTOS = [
 
 const GalleryManager = () => {
 
-  const [photos,setPhotos] = useState(DUMMY_PHOTOS);
+  const [photos,setPhotos] = useState([]);
   const [selectedPhoto,setSelectedPhoto] =useState(null);
   const [deletePhoto,setDeletePhoto] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // API 상수
-  const ROOM_CODE = 'd8df09f5';
-  const URL_ID = '1739944073733eb7c6';
+  const ROOM_CODE = '7340c7bb';
+  const URL_ID = '174037426298d6e418';
   const API_BASE_URL = 'http://localhost:8999/api/fish/photo';
 
   // 컴포넌트가 처음 마운트될 때 이미지 목록을 가져옵니다
@@ -74,9 +74,13 @@ const GalleryManager = () => {
         body: formData
       });
 
-      if (!response.ok) throw new Error('사진을 업로드하는데 실패했습니다.');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || '사진을 업로드하는데 실패했습니다.');
+      }
 
       const data = await response.json();
+      console.log('Upload response:', data);
 
       // 새 이미지를 상태에 추가합니다
       const newPhoto = {
@@ -88,6 +92,7 @@ const GalleryManager = () => {
       setPhotos(prevPhotos => [...prevPhotos, newPhoto]);
     } catch (error) {
       console.error('업로드 사진 에러:', error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -101,7 +106,7 @@ const GalleryManager = () => {
   const removePhoto = async () => {
     if (deletePhoto !== null) {
       try {
-        const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
+        const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${deletePhoto}`, {
           method: 'DELETE'
         });
 
