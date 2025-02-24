@@ -81,7 +81,7 @@ const CheckListManager = () => {
         />
       </div>
      
-      <div className={styles.managerContent}>
+      <div className={styles.managerContent}><p className={styles.mainTitleName}>📝체크리스트</p>
         <CheckList
           category={selectedCategory}
           items={checklistItems[selectedCategory] || []}

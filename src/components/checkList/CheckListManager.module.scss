@@ -1,7 +1,7 @@
 .mainContainer {
   display: flex;
   width: 90%;
-  height: 90vh;
+  height: 70vh;
   background-color: #7BD3EA;
   margin: 2rem auto;
 
@@ -13,7 +13,8 @@
   
   background-color: #7BD3EA;
   border-right: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 24px;
+  margin-top: 3%;
+  padding: 30px;
   overflow-y: auto;
   transition: all 0.3s ease;
 
@@ -21,10 +22,15 @@
     box-shadow: 4px 0 12px rgba(0, 0, 0, 0.08);
   }
 }
+.mainTitleName{
+  font-size: 20px;
+  font-weight: bold;
+  
 
+}
 .managerContent {
   display: flex;
-  padding: 32px;
+  padding: 20px;
   width: 90%;
   background-color: #7BD3EA;
   border-radius: 0 20px 20px 0;
