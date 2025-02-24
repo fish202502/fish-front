@@ -13,7 +13,6 @@
 .title {
     font-size: 35px;
     text-align: center;
-    font-weight: lighter;
     color: white;
     margin-bottom: 15px;
 
@@ -60,4 +59,45 @@
 .saveBtn:hover {
     background-color: #e07878;
 
+}
+
+/* ScheduleManager.module.css에 추가 */
+.fixContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: linear-gradient(
+            to bottom,
+            white,
+            rgba(255, 255, 255, 0.98)
+    );
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    padding: 0 25px;
+    width: 60%;
+}
+
+.beforeComment {
+    font-size: 25px;
+    color: #aaaaaa;
+}
+
+.fixBtn {
+    display: inline-block;
+    background-color: #eeb1b1;
+    color: white;
+    border: none;
+    width: 70px;
+    height: 40px;
+    margin-right: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.fixBtn:hover {
+    background-color: #e07878;
 }
