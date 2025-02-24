@@ -116,42 +116,57 @@ const CheckListManager = () => {
 
   const handleAddChecklistItem = async (categoryId, item) => {
     try {
+      // 올바른 API 경로 사용
+      const itemUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
+      console.log("체크리스트 아이템 추가 요청 URL:", itemUrl);
+      console.log("체크리스트 아이템 추가 요청 본문:", JSON.stringify({
+        categoryId: categoryId,
+        assignee: item.assignee,
+        content: item.content
+      }));
+      
       // API를 통해 새 체크리스트 아이템 추가 요청
-      const response = await fetch(`${baseUrl}/category/${categoryId}/item`, {
+      const response = await fetch(itemUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          content: item.content,
-          assignee: item.assignee
+          categoryId: categoryId,
+          assignee: item.assignee,
+          content: item.content
         })
       });
       
+      console.log("응답 상태:", response.status);
+      
       if (!response.ok) {
-        throw new Error('체크리스트 항목 추가에 실패했습니다.');
+        const errorText = await response.text();
+        console.error("응답 에러:", errorText);
+        throw new Error(`체크리스트 항목 추가에 실패했습니다. 상태 코드: ${response.status}`);
       }
       
       const data = await response.json();
+      console.log("응답 데이터:", data);
       
-      // 성공적으로 추가된 경우, 응답에서 아이템 ID를 가져와 로컬 상태 업데이트
-      if (data && data.id) {
-        setChecklistItems({
-          ...checklistItems,
-          [categoryId]: [...(checklistItems[categoryId] || []), {
-            id: data.id,
-            content: item.content,
-            assignee: item.assignee,
-            completed: false
-          }]
-        });
-      }
+      // 성공적으로 추가된 경우, 로컬 상태 업데이트
+      // 서버 응답에서 아이템 ID를 가져옵니다 - 응답 구조에 따라 조정 필요할 수 있음
+      const itemId = data.id || Date.now(); // 응답에 ID가 없으면 임시 ID 생성
+      
+      setChecklistItems({
+        ...checklistItems,
+        [categoryId]: [...(checklistItems[categoryId] || []), {
+          id: itemId,
+          content: item.content,
+          assignee: item.assignee,
+          completed: false
+        }]
+      });
     } catch (err) {
       console.error('Error adding checklist item:', err);
-      alert('체크리스트 항목 추가 중 오류가 발생했습니다.');
+      alert(`체크리스트 항목 추가 중 오류가 발생했습니다: ${err.message}`);
     }
   };
-
   const handleDeleteItem = async (categoryId, itemId) => {
     try {
       // API를 통해 체크리스트 아이템 삭제 요청
