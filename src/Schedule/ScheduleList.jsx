@@ -44,6 +44,11 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
     };
 
     const groupedSchedules = schedules.reduce((acc, schedule) => {
+        // dayLabel이 없는 일정은 처리하지 않음
+        if (!schedule || !schedule.dayLabel) {
+            return acc;
+        }
+
         if (!acc[schedule.dayLabel]) {
             acc[schedule.dayLabel] = {
                 date: schedule.startDateTime.split("T")[0],

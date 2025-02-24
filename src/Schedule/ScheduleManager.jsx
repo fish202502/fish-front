@@ -24,8 +24,8 @@ const ScheduleManager = () => {
   // 에러의 데이터를 관리하는 상태변수
   const [error,setError] = useState('');
 
-  const ROOM_CODE = '7340c7bb';
-  const URL_ID = '174037426298d6e418';
+  const ROOM_CODE = '474fd815';
+  const URL_ID = '174040496771a556e4';
   const API_BASE_URL = 'http://localhost:8999/api/fish/schedule';
 
 
@@ -47,12 +47,27 @@ const ScheduleManager = () => {
           setTripEndDate(endDate);
           setHasPeriod(true);  // 여행 기간 존재 표시
 
-          // 일정 목록 처리
-          if (data.scheduleItemList) {
+          // 일정 목록 처리 - 주석이 아닌 실제 코드로 수정
+          if (data.scheduleItemList && data.scheduleItemList.length > 0) {
             const formattedSchedules = data.scheduleItemList.map(item => {
-              // ... 기존 매핑 로직
+              const start = new Date(startDate);
+              const itemDate = new Date(item.startTime.split('T')[0]);
+              const dayDifference = Math.floor((itemDate - start) / (1000 * 60 * 60 * 24));
+
+              return {
+                id: item.scheduleItemId,
+                title: item.title,
+                content: item.content || "",
+                startDateTime: item.startTime,
+                endDateTime: item.endTime,
+                dayLabel: `Day${dayDifference + 1}`
+              };
             });
+
             setSchedules(sortSchedules(formattedSchedules));
+          } else {
+            // 일정이 없는 경우 빈 배열로 설정
+            setSchedules([]);
           }
         }
       } else {
@@ -118,10 +133,6 @@ const ScheduleManager = () => {
   // 일정 추가 함수
   const addSchedule = async (title,startDate,startTime,endDate,endTime) => {
 
-    // 날짜와 시간을 합쳐 ISO 형식 (YYYY-MM-DDTHH:MM:00)으로 변환
-    const startDateTime = `${startDate}T${startTime}:00`;  // 초 단위 추가
-    const endDateTime = `${endDate}T${endTime}:00`;       // 초 단위 추가
-
     if (!title.trim()) {
       handleError("입력 오류", "일정 제목을 입력해야 합니다.");
       return false;
@@ -131,19 +142,26 @@ const ScheduleManager = () => {
       return false;
     }
 
+    // 날짜와 시간을 합쳐 ISO 형식으로 변환
+    const startDateTime = `${startDate}T${startTime}:00`;
+    const endDateTime = `${endDate}T${endTime}:00`;
 
     if(endDateTime < startDateTime) {
       handleError("입력오류", "일정종료시간은 시작시간보다 나중이어야 합니다.")
       return false;
     }
 
+
     // 요청 데이터 로깅
     const requestBody = {
-      title,
+      scheduleId: scheduleId,
+      title:title,
       content:"",
       startTime: startDateTime,
       endTime: endDateTime
     };
+
+    console.log('요청 본문:', requestBody); // 디버깅용
 
     try {
       const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
@@ -155,6 +173,7 @@ const ScheduleManager = () => {
       });
 
       const data = await response.json();
+      console.log('일정추가 응답',data)
 
 
       if (response.ok) {
@@ -172,6 +191,7 @@ const ScheduleManager = () => {
           endDateTime,
           dayLabel
         };
+
 
         setSchedules(prevSchedules => sortSchedules([...prevSchedules, newSchedule]));
         return true;
