@@ -64,6 +64,12 @@ const CheckListManager = () => {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.sidebar}>
+        <div className={styles.searchContainer}>
+          <CheckListSearch 
+            categories={categories}
+            onSelectCategory={setSelectedCategory}
+          />
+        </div>
         <CheckSidebar 
           categories={categories}
           selectedCategory={selectedCategory}
@@ -75,22 +81,14 @@ const CheckListManager = () => {
         />
       </div>
      
-      <div className={styles.content}>
-        {selectedCategory && (
-          <CheckList
-            category={selectedCategory}
-            items={checklistItems[selectedCategory] || []}
-            onAddItem={handleAddChecklistItem}
-            onToggleComplete={handleToggleComplete}
-            onDeleteItem={handleDeleteItem}
-            onUpdateItem={handleUpdateItem}
-          />
-        )}
-      </div>
-      <div className={styles.searchContainer}>
-        <CheckListSearch 
-          categories={categories}
-          onSelectCategory={setSelectedCategory}
+      <div className={styles.managerContent}><p className={styles.mainTitleName}>📝체크리스트</p>
+        <CheckList
+          category={selectedCategory}
+          items={checklistItems[selectedCategory] || []}
+          onAddItem={handleAddChecklistItem}
+          onToggleComplete={handleToggleComplete}
+          onDeleteItem={handleDeleteItem}
+          onUpdateItem={handleUpdateItem}
         />
       </div>
     </div>
