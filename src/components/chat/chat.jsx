@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import Modal from "./Modal"; // 모달 컴포넌트 임포트
 import styles from "./Chat.module.css"; // CSS 모듈 임포트
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 
 function Chat() {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
+  const [mySessionId, setMySessionId] = useState("");
+  const [isFirst, setIsFist] = useState(false);
   const [socket, setSocket] = useState(null);
   const [showModal, setShowModal] = useState(true);
   const { roomCode } = useParams();
@@ -35,6 +37,8 @@ function Chat() {
     };
 
     ws.onmessage = (event) => {
+      const [sender, sessionId, text] = event.data.split(":");
+      setMySessionId(sessionId);
       setMessages((prevMessages) => [...prevMessages, event.data]);
     };
 
@@ -89,12 +93,14 @@ function Chat() {
 
   // 메세지 처리
   const randMessage = (msg, index) => {
-    const [sender, text] = msg.split(":");
+    const [sender, sessionId, text] = msg.split(":");
     return (
       <>
         <div
           className={`${styles.sender} ${
-            msg.includes(name) ? styles.myName : styles.otherName
+            msg.includes(name) && sessionId === mySessionId
+              ? styles.myName
+              : styles.otherName
           }`}
         >
           {text ? sender : ""}
@@ -102,7 +108,7 @@ function Chat() {
         <div
           key={index}
           className={`${styles.message} ${
-            msg.includes(name) ? styles.myMessage : styles.otherMessage
+            msg.includes(name) && sessionId === mySessionId ? styles.myMessage : styles.otherMessage
           }`}
         >
           <p>{text ? text : msg}</p>
@@ -131,7 +137,7 @@ function Chat() {
           onKeyDown={handleKeyDown}
         />
         <button onClick={sendMessage} className={styles.sendButton}>
-          Send
+          보내기
         </button>
       </div>
     </div>
