@@ -210,66 +210,130 @@ const CheckListManager = () => {
   };
   const handleUpdateItem = async (categoryId, itemId, updatedItem) => {
     try {
+      // 선택된 카테고리의 체크리스트 아이템 목록에서 수정할 항목의 checkListItemId 찾기
+      const itemToUpdate = checklistItems[categoryId].find(item => item.id === itemId);
+      
+      if (!itemToUpdate) {
+        throw new Error('수정할 체크리스트 항목을 찾을 수 없습니다.');
+      }
+      
+      // 실제 API에서 사용하는 checkListItemId 가져오기
+      const checkListItemId = itemToUpdate.checkListItemId || itemId;
+      
+      // 올바른 API 경로 사용
+      const updateUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
+      console.log("체크리스트 아이템 수정 요청 URL:", updateUrl);
+      console.log("체크리스트 아이템 수정 요청 본문:", JSON.stringify({
+        checkListItemId: checkListItemId,
+        assignee: updatedItem.assignee,
+        content: updatedItem.content,
+        isChecked: itemToUpdate.isChecked || false
+      }));
+      
       // API를 통해 체크리스트 아이템 업데이트 요청
-      const response = await fetch(`${baseUrl}/category/${categoryId}/item/${itemId}`, {
+      const response = await fetch(updateUrl, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          checkListItemId: checkListItemId,
+          assignee: updatedItem.assignee,
           content: updatedItem.content,
-          assignee: updatedItem.assignee
+          isChecked: itemToUpdate.isChecked || false
         })
       });
       
+      console.log("응답 상태:", response.status);
+      
       if (!response.ok) {
-        throw new Error('체크리스트 항목 업데이트에 실패했습니다.');
+        const errorText = await response.text();
+        console.error("응답 에러:", errorText);
+        throw new Error(`체크리스트 항목 수정에 실패했습니다. 상태 코드: ${response.status}`);
       }
       
       // 로컬 상태 업데이트
       setChecklistItems({
         ...checklistItems,
         [categoryId]: checklistItems[categoryId].map(item =>
-          item.id === itemId ? { ...item, ...updatedItem } : item
+          item.id === itemId ? { 
+            ...item, 
+            ...updatedItem,
+            checkListItemId: checkListItemId // checkListItemId 유지
+          } : item
         ),
       });
+      
+      console.log('체크리스트 항목이 성공적으로 수정되었습니다.');
     } catch (err) {
       console.error('Error updating checklist item:', err);
-      alert('체크리스트 항목 업데이트 중 오류가 발생했습니다.');
+      alert(`체크리스트 항목 수정 중 오류가 발생했습니다: ${err.message}`);
     }
   };
   
   const handleToggleComplete = async (categoryId, itemId) => {
     try {
-      // 현재 아이템의 완료 상태를 찾습니다
+      // 선택된 카테고리의 체크리스트 아이템 목록에서 해당 항목 찾기
       const currentItem = checklistItems[categoryId].find(item => item.id === itemId);
-      const newCompletedStatus = !currentItem.completed;
+      
+      if (!currentItem) {
+        throw new Error('체크리스트 항목을 찾을 수 없습니다.');
+      }
+      
+      // 실제 API에서 사용하는 checkListItemId 가져오기
+      const checkListItemId = currentItem.checkListItemId || itemId;
+      
+      // 완료 상태 토글
+      const newCheckedStatus = !currentItem.isChecked;
+      
+      // 올바른 API 경로 사용 (체크리스트 수정과 같은 경로 사용)
+      const updateUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
+      console.log("체크리스트 완료 상태 변경 요청 URL:", updateUrl);
+      console.log("체크리스트 완료 상태 변경 요청 본문:", JSON.stringify({
+        checkListItemId: checkListItemId,
+        assignee: currentItem.assignee,
+        content: currentItem.content,
+        isChecked: newCheckedStatus
+      }));
       
       // API를 통해 체크리스트 아이템 완료 상태 업데이트 요청
-      const response = await fetch(`${baseUrl}/category/${categoryId}/item/${itemId}/complete`, {
+      const response = await fetch(updateUrl, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          completed: newCompletedStatus
+          checkListItemId: checkListItemId,
+          assignee: currentItem.assignee,
+          content: currentItem.content,
+          isChecked: newCheckedStatus
         })
       });
       
+      console.log("응답 상태:", response.status);
+      
       if (!response.ok) {
-        throw new Error('체크리스트 항목 완료 상태 변경에 실패했습니다.');
+        const errorText = await response.text();
+        console.error("응답 에러:", errorText);
+        throw new Error(`체크리스트 항목 완료 상태 변경에 실패했습니다. 상태 코드: ${response.status}`);
       }
       
       // 로컬 상태 업데이트
       setChecklistItems({
         ...checklistItems,
         [categoryId]: checklistItems[categoryId].map(item =>
-          item.id === itemId ? { ...item, completed: newCompletedStatus } : item
+          item.id === itemId ? { 
+            ...item, 
+            isChecked: newCheckedStatus,
+            completed: newCheckedStatus // UI 호환성을 위해 completed 필드도 업데이트
+          } : item
         )
       });
+      
+      console.log('체크리스트 항목 완료 상태가 성공적으로 변경되었습니다.');
     } catch (err) {
       console.error('Error toggling checklist item completion:', err);
-      alert('체크리스트 항목 완료 상태 변경 중 오류가 발생했습니다.');
+      alert(`체크리스트 항목 완료 상태 변경 중 오류가 발생했습니다: ${err.message}`);
     }
   };
 
