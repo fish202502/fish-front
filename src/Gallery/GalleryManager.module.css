@@ -15,10 +15,9 @@
 .title {
     font-size: 35px;
     text-align: center;
-    font-weight: lighter;
     color: white;
     margin-bottom: 15px;
-
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 

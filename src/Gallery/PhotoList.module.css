@@ -1,25 +1,24 @@
-.photoListContainer{
+.photoListContainer {
     background: white;
     margin: 10px 20px;
     border-radius: 20px;
     max-width: 100%;
     padding: 20px;
-
 }
+
 .photoList {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 사진 크기에 맞춰 자동 조정 */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     justify-content: center;
     padding: 20px;
-
 }
-.photoListContainer p{
+
+.photoListContainer p {
     text-align: center;
     font-size: 20px;
     color: #888888;
 }
-
-
 
 
 
