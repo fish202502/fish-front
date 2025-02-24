@@ -64,6 +64,12 @@ const CheckListManager = () => {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.sidebar}>
+      <div className={styles.searchContainer}>
+        <CheckListSearch 
+          categories={categories}
+          onSelectCategory={setSelectedCategory}
+        />
+      </div>
         <CheckSidebar 
           categories={categories}
           selectedCategory={selectedCategory}
@@ -75,7 +81,7 @@ const CheckListManager = () => {
         />
       </div>
      
-      <div className={styles.content}>
+      <div className={styles.managerContent}>
         {selectedCategory && (
           <CheckList
             category={selectedCategory}
@@ -87,12 +93,7 @@ const CheckListManager = () => {
           />
         )}
       </div>
-      <div className={styles.searchContainer}>
-        <CheckListSearch 
-          categories={categories}
-          onSelectCategory={setSelectedCategory}
-        />
-      </div>
+     
     </div>
   );
 };
