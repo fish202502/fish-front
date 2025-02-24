@@ -1,7 +1,7 @@
 /* 일정 리스트 스타일 */
 .scheduleList {
     margin-top: 20px;
-    width: 65%;
+    width: 85%;
 }
 
 .scheduleList h2 {
@@ -51,7 +51,7 @@
     font-size: 14px;
     color: #555;
     transition: color 0.2s ease;
-    width: 50px;
+    width: 80px;
 }
 
 .scheduleItem button:hover {
@@ -65,4 +65,8 @@
 
 .title{
     font-size: 20px;
+}
+
+.buttonContainer{
+    width: 20%;
 }
