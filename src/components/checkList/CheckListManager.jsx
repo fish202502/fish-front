@@ -5,61 +5,67 @@ import CheckSidebar from './CheckSidebar';
 import styles from './CheckListManager.module.scss';
 import CheckListSearch from './CheckListSearch';
 
-const DUMMY_CheckList = [
-  {
-    text: "밥",
-    name: "name",
-    completed: true
-  }
-]
+
 const CheckListManager = () => {
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [checklistItems, setChecklistItems] = useState({});
 
-  const handleAddCategory = (newCategory) => {
-    const newCategoryObj = { id: Date.now(), name: newCategory };
+  const handleAddCategory = (newCategoryContent) => {
+    const categoryId = `category_${Date.now()}`;
+    const newCategoryObj = { 
+      id: categoryId, 
+      name: newCategoryContent,
+      category: newCategoryContent, // 백엔드 DTO와 일치하는 필드
+      content: newCategoryContent   // 백엔드 JsonProperty와 일치하는 필드
+    };
+    
     setCategories([...categories, newCategoryObj]);
-    setChecklistItems({ ...checklistItems, [newCategory]: [] });
-    setSelectedCategory(newCategory);
+    setChecklistItems({ ...checklistItems, [categoryId]: [] });
+    setSelectedCategoryId(categoryId);
   };
 
-  const handleAddChecklistItem = (category, item) => {
+  const handleAddChecklistItem = (categoryId, item) => {
     setChecklistItems({
       ...checklistItems,
-      [category]: [...(checklistItems[category] || []), {
+      [categoryId]: [...(checklistItems[categoryId] || []), {
         id: Date.now(),
-        text: item.text,
-        name: item.name,
+        content: item.content,
+        assignee: item.assignee,
         completed: false
       }]
     });
   };
 
-  const handleDeleteItem = (category, itemId) => {
+  const handleDeleteItem = (categoryId, itemId) => {
     setChecklistItems({
       ...checklistItems,
-      [category]: checklistItems[category].filter(item => item.id !== itemId),
+      [categoryId]: checklistItems[categoryId].filter(item => item.id !== itemId),
     });
   };
   
-  const handleUpdateItem = (category, itemId, updatedItem) => {
+  const handleUpdateItem = (categoryId, itemId, updatedItem) => {
     setChecklistItems({
       ...checklistItems,
-      [category]: checklistItems[category].map(item =>
+      [categoryId]: checklistItems[categoryId].map(item =>
         item.id === itemId ? { ...item, ...updatedItem } : item
       ),
     });
   };
   
-  const handleToggleComplete = (category, itemId) => {
+  const handleToggleComplete = (categoryId, itemId) => {
     setChecklistItems({
       ...checklistItems,
-      [category]: checklistItems[category].map(item =>
+      [categoryId]: checklistItems[categoryId].map(item =>
         item.id === itemId ? { ...item, completed: !item.completed } : item
       )
     });
   };
+
+  // 선택된 카테고리 객체 찾기
+  const selectedCategory = categories.find(cat => cat.id === selectedCategoryId);
+  // 선택된 카테고리의 이름 (표시용)
+  const selectedCategoryName = selectedCategory ? selectedCategory.name : null;
 
   return (
     <div className={styles.mainContainer}>
@@ -67,13 +73,13 @@ const CheckListManager = () => {
         <div className={styles.searchContainer}>
           <CheckListSearch 
             categories={categories}
-            onSelectCategory={setSelectedCategory}
+            onSelectCategory={setSelectedCategoryId}
           />
         </div>
         <CheckSidebar 
           categories={categories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
+          selectedCategory={selectedCategoryId}
+          onSelectCategory={setSelectedCategoryId}
         />
         <CheckListAdd 
           onAddCategory={handleAddCategory} 
@@ -83,8 +89,9 @@ const CheckListManager = () => {
      
       <div className={styles.managerContent}><p className={styles.mainTitleName}>📝체크리스트</p>
         <CheckList
-          category={selectedCategory}
-          items={checklistItems[selectedCategory] || []}
+          categoryId={selectedCategoryId}
+          items={checklistItems[selectedCategoryId] || []}
+          categoryName={selectedCategoryName} // 카테고리 이름 전달
           onAddItem={handleAddChecklistItem}
           onToggleComplete={handleToggleComplete}
           onDeleteItem={handleDeleteItem}
