@@ -107,7 +107,10 @@ const GalleryManager = () => {
     if (deletePhoto !== null) {
       try {
         const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${deletePhoto}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
 
         if (!response.ok) throw new Error('사진삭제에 실패했습니다');
