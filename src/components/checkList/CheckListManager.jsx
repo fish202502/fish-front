@@ -169,13 +169,31 @@ const CheckListManager = () => {
   };
   const handleDeleteItem = async (categoryId, itemId) => {
     try {
+      // 선택된 카테고리의 체크리스트 아이템 목록에서 삭제할 항목의 checkListItemId 찾기
+      const itemToDelete = checklistItems[categoryId].find(item => item.id === itemId);
+      
+      if (!itemToDelete) {
+        throw new Error('삭제할 체크리스트 항목을 찾을 수 없습니다.');
+      }
+      
+      // 실제 API에서 사용하는 checkListItemId 가져오기
+      const checkListItemId = itemToDelete.checkListItemId || itemId;
+      
+      // 올바른 API 경로 사용
+      const deleteUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}/${checkListItemId}`;
+      console.log("체크리스트 아이템 삭제 요청 URL:", deleteUrl);
+      
       // API를 통해 체크리스트 아이템 삭제 요청
-      const response = await fetch(`${baseUrl}/category/${categoryId}/item/${itemId}`, {
+      const response = await fetch(deleteUrl, {
         method: 'DELETE'
       });
       
+      console.log("응답 상태:", response.status);
+      
       if (!response.ok) {
-        throw new Error('체크리스트 항목 삭제에 실패했습니다.');
+        const errorText = await response.text();
+        console.error("응답 에러:", errorText);
+        throw new Error(`체크리스트 항목 삭제에 실패했습니다. 상태 코드: ${response.status}`);
       }
       
       // 로컬 상태 업데이트
@@ -183,12 +201,13 @@ const CheckListManager = () => {
         ...checklistItems,
         [categoryId]: checklistItems[categoryId].filter(item => item.id !== itemId),
       });
+      
+      console.log('체크리스트 항목이 성공적으로 삭제되었습니다.');
     } catch (err) {
       console.error('Error deleting checklist item:', err);
-      alert('체크리스트 항목 삭제 중 오류가 발생했습니다.');
+      alert(`체크리스트 항목 삭제 중 오류가 발생했습니다: ${err.message}`);
     }
   };
-  
   const handleUpdateItem = async (categoryId, itemId, updatedItem) => {
     try {
       // API를 통해 체크리스트 아이템 업데이트 요청
