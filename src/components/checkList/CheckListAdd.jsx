@@ -11,10 +11,12 @@ const CheckListAdd = ({ onAddCategory, categories }) => {
     const trimmedCategory = newCategory.trim();
     
     if (trimmedCategory) {
-      // 카테고리 중복 확인
-      const categoryExists = categories.some(
-        category => category.name.toLowerCase() === trimmedCategory.toLowerCase()
-      );
+      // 카테고리 중복 확인 - 카테고리 구조 안전하게 확인
+      const categoryExists = categories.some(category => {
+        // 여러 가능한 속성 이름 확인
+        const categoryName = category.name || category.category || category.content;
+        return categoryName && categoryName.toLowerCase() === trimmedCategory.toLowerCase();
+      });
       
       if (categoryExists) {
         setError("이미 존재하는 카테고리입니다");
@@ -33,6 +35,7 @@ const CheckListAdd = ({ onAddCategory, categories }) => {
         <input
           type="text"
           value={newCategory}
+          name="content"
           onChange={(e) => {
             setNewCategory(e.target.value);
             setError(""); // 입력 시 에러 메시지 초기화

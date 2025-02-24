@@ -66,7 +66,7 @@ const AddFinancial = ({ addFinancial }) => {
     
     // 이미지가 있는 경우 추가
     if (imageFile) {
-      submitFormData.append('image', imageFile);
+      submitFormData.append('images', imageFile);
     }
   
     // 데이터 전송
@@ -120,8 +120,10 @@ const AddFinancial = ({ addFinancial }) => {
         />
 
         <input 
-          type="file" 
+          type="file"
+          name="images"
           accept="image/*" 
+          value={formData.Images}
           onChange={handlePreview}
           className="file-upload-input" 
         />
