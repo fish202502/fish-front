@@ -31,7 +31,7 @@ const ScheduleManager = () => {
   const fetchScheduleData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/schedule'); // 실제 엔드포인트로 수정 필요
+      const response = await fetch('`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`'); // 실제 엔드포인트로 수정 필요
       const data = await response.json();
 
       if (response.ok) {
@@ -231,7 +231,7 @@ const ScheduleManager = () => {
     }
 
     try {
-      const response = await fetch('/api/schedule', {  // 실제 엔드포인트로 수정 필요
+      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
