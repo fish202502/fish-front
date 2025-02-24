@@ -35,8 +35,15 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
     };
 
     const handleDelete = async (id) => {
-        const isSuccess = await removeSchedule(id);
-
+        try {
+            const isSuccess = await removeSchedule(id);
+            if (isSuccess) {
+                // 성공 시 아무것도 하지 않음 (이미 removeSchedule에서 상태 업데이트)
+                console.log('일정 삭제 성공:', id);
+            }
+        } catch (error) {
+            console.error('삭제 처리 중 오류:', error);
+        }
     };
 
     const closeErrorModal = () => {

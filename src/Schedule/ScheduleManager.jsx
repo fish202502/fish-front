@@ -185,7 +185,7 @@ const ScheduleManager = () => {
 
         // 새 일정을 로컬 상태에 추가
         const newSchedule = {
-          id: data.scheduleItemId, // API에서 받은 ID 사용
+          id: data.scheduleId, // API에서 받은 ID 사용
           title,
           startDateTime,
           endDateTime,
@@ -218,10 +218,9 @@ const ScheduleManager = () => {
         const data = await response.json();
 
         if (response.ok && data.successes) {
-          // API 호출이 성공하면 로컬 상태도 업데이트합니다
-          setSchedules(prevSchedules =>
-              prevSchedules.filter(schedule => schedule.id !== scheduleItemId)
-          );
+          // 삭제 후 새로운 배열 생성 방식으로 변경
+          const updatedSchedules = schedules.filter(schedule => schedule.id !== scheduleItemId);
+          setSchedules(updatedSchedules);
           return true;
         } else {
           // API 호출은 성공했지만 삭제가 실패한 경우
@@ -246,6 +245,18 @@ const ScheduleManager = () => {
       handleError("입력 오류", "일정 종료시간은 시작시간보다 나중이어야 합니다.");
       return false;
     }
+
+    // 요청 본문 로깅
+    const requestBody = {
+      scheduleId: scheduleId, // 전체 여행 일정 ID (개별 일정 ID가 아닌)
+      title: updatedData.title,
+      content: updatedData.content || "",
+      startTime: startDateTime,
+      endTime: endDateTime
+    };
+
+    console.log('수정 요청 본문:', requestBody);
+
 
     try {
       const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`, {
