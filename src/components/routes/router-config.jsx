@@ -1,28 +1,30 @@
 import { createBrowserRouter } from "react-router-dom";
-// import Chat from "../chat/chat";
+import Chat from "../chat/chat";
 import RootLayout from "../../pages/RootLayout";
 import CreateRoom from "../room/CreateRoom";
 import FinancialManager from "../financial/FinancialManager";
+import { BsChatHeart } from "react-icons/bs";
+import MainNavigation from "../../pages/MainLayout";
 
 // 라우터 설정
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: <CreateRoom />,
     // errorElement: <ErrorPage />,
+  },
+  {
+    path: "/room",
+    element: <MainNavigation />,
     children: [
-      {
-        path: "new",
-        element: <CreateRoom />,
-      },
       {
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
       },
-      // {
-      //   path: "chat/:roomCode",
-      //   element: <Chat />,
-      // },
+      {
+        path: "chat/:roomCode/:url",
+        element: <Chat />,
+      },
     ],
   },
 ]);

@@ -103,6 +103,19 @@
   border-bottom: 10px solid #eecadf;
 }
 
+.systemMessage{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto; /* 상하 여백 추가 + 좌우 자동 정렬 */
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  text-align: center;
+  border-bottom: 2px solid #bfdaf8;
+  border-top: 2px solid #bfdaf8;
+}
+
 /* 입력창 */
 .inputContainer {
   display: flex;
