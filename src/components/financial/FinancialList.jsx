@@ -1,30 +1,30 @@
 import React, { useState } from "react";
 import "./FinancialList.css";
 import FinancialDutch from "./FinancialDutch";
-import ErrorModal from "../ui/Modal/ErrorModal"
+import ErrorModal from "../ui/Modal/ErrorModal";
 import ImageModal from "../ui/Modal/ImageModal";
 
 const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
   const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({ 
-    spender: "", 
-    description: "", 
-    amount: 0, 
+  const [editData, setEditData] = useState({
+    spender: "",
+    description: "",
+    amount: 0,
     spendAt: "",
-    images: []
+    images: [],
   });
   const [previewImg, setPreviewImg] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  
+
   // 이미지 모달 상태
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   // 이미지 클릭 핸들러
   const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
+    setSelectedImage("http://localhost:8999" + imageUrl);
     setImageModalOpen(true);
   };
 
@@ -50,8 +50,11 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
     });
     
     // 이미지가 있는 경우 미리보기 설정
+    // URL에서 호스트 부분을 제거하고 경로만 저장
     if (financial.images && financial.images.length > 0) {
-      setPreviewImg(financial.images[0]); // 첫 번째 이미지를 미리보기로 표시
+      // 기존 방식 유지 - 서버 경로만 저장
+      const imagePath = financial.images[0];
+      setPreviewImg(imagePath);
     } else {
       setPreviewImg(null);
     }
@@ -82,47 +85,57 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
     };
     reader.readAsDataURL(file);
   };
-  
+
   // 이미지 삭제 핸들러
   const handleImageDelete = () => {
     setPreviewImg(null);
     setImageFile(null);
-    setEditData({...editData, images: []});
+    setEditData({ ...editData, images: [] });
   };
 
   // FinancialList.jsx 컴포넌트 내에서 항목 수정 시 FormData 처리 부분 수정
 
-// 저장 버튼 클릭 시
-const handleSave = () => {
-  // FormData 객체 생성
-  const submitFormData = new FormData();
-  
-  // JSON 데이터 생성
-  const expenseData = {
-    spender: editData.spender,
-    description: editData.description,
-    amount: Number(editData.amount),
-    spendAt: editData.spendAt
-  };
-  
-  // FormData에 expense 키로 JSON 문자열 추가
-  submitFormData.append('expense', JSON.stringify(expenseData));
-  
-  // 이미지 상태 처리
-  if (imageFile) {
-    // 새 이미지가 있으면 추가
-    submitFormData.append('image', imageFile);
-  } else {
-    // 이미지를 삭제했거나 변경하지 않았을 경우
-    // 삭제 여부를 나타내는 플래그 추가
-    submitFormData.append('removeImage', previewImg ? 'false' : 'true');
-  }
+  // 저장 버튼 클릭 시
+  const handleSave = () => {
+    // FormData 객체 생성
+    const submitFormData = new FormData();
 
-  modifyFinancial(editingId, submitFormData);
-  setEditingId(null);
-  setImageFile(null);
-  setPreviewImg(null);
-};
+    // JSON 데이터 생성
+    const expenseData = {
+      spender: editData.spender,
+      description: editData.description,
+      amount: Number(editData.amount),
+      spendAt: editData.spendAt,
+    };
+
+    // FormData에 expense 키로 JSON 문자열 추가
+    const jsonBlob = new Blob([JSON.stringify(expenseData)], { type: 'application/json' });
+    submitFormData.append('expense', jsonBlob);
+
+    // 이미지 처리 로직 수정
+    if (imageFile) {
+      // 새 이미지 파일이 있는 경우
+      submitFormData.append("images", imageFile);
+    } else if (previewImg) {
+      // 원래 이미지를 그대로 유지하는 경우 (이미지 URL에서 호스트 부분 제거)
+      // 서버에 이미지 경로만 전달하기 위해 URL에서 'http://localhost:8999' 부분 제거
+      const originalImagePath = previewImg.includes("http://localhost:8999")
+        ? previewImg.replace("http://localhost:8999", "")
+        : previewImg;
+
+      submitFormData.append("existingImage", originalImagePath);
+      submitFormData.append("removeImage", "false");
+    } else {
+      // 이미지를 삭제하는 경우
+      submitFormData.append("removeImage", "true");
+    }
+
+
+    modifyFinancial(editingId, submitFormData);
+    setEditingId(null);
+    setImageFile(null);
+    setPreviewImg(null);
+  };
 
   // 삭제 버튼 클릭 시 (모달 열기)
   const handleDeleteClick = (id) => {
@@ -146,16 +159,20 @@ const handleSave = () => {
   };
 
   // 총 지출 금액 계산
-  const totalAmount = financials.reduce((sum, financial) => 
-    sum + Number(financial.amount), 0).toLocaleString('ko-KR');
+  const totalAmount = financials
+    .reduce((sum, financial) => sum + Number(financial.amount), 0)
+    .toLocaleString("ko-KR");
 
   // 날짜 시간 표시 형식화 함수
   const formatDateTime = (dateTimeStr) => {
     if (!dateTimeStr) return "";
     const date = new Date(dateTimeStr);
     console.log("ddd:", date);
-    
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`;
   };
 
   return (
@@ -169,53 +186,61 @@ const handleSave = () => {
               <li key={financial.id} className="financial-item">
                 {editingId === financial.id ? (
                   <div className="edit-mode">
-                    <input 
-                    className="listInput"
-                      type="text" 
-                      name="spender" 
-                      value={editData.spender} 
-                      onChange={handleChange} 
+                    <input
+                      className="listInput"
+                      type="text"
+                      name="spender"
+                      value={editData.spender}
+                      onChange={handleChange}
                       placeholder="지출자"
                     />
-                    <input 
-                    className="listInput"
-                      type="text" 
-                      name="description" 
-                      value={editData.description} 
-                      onChange={handleChange} 
+                    <input
+                      className="listInput"
+                      type="text"
+                      name="description"
+                      value={editData.description}
+                      onChange={handleChange}
                       placeholder="설명"
                     />
-                    <input 
-                    className="listInput"
-                      type="number" 
-                      name="amount" 
-                      value={editData.amount} 
-                      onChange={handleChange} 
+                    <input
+                      className="listInput"
+                      type="number"
+                      name="amount"
+                      value={editData.amount}
+                      onChange={handleChange}
                       placeholder="금액"
                     />
-                    <input 
-                    className="listInput"
-                      type="datetime-local" 
-                      name="spendAt" 
-                      value={editData.spendAt} 
-                      onChange={handleChange} 
+                    <input
+                      className="listInput"
+                      type="datetime-local"
+                      name="spendAt"
+                      value={editData.spendAt}
+                      onChange={handleChange}
                     />
-
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={handleImageUpload} 
+                    <input
+                      className="modifiImage"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
                     />
-                    
+                 
                     {previewImg && (
                       <div>
-                        <img 
-                          src={previewImg} 
-                          alt="미리보기" 
-                          className="preview-image" 
+                        <img
+                          src={
+                            previewImg.startsWith("data:")
+                              ? previewImg
+                              : `http://localhost:8999${previewImg}`
+                          }
+                          alt="미리보기"
+                          className="preview-image"
+                          onError={(e) => {
+                            console.error("이미지 로딩 실패:", previewImg);
+                            e.target.onerror = null; // 무한 루프 방지
+                          }}
                         />
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           onClick={handleImageDelete}
                           className="financialButton"
                         >
@@ -223,16 +248,12 @@ const handleSave = () => {
                         </button>
                       </div>
                     )}
-
                     <div className="button-group">
-                      <button 
-                        onClick={handleSave} 
-                        className="financialButton"
-                      >
+                      <button onClick={handleSave} className="financialButton">
                         💾 저장
                       </button>
-                      <button 
-                        onClick={() => setEditingId(null)} 
+                      <button
+                        onClick={() => setEditingId(null)}
                         className="financialButton"
                       >
                         ❌ 취소
@@ -242,30 +263,32 @@ const handleSave = () => {
                 ) : (
                   <div className="financial-content">
                     <span className="financial-text">
-                      📅 {financial.spender} {Number(financial.amount).toLocaleString('ko-KR')}원 
-                      {formatDateTime(financial.spendAt)} - {financial.description}
+                      📅 {financial.spender}{" "}
+                      {Number(financial.amount).toLocaleString("ko-KR")}원
+                      {formatDateTime(financial.spendAt)} -{" "}
+                      {financial.description}
                     </span>
-                    
+
                     {financial.images && financial.images.length > 0 && (
-                      <img 
-                        src={financial.images[0]} 
-                        alt="지출 이미지" 
+                      <img
+                        src={"http://localhost:8999" + financial.images[0]}
+                        alt="지출 이미지"
                         className="list-image"
                         onClick={() => handleImageClick(financial.images[0])}
-                        style={{ cursor: 'pointer' }}
+                        style={{ cursor: "pointer" }}
                         title="클릭하여 확대"
                       />
                     )}
-                    
+
                     <div className="button-group">
-                      <button 
-                        onClick={() => handleEditClick(financial)} 
+                      <button
+                        onClick={() => handleEditClick(financial)}
                         className="financialButton"
                       >
                         ✏ 수정
                       </button>
-                      <button 
-                        onClick={() => handleDeleteClick(financial.id)} 
+                      <button
+                        onClick={() => handleDeleteClick(financial.id)}
                         className="financialButton"
                       >
                         ❌ 삭제
@@ -287,19 +310,16 @@ const handleSave = () => {
       {/* 삭제 확인 모달 */}
       {modalOpen && (
         <ErrorModal
-          title="삭제" 
-          message="정말 삭제하시겠습니까?" 
-          closeModal={closeModal} 
-          onConfirm={confirmDelete} 
+          title="삭제"
+          message="정말 삭제하시겠습니까?"
+          closeModal={closeModal}
+          onConfirm={confirmDelete}
         />
       )}
-      
+
       {/* 이미지 확대 모달 */}
       {imageModalOpen && selectedImage && (
-        <ImageModal
-          imageUrl={selectedImage}
-          closeModal={closeImageModal}
-        />
+        <ImageModal imageUrl={selectedImage} closeModal={closeImageModal} />
       )}
     </>
   );

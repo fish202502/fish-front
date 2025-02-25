@@ -73,6 +73,9 @@ li {
   background-color: #f1a5a5;
 }
 
+.modifiImage{
+  display: block !important;
+}
 .list-image{
   
   width: 60px;

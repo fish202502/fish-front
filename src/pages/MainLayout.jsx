@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 import Header from "../components/layout/Header";
 
 const MainNavigation = () => {
@@ -11,7 +12,9 @@ const MainNavigation = () => {
 
   return (
     <>
-      <Header />
+      <Header />        
+      {/* router에서 설정한 chidren page들이 Outlet에 렌더링됨 */}
+      <Outlet />
     </>
   );
 };
