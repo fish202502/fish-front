@@ -182,6 +182,115 @@ const CheckListManager = () => {
     }
   };
 
+  const handleUpdateCategory = async (categoryId, newCategoryContent) => {
+    try {
+      // 카테고리를 찾아서 존재하는지 확인
+      const categoryToUpdate = categories.find(cat => cat.id === categoryId);
+      
+      if (!categoryToUpdate) {
+        throw new Error('수정할 카테고리를 찾을 수 없습니다.');
+      }
+      
+      // 올바른 API 경로 사용
+      const updateUrl = `http://localhost:8999/api/fish/check/category/${roomCode}/${url}`;
+      console.log("카테고리 수정 요청 URL:", updateUrl);
+      console.log("카테고리 수정 요청 본문:", JSON.stringify({
+        categoryId: categoryId,
+        content: newCategoryContent
+      }));
+      
+      // API를 통해 카테고리 업데이트 요청
+      const response = await fetch(updateUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          categoryId: categoryId,
+          content: newCategoryContent
+        })
+      });
+      
+      console.log("응답 상태:", response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("응답 에러:", errorText);
+        throw new Error(`카테고리 수정에 실패했습니다. 상태 코드: ${response.status}`);
+      }
+      
+      // 로컬 상태 업데이트
+      setCategories(categories.map(cat => 
+        cat.id === categoryId ? {
+          ...cat,
+          name: newCategoryContent,
+          content: newCategoryContent,
+          category: newCategoryContent
+        } : cat
+      ));
+      
+      console.log('카테고리가 성공적으로 수정되었습니다.');
+    } catch (err) {
+      console.error('Error updating category:', err);
+      alert(`카테고리 수정 중 오류가 발생했습니다: ${err.message}`);
+    }
+  };
+  
+  const handleDeleteCategory = async (categoryId) => {
+    try {
+      // 카테고리를 찾아서 존재하는지 확인
+      const categoryToDelete = categories.find(cat => cat.id === categoryId);
+      
+      if (!categoryToDelete) {
+        throw new Error('삭제할 카테고리를 찾을 수 없습니다.');
+      }
+      
+      // 삭제 전 확인
+      if (!window.confirm(`"${categoryToDelete.name}" 카테고리를 삭제하시겠습니까? 이 카테고리의 모든 항목이 함께 삭제됩니다.`)) {
+        return; // 사용자가 취소한 경우
+      }
+      
+      // 올바른 API 경로 사용
+      const deleteUrl = `http://localhost:8999/api/fish/check/category/${roomCode}/${url}/${categoryId}`;
+      console.log("카테고리 삭제 요청 URL:", deleteUrl);
+      
+      // API를 통해 카테고리 삭제 요청
+      const response = await fetch(deleteUrl, {
+        method: 'DELETE'
+      });
+      
+      console.log("응답 상태:", response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("응답 에러:", errorText);
+        throw new Error(`카테고리 삭제에 실패했습니다. 상태 코드: ${response.status}`);
+      }
+      
+      // 로컬 상태 업데이트
+      const updatedCategories = categories.filter(cat => cat.id !== categoryId);
+      setCategories(updatedCategories);
+      
+      // 체크리스트 아이템도 함께 삭제
+      const updatedChecklistItems = { ...checklistItems };
+      delete updatedChecklistItems[categoryId];
+      setChecklistItems(updatedChecklistItems);
+      
+      // 현재 선택된 카테고리가 삭제되는 경우, 다른 카테고리 선택
+      if (selectedCategoryId === categoryId) {
+        if (updatedCategories.length > 0) {
+          setSelectedCategoryId(updatedCategories[0].id);
+        } else {
+          setSelectedCategoryId(null);
+        }
+      }
+      
+      console.log('카테고리가 성공적으로 삭제되었습니다.');
+    } catch (err) {
+      console.error('Error deleting category:', err);
+      alert(`카테고리 삭제 중 오류가 발생했습니다: ${err.message}`);
+    }
+  };
   const handleDeleteItem = async (categoryId, itemId) => {
     try {
       // 선택된 카테고리의 체크리스트 아이템 목록에서 삭제할 항목의 checkListItemId 찾기
@@ -375,10 +484,13 @@ const CheckListManager = () => {
           />
         </div>
         <CheckSidebar 
-          categories={categories}
-          selectedCategory={selectedCategoryId}
-          onSelectCategory={setSelectedCategoryId}
-        />
+  categories={categories}
+  selectedCategory={selectedCategoryId}
+  onSelectCategory={setSelectedCategoryId}
+  onUpdateCategory={handleUpdateCategory}
+  onDeleteCategory={handleDeleteCategory}
+/>
+        
         <CheckListAdd 
           onAddCategory={handleAddCategory} 
           categories={categories}
