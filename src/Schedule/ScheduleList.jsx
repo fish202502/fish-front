@@ -81,6 +81,9 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
                                 <li key={schedule.id} className={styles.scheduleItem}>
                                     {editingId === schedule.id ? (
                                         <>
+
+
+                                            <section className={styles.editInputContainer}>
                                             <input type="text" name="title" value={editData.title}
                                                    onChange={handleChange}/>
                                             <input type="date" name="startDate" value={editData.startDate}
@@ -92,10 +95,14 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
                                             <input type="time" name="endTime" value={editData.endTime}
                                                    onChange={handleChange}/>
 
+                                            </section>
+
                                             <section className={styles.buttonContainer}>
                                                 <button onClick={(e) => handleSave(e)}>확인</button>
                                                 <button onClick={() => setEditingId(null)}>취소</button>
                                             </section>
+
+
                                         </>
                                     ) : (
                                         <>
@@ -106,8 +113,8 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
                                             </section>
 
                                             <section>
-                                                <button onClick={() => handleDelete(schedule.id)}>❌ 삭제</button>
                                                 <button onClick={() => handleEditClick(schedule)}>✏️ 수정</button>
+                                                <button onClick={() => handleDelete(schedule.id)}>❌ 삭제</button>
                                             </section>
                                         </>
                                     )}
