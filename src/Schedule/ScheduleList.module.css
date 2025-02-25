@@ -72,4 +72,15 @@
     margin-right: 10px;
 }
 
+.invalidSchedule {
+    background-color: rgba(255, 200, 200, 0.3);
+    border-left: 4px solid #ff6b6b;
+}
+
+.warningIcon {
+    color: #e74c3c;
+    margin-right: 8px;
+    font-size: 18px;
+}
+
 
