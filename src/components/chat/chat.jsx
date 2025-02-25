@@ -8,16 +8,42 @@ function Chat() {
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
   const [mySessionId, setMySessionId] = useState("");
-  const [isFirst, setIsFist] = useState(false);
+  const [permission, setPermission] = useState(null);
   const [socket, setSocket] = useState(null);
   const [showModal, setShowModal] = useState(true);
-  const { roomCode } = useParams();
+  const { roomCode, url } = useParams();
 
   // 인풋창에 대한 ref 생성
   const inputRef = useRef(null);
   // 메시지 컨테이너를 위한 ref 생성
   const messagesEndRef = useRef(null);
 
+  // 권한 체크
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8999/api/fish/rooms/${roomCode}/${url}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        const data = await response.json();
+        console.log(data);
+        if (data.type === false) {
+          setPermission(false);
+        }else{
+          setPermission(true);
+        }
+      } catch (error) {
+        console.error("API 호출 중 오류 발생:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // ✅ 페이지 로드 시 한 번만 실행
 
   useEffect(() => {
     const ws = new WebSocket(`ws://localhost:8999/ws/chat/${roomCode}`);
@@ -109,12 +135,13 @@ function Chat() {
           {data.type === "M" ? data.sender : ""}
         </div>
         <div
-          key={index}
-          className={`${data.type === "H" 
-            ? styles.systemMessage 
-            : data.sender === name && data.sessionId === mySessionId 
+          className={`${
+            data.type === "H"
+              ? styles.systemMessage
+              : data.sender === name && data.sessionId === mySessionId
               ? `${styles.message} ${styles.myMessage}`
-              : `${styles.message} ${styles.otherMessage}`}`}
+              : `${styles.message} ${styles.otherMessage}`
+          }`}
         >
           <p>{data.type === "M" ? data.message : data.message}</p>
         </div>
@@ -127,7 +154,9 @@ function Chat() {
       {showModal && <Modal onNameSubmit={handleNameSubmit} />}
       <h1 className={styles.title}>대화방</h1>
       <div className={styles.messagesContainer}>
-        {messages.map((msg, index) => randMessage(msg, index))}
+        {messages.map((msg, index) => (
+          <div key={index}>{randMessage(msg, index)}</div>
+        ))}
         {/* 메시지 끝에 빈 div를 추가하여 스크롤이 맨 아래로 이동하도록 함 */}
         <div ref={messagesEndRef} />
       </div>
