@@ -44,6 +44,9 @@ const AddFinancial = ({ addFinancial }) => {
     if (!formData.spender.trim() || !formData.amount) {
       alert("지출자와 금액을 올바르게 입력하세요!");
       return;
+    }else if(!formData.spendAt.trim()){
+      alert("날짜 값을 입력해 주십시오");
+      return;
     }
     setModalOpen(true);
   };

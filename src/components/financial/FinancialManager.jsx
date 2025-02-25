@@ -86,7 +86,6 @@ const addFinancial = async (formData) => {
       throw new Error('데이터 새로고침에 실패했습니다');
     }
     
-    const refetchData = await refetchResponse.json();
     // 이하 코드는 그대로 유지
   } catch (error) {
     console.error('지출 추가 중 오류 발생:', error);
@@ -122,54 +121,57 @@ const addFinancial = async (formData) => {
     }
   };
 
-  // 지출 수정 함수
-  const modifyFinancial = async (id, formData) => {
-    try {
-      setIsLoading(true);
-      
-      // API 호출
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`, {
-        method: 'PUT',
-        body: formData
-      });
+ // 지출 수정 함수
+const modifyFinancial = async (id, formData) => {
+  try {
+    setIsLoading(true);
+    
+ 
+    
+    // API 호출 - Content-Type 헤더를 명시적으로 설정하지 않음
+    const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`, {
+      method: 'PUT',
+      // headers 설정을 제거하거나 비워둠 (브라우저가 자동으로 설정하도록)
+      body: formData
+    });
 
-      if (!response.ok) {
-        throw new Error('항목 수정에 실패했습니다');
-      }
+    console.log('응답 상태:', response.status);
+    
+    if (!response.ok) {
 
-      // 응답 데이터 받기
-      const result = await response.json();
-      console.log('수정된 항목 응답:', result);
-
-      // 데이터 다시 불러오기 (대안: 응답 기반 로컬 상태 업데이트)
-      const refetchResponse = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`);
-      if (!refetchResponse.ok) {
-        throw new Error('데이터 새로고침에 실패했습니다');
-      }
-      
-      const refetchData = await refetchResponse.json();
-      if (refetchData && Array.isArray(refetchData) && refetchData.length > 0 && refetchData[0].expenseItemList) {
-        const formattedData = refetchData[0].expenseItemList.map(item => ({
-          id: item.expenseItemId || item.id || Math.random().toString(),
-          spender: item.spender,
-          description: item.description,
-          amount: item.amount,
-          spendAt: item.spendAt,
-          images: item.receiptList && item.receiptList.length > 0 
-            ? item.receiptList.map(receipt => receipt.url) 
-            : []
-        }));
-        
-        setFinancials(formattedData);
-      }
-    } catch (error) {
-      console.error('지출 수정 중 오류 발생:', error);
-      setError('지출 수정에 실패했습니다: ' + error.message);
-    } finally {
-      setIsLoading(false);
+      throw new Error(`항목 수정에 실패했습니다 (${response.status})`);
     }
-  };
 
+   
+
+    // 나머지 코드는 동일...
+    const refetchResponse = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`);
+    if (!refetchResponse.ok) {
+      throw new Error('데이터 새로고침에 실패했습니다');
+    }
+    
+    const refetchData = await refetchResponse.json();
+    if (refetchData && Array.isArray(refetchData) && refetchData.length > 0 && refetchData[0].expenseItemList) {
+      const formattedData = refetchData[0].expenseItemList.map(item => ({
+        id: item.expenseItemId || item.id || Math.random().toString(),
+        spender: item.spender,
+        description: item.description,
+        amount: item.amount,
+        spendAt: item.spendAt,
+        images: item.receiptList && item.receiptList.length > 0 
+          ? item.receiptList.map(receipt => receipt.url) 
+          : []
+      }));
+      
+      setFinancials(formattedData);
+    }
+  } catch (error) {
+    console.error('지출 수정 중 오류 발생:', error);
+    setError('지출 수정에 실패했습니다: ' + error.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <>
       <div className="main-frame">
