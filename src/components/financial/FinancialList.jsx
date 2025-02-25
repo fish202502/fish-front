@@ -4,7 +4,7 @@ import FinancialDutch from "./FinancialDutch";
 import ErrorModal from "../ui/Modal/ErrorModal";
 import ImageModal from "../ui/Modal/ImageModal";
 
-const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
+const FinancialList = ({ financials, removeFinancial, modifyFinancial, hasPermission }) => {
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({
     spender: "",
@@ -36,6 +36,9 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
 
   // 수정 버튼 클릭 시
   const handleEditClick = (financial) => {
+    // 권한이 없으면 수정 불가
+    if (!hasPermission) return;
+    
     setEditingId(financial.id);
     
     // 날짜 시간 형식 변환 (백엔드 형식에 맞춤)
@@ -50,7 +53,6 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
     });
     
     // 이미지가 있는 경우 미리보기 설정
-    // URL에서 호스트 부분을 제거하고 경로만 저장
     if (financial.images && financial.images.length > 0) {
       // 기존 방식 유지 - 서버 경로만 저장
       const imagePath = financial.images[0];
@@ -93,10 +95,11 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
     setEditData({ ...editData, images: [] });
   };
 
-  // FinancialList.jsx 컴포넌트 내에서 항목 수정 시 FormData 처리 부분 수정
-
   // 저장 버튼 클릭 시
   const handleSave = () => {
+    // 권한이 없으면 저장 불가
+    if (!hasPermission) return;
+    
     // FormData 객체 생성
     const submitFormData = new FormData();
 
@@ -130,7 +133,6 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
       submitFormData.append("removeImage", "true");
     }
 
-
     modifyFinancial(editingId, submitFormData);
     setEditingId(null);
     setImageFile(null);
@@ -139,13 +141,16 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
 
   // 삭제 버튼 클릭 시 (모달 열기)
   const handleDeleteClick = (id) => {
+    // 권한이 없으면 삭제 불가
+    if (!hasPermission) return;
+    
     setSelectedId(id);
     setModalOpen(true);
   };
 
   // 삭제 확정
   const confirmDelete = () => {
-    if (selectedId !== null) {
+    if (selectedId !== null && hasPermission) {
       removeFinancial(selectedId);
       setSelectedId(null);
     }
@@ -193,6 +198,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       value={editData.spender}
                       onChange={handleChange}
                       placeholder="지출자"
+                      disabled={!hasPermission}
                     />
                     <input
                       className="listInput"
@@ -201,6 +207,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       value={editData.description}
                       onChange={handleChange}
                       placeholder="설명"
+                      disabled={!hasPermission}
                     />
                     <input
                       className="listInput"
@@ -209,6 +216,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       value={editData.amount}
                       onChange={handleChange}
                       placeholder="금액"
+                      disabled={!hasPermission}
                     />
                     <input
                       className="listInput"
@@ -216,13 +224,17 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       name="spendAt"
                       value={editData.spendAt}
                       onChange={handleChange}
+                      disabled={!hasPermission}
                     />
-                    <input
-                      className="modifiImage"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                    />
+                    
+                    {hasPermission && (
+                      <input
+                        className="modifiImage"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                      />
+                    )}
                  
                     {previewImg && (
                       <div>
@@ -239,25 +251,31 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                             e.target.onerror = null; // 무한 루프 방지
                           }}
                         />
-                        <button
-                          type="button"
-                          onClick={handleImageDelete}
-                          className="financialButton"
-                        >
-                          ❌ 삭제
-                        </button>
+                        {hasPermission && (
+                          <button
+                            type="button"
+                            onClick={handleImageDelete}
+                            className="financialButton"
+                          >
+                            ❌ 삭제
+                          </button>
+                        )}
                       </div>
                     )}
                     <div className="button-group">
-                      <button onClick={handleSave} className="financialButton">
-                        💾 저장
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="financialButton"
-                      >
-                        ❌ 취소
-                      </button>
+                      {hasPermission && (
+                        <>
+                          <button onClick={handleSave} className="financialButton">
+                            💾 저장
+                          </button>
+                          <button
+                            onClick={() => setEditingId(null)}
+                            className="financialButton"
+                          >
+                            ❌ 취소
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -280,20 +298,22 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
                       />
                     )}
 
-                    <div className="button-group">
-                      <button
-                        onClick={() => handleEditClick(financial)}
-                        className="financialButton"
-                      >
-                        ✏ 수정
-                      </button>
-                      <button
-                        onClick={() => handleDeleteClick(financial.id)}
-                        className="financialButton"
-                      >
-                        ❌ 삭제
-                      </button>
-                    </div>
+                    {hasPermission && (
+                      <div className="button-group">
+                        <button
+                          onClick={() => handleEditClick(financial)}
+                          className="financialButton"
+                        >
+                          ✏ 수정
+                        </button>
+                        <button
+                          onClick={() => handleDeleteClick(financial.id)}
+                          className="financialButton"
+                        >
+                          ❌ 삭제
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </li>

@@ -7,13 +7,48 @@ import { EXPENSE_API_URL } from "../../config/host-config";
 
 const FinancialManager = () => {
   const [financials, setFinancials] = useState([]);
+  const [permission, setPermission] = useState(null); // 권한 상태 추가
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // API 상수
-  const ROOM_CODE = "10b507dd";
-  const URL_ID = "1740453889520469b6";
+  // 라우터 파라미터 가져오기
+  const { roomCode, url } = useParams();
+
+  // 권한 체크
+// 권한 체크 useEffect 내부
+useEffect(() => {
+  const fetchPermission = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8999/api/fish/rooms/${roomCode}/${url}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const data = await response.json();
+      console.log("권한 확인 응답:", data);
+      
+      // 여기서 항상 false로 설정하여 읽기 전용 모드로 만듭니다
+      setPermission(true);
+      
+      // 원래 코드:
+      // if (data.type === false) {
+      //   setPermission(false);
+      // } else {
+      //   setPermission(true);
+      // }
+    } catch (error) {
+      console.error("권한 확인 중 오류 발생:", error);
+      setError("권한 확인에 실패했습니다.");
+      setPermission(false); // 오류 시 권한 없음으로 설정
+    }
+  };
   
+  fetchPermission();
+}, [roomCode, url]);
+
   // API에서 데이터 가져오기
   useEffect(() => {
     const fetchFinancials = async () => {
@@ -22,7 +57,7 @@ const FinancialManager = () => {
 
       try {
         // API 호출
-        const response = await fetch(`${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`);
+        const response = await fetch(`${EXPENSE_API_URL}/${roomCode}/${url}`);
 
         if (!response.ok) {
           throw new Error("네트워크 응답이 올바르지 않습니다");
@@ -71,16 +106,24 @@ const FinancialManager = () => {
       }
     };
 
-    fetchFinancials();
-  }, []);
+    if (roomCode && url) {
+      fetchFinancials();
+    }
+  }, [roomCode, url]);
 
   // 지출 추가 함수
   const addFinancial = async (formData) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("추가 권한이 없습니다.");
+      return;
+    }
+    
     try {
       setIsLoading(true);
 
       // 이미 FormData 객체가 준비되어 있으니, 다른 처리 없이 그대로 전송
-      const response = await fetch(`${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`, {
+      const response = await fetch(`${EXPENSE_API_URL}/${roomCode}/${url}`, {
         method: "POST",
         body: formData,
       });
@@ -94,7 +137,7 @@ const FinancialManager = () => {
 
       // 데이터 다시 불러오기
       const refetchResponse = await fetch(
-        `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`
+        `${EXPENSE_API_URL}/${roomCode}/${url}`
       );
       if (!refetchResponse.ok) {
         throw new Error("데이터 새로고침에 실패했습니다");
@@ -139,12 +182,18 @@ const FinancialManager = () => {
 
   // 지출 삭제 함수
   const removeFinancial = async (id) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("삭제 권한이 없습니다.");
+      return;
+    }
+    
     try {
       setIsLoading(true);
 
       // API 호출
       const response = await fetch(
-        `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}/${id}`,
+        `${EXPENSE_API_URL}/${roomCode}/${url}/${id}`,
         {
           method: "DELETE",
         }
@@ -168,12 +217,18 @@ const FinancialManager = () => {
 
   // 지출 수정 함수
   const modifyFinancial = async (id, formData) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("수정 권한이 없습니다.");
+      return;
+    }
+    
     try {
       setIsLoading(true);
 
       // API 호출
       const response = await fetch(
-        `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}/${id}`,
+        `${EXPENSE_API_URL}/${roomCode}/${url}/${id}`,
         {
           method: "PUT",
           body: formData,
@@ -191,7 +246,7 @@ const FinancialManager = () => {
 
       // 데이터 다시 불러오기
       const refetchResponse = await fetch(
-        `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`
+        `${EXPENSE_API_URL}/${roomCode}/${url}`
       );
       if (!refetchResponse.ok) {
         throw new Error("데이터 새로고침에 실패했습니다");
@@ -244,12 +299,22 @@ const FinancialManager = () => {
         {/* 오류 표시 */}
         {error && <div className="error-message">{error}</div>}
 
+        {/* 권한 없음 메시지 */}
+        {permission === false && (
+          <div className="permission-message">
+            읽기 권한만 있습니다. 항목을 추가하거나 수정할 수 없습니다.
+          </div>
+        )}
+
         <div className="frame">
-          <AddFinancial addFinancial={addFinancial} />
+          {/* 권한이 있을 때만 AddFinancial 컴포넌트 표시 */}
+          {permission && <AddFinancial addFinancial={addFinancial} />}
+          
           <FinancialList
             financials={financials}
             removeFinancial={removeFinancial}
             modifyFinancial={modifyFinancial}
+            hasPermission={permission} // 권한 정보 전달
           />
         </div>
       </div> 
