@@ -9,21 +9,13 @@ const FinancialManager = () => {
   const [financials, setFinancials] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [permission, setPermission] = useState(null);
-  const { roomCode, url } = useParams();
 
   // API 상수
   const ROOM_CODE = "10b507dd";
   const URL_ID = "1740453889520469b6";
   
-
   // API에서 데이터 가져오기
   useEffect(() => {
-    const permission = async () => {
-
-
-    };
-
     const fetchFinancials = async () => {
       setIsLoading(true);
       setError(null);
@@ -59,7 +51,14 @@ const FinancialManager = () => {
                 : [],
           }));
 
-          setFinancials(formattedData);
+          // 날짜 기준으로 정렬
+          const sortedData = formattedData.sort((a, b) => {
+            const dateA = new Date(a.spendAt);
+            const dateB = new Date(b.spendAt);
+            return dateA - dateB; // 오름차순 정렬 (과거 -> 최근)
+          });
+
+          setFinancials(sortedData);
         } else {
           console.log("데이터 형식이 예상과 다릅니다:", data);
           setError("데이터 형식이 올바르지 않습니다.");
@@ -81,7 +80,6 @@ const FinancialManager = () => {
       setIsLoading(true);
 
       // 이미 FormData 객체가 준비되어 있으니, 다른 처리 없이 그대로 전송
-      // Content-Type을 지정하지 않으면 브라우저가 자동으로 multipart/form-data로 설정
       const response = await fetch(`${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`, {
         method: "POST",
         body: formData,
@@ -91,7 +89,6 @@ const FinancialManager = () => {
         throw new Error("항목 추가에 실패했습니다");
       }
 
-      // 이하 코드는 그대로 유지
       const result = await response.json();
       console.log("추가된 항목 응답:", result);
 
@@ -102,8 +99,36 @@ const FinancialManager = () => {
       if (!refetchResponse.ok) {
         throw new Error("데이터 새로고침에 실패했습니다");
       }
+      
+      // 데이터 다시 가져와서 상태 업데이트
+      const refetchData = await refetchResponse.json();
+      if (
+        refetchData &&
+        Array.isArray(refetchData) &&
+        refetchData.length > 0 &&
+        refetchData[0].expenseItemList
+      ) {
+        const formattedData = refetchData[0].expenseItemList.map((item) => ({
+          id: item.expenseItemId || item.id || Math.random().toString(),
+          spender: item.spender,
+          description: item.description,
+          amount: item.amount,
+          spendAt: item.spendAt,
+          images:
+            item.receiptList && item.receiptList.length > 0
+              ? item.receiptList.map((receipt) => receipt.url)
+              : [],
+        }));
 
-      // 이하 코드는 그대로 유지
+        // 날짜 기준으로 정렬
+        const sortedData = formattedData.sort((a, b) => {
+          const dateA = new Date(a.spendAt);
+          const dateB = new Date(b.spendAt);
+          return dateA - dateB; // 오름차순 정렬
+        });
+
+        setFinancials(sortedData);
+      }
     } catch (error) {
       console.error("지출 추가 중 오류 발생:", error);
       setError("지출 추가에 실패했습니다: " + error.message);
@@ -111,6 +136,7 @@ const FinancialManager = () => {
       setIsLoading(false);
     }
   };
+
   // 지출 삭제 함수
   const removeFinancial = async (id) => {
     try {
@@ -128,7 +154,7 @@ const FinancialManager = () => {
         throw new Error("항목 삭제에 실패했습니다");
       }
 
-      // 로컬 상태 업데이트
+      // 로컬 상태 업데이트 - 삭제된 항목 제거
       setFinancials((prevFinancials) =>
         prevFinancials.filter((item) => item.id !== id)
       );
@@ -145,12 +171,11 @@ const FinancialManager = () => {
     try {
       setIsLoading(true);
 
-      // API 호출 - Content-Type 헤더를 명시적으로 설정하지 않음
+      // API 호출
       const response = await fetch(
         `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}/${id}`,
         {
           method: "PUT",
-          // headers 설정을 제거하거나 비워둠 (브라우저가 자동으로 설정하도록)
           body: formData,
         }
       );
@@ -158,10 +183,13 @@ const FinancialManager = () => {
       console.log("응답 상태:", response.status);
 
       if (!response.ok) {
+        // 오류 응답의 텍스트 내용을 확인
+        const errorText = await response.text();
+        console.error('서버 오류 응답:', errorText);
         throw new Error(`항목 수정에 실패했습니다 (${response.status})`);
       }
 
-      // 나머지 코드는 동일...
+      // 데이터 다시 불러오기
       const refetchResponse = await fetch(
         `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`
       );
@@ -188,7 +216,14 @@ const FinancialManager = () => {
               : [],
         }));
 
-        setFinancials(formattedData);
+        // 날짜 기준으로 정렬
+        const sortedData = formattedData.sort((a, b) => {
+          const dateA = new Date(a.spendAt);
+          const dateB = new Date(b.spendAt);
+          return dateA - dateB; // 오름차순 정렬 (과거 -> 최근)
+        });
+
+        setFinancials(sortedData);
       }
     } catch (error) {
       console.error("지출 수정 중 오류 발생:", error);
@@ -197,9 +232,9 @@ const FinancialManager = () => {
       setIsLoading(false);
     }
   };
+
   return (
     <>
-    permission ?
       <div className="main-frame">
         <h2 className="main-title">📅 여행 지출 관리</h2>
 
@@ -217,7 +252,7 @@ const FinancialManager = () => {
             modifyFinancial={modifyFinancial}
           />
         </div>
-      </div> : <p>오류</p>
+      </div> 
     </>
   );
 };
