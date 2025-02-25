@@ -2,43 +2,29 @@ import React, { useEffect, useState } from "react";
 import "./Header.css"; // CSS 파일 연결
 import {
   NavLink,
-  useLoaderData,
   useParams,
-  useRouteLoaderData,
 } from "react-router-dom";
-
 import { useNavigate } from "react-router-dom";
-
-import { usePermission } from "../../pages/MainLayout"; // 🔥 추가
+import { usePermission } from "../../pages/MainLayout";
 
 const Header = () => {
   const activeLink = ({ isActive }) => (isActive ? "active" : "");
   const [permission, setPermission] = useState(null);
-  const [showUrl, setShowUrl] = useState(false);
+  const [showModal, setShowModal] = useState(false); // 🔥 모달 상태 추가
 
   const navigate = useNavigate();
-
   const { roomCode, url } = useParams();
-
-  const menuItems = [
-    { id: "home", name: "홈" }, // 빨강
-    { id: "schedule", name: "일정" }, // 주황
-    { id: "check", name: "체크리스트" }, // 노랑
-    { id: "expense", name: "지출" }, // 초록
-    { id: "photo", name: "갤러리" }, // 파랑
-    { id: "chat", name: "채팅방" }, // 남색
-    { id: "setting", name: "설정" }, // 보라
-  ];
-
   const permissionData = usePermission();
 
   useEffect(() => {
     setPermission(permissionData.permission);
   }, []);
 
-  const handleBtn = () => {
-    navigate("/", { state: { roomCode: roomCode, url: url } });
+  const handleConfirm = () => {
+    navigate("/", { state: { roomCode, url } });
+    setShowModal(false);
   };
+
   return (
     <>
       <nav className="header-nav">
@@ -48,12 +34,20 @@ const Header = () => {
             visibility: !permission ? "hidden" : "visible",
           }}
         >
-          <button onClick={handleBtn} className="room-info-btn">
+          <button onClick={() => setShowModal(true)} className="room-info-btn">
             방정보 변경
           </button>
         </div>
         <ul className="nav-list">
-          {menuItems.map((item, index) => (
+          {[
+            { id: "home", name: "홈" },
+            { id: "schedule", name: "일정" },
+            { id: "check", name: "체크리스트" },
+            { id: "expense", name: "지출" },
+            { id: "photo", name: "갤러리" },
+            { id: "chat", name: "채팅방" },
+            { id: "setting", name: "설정" },
+          ].map((item, index) => (
             <NavLink
               key={index}
               className={`nav-item nav-item-${index} ${activeLink}`}
@@ -64,6 +58,24 @@ const Header = () => {
           ))}
         </ul>
       </nav>
+
+      {/* 🔥 모달 컴포넌트 */}
+      {showModal && (
+  <div className="modal-overlay">
+    <div className="modal-content">
+      <p>정말로 변경하시겠습니까?</p>
+      <p className="warning-text">변경 시 URL을 반드시 새로 공유해주세요</p>
+      <div className="modal-buttons">
+        <button className="confirm-btn" onClick={handleConfirm}>
+          확인
+        </button>
+        <button className="cancel-btn" onClick={() => setShowModal(false)}>
+          취소
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </>
   );
 };
