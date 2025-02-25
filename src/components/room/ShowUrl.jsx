@@ -31,7 +31,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
         <p>📖 읽기 전용 링크:</p>
         <input 
           type="text" 
-          value={`http://localhost:5173/${data.roomCode}/${data.readUrl}`} 
+          value={`http://localhost:5173/room/schedule${data.roomCode}/${data.readUrl}`} 
           readOnly 
           onClick={(e) => handleCopy(e.target.value)}  // 클릭하면 복사
         />
@@ -44,7 +44,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
         <p>✍️ 쓰기 전용 링크:</p>
         <input 
           type="text" 
-          value={`http://localhost:5173/${data.roomCode}/${data.writeUrl}`} 
+          value={`http://localhost:5173/room/schedule${data.roomCode}/${data.writeUrl}`} 
           readOnly 
           onClick={(e) => handleCopy(e.target.value)}  // 클릭하면 복사
         />
