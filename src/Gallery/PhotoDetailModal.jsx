@@ -9,7 +9,7 @@ const PhotoDetailModal = ({photo,onClose}) => {
                 <button className={styles.deleteBtn} onClick={onClose} >
                     ✖
                 </button>
-                <img src={photo.url} alt={photo.name} />
+                <img src={`http://localhost:8999${photo.url}`} alt={photo.name} />
               </div>
 
             </div>

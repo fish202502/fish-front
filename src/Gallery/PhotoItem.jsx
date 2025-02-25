@@ -7,7 +7,7 @@ const PhotoItem = ({photo,onDelete,onPhotoClick}) => {
     <>
 
       <div className={styles.image_container}>
-        <img src={photo.url} alt={photo.name} onClick={() => onPhotoClick(photo)}/>
+        <img src={`http://localhost:8999${photo.url}`} alt={photo.name} onClick={() => onPhotoClick(photo)}/>
         <button className={styles.deleteBtn} onClick={() => onDelete(photo.id)} >
           X
         </button>
