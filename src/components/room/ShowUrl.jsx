@@ -1,8 +1,29 @@
-import React from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import "./ShowUrl.css";
+import { SendModal } from "./SendModal";
+import { useNavigate } from "react-router-dom";
 
 const ShowUrl = ({ data, handlecreateBtn }) => {
-  
+  const [readUrl, setReadUrl] = useState("");
+  const [writeUrl, setWriteUrl] = useState("");
+  const [roomCode, setRoomCode] = useState("");
+  const emailInput = useRef(null);
+
+  const navigate = useNavigate();
+
+  const [confrimModal, setConfirmModal] = useState(false);
+
+  useEffect(() => {
+    setReadUrl(
+      `http://localhost:5173/room/schedule/${data.roomCode}/${data.readUrl}`
+    );
+    setWriteUrl(
+      `http://localhost:5173/room/schedule/${data.roomCode}/${data.writeUrl}`
+    );
+    setRoomCode(data.roomCode);
+    emailInput.current.focus();
+  }, []);
+
   // 링크 클릭 시 자동 복사
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -12,7 +33,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
 
   // 새 창에서 링크 열기
   const handleOpenLink = (url) => {
-    window.open(url, "_blank");
+    navigate(url)
   };
 
   // 나가기 버튼 기능
@@ -20,42 +41,86 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
     handlecreateBtn();
   };
 
+  const handleSendEmail = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8999/api/fish/rooms/mail",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({
+            email: emailInput.current.value,
+            readUrl: readUrl,
+            writeUrl: writeUrl,
+            roomCode: roomCode,
+          }),
+        }
+      );
+      const result = await response.json();
+      if(response.ok){
+        setConfirmModal(true);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const closeModal= ()=>{
+    setConfirmModal(false);
+  }
   return (
     <div className="container">
+      {confrimModal && <SendModal onModal={closeModal}/>}
       <h1 className="title">방 생성 완료!</h1>
-      <p>방 코드: <strong>{data.roomCode}</strong></p>
-
-      <p className="copy-info">📌 링크를 클릭하면 복사됩니다.</p>  {/* 안내 문구 추가 */}
-
+      <p className="copy-info">📌 링크를 클릭하면 복사됩니다.</p>{" "}
+      {/* 안내 문구 추가 */}
       <div className="url-group">
         <p>📖 읽기 전용 링크:</p>
-        <input 
-          type="text" 
-          value={`http://localhost:5173/${data.roomCode}/${data.readUrl}`} 
-          readOnly 
-          onClick={(e) => handleCopy(e.target.value)}  // 클릭하면 복사
+        <input
+          type="text"
+          value={readUrl}
+          readOnly
+          onClick={(e) => handleCopy(e.target.value)} // 클릭하면 복사
         />
-        <button className="go-btn" onClick={() => handleOpenLink(`http://localhost:5173/${data.roomCode}/${data.readUrl}`)}>
+        <button
+          className="go-btn"
+          onClick={() =>
+            handleOpenLink(
+              `/room/chat/${data.roomCode}/${data.readUrl}`
+            )
+          }
+        >
           바로가기
         </button>
       </div>
-
       <div className="url-group">
         <p>✍️ 쓰기 전용 링크:</p>
-        <input 
-          type="text" 
-          value={`http://localhost:5173/${data.roomCode}/${data.writeUrl}`} 
-          readOnly 
-          onClick={(e) => handleCopy(e.target.value)}  // 클릭하면 복사
+        <input
+          type="text"
+          value={writeUrl}
+          readOnly
+          onClick={(e) => handleCopy(e.target.value)} // 클릭하면 복사
         />
-        <button className="go-btn" onClick={() => handleOpenLink(`http://localhost:5173/${data.roomCode}/${data.writeUrl}`)}>
-          입장하기
+        <button
+          className="go-btn"
+          onClick={() =>
+            handleOpenLink(
+              `/room/chat/${data.roomCode}/${data.writeUrl}`
+            )
+          }
+        >
+          바로가기
         </button>
       </div>
-
+      <div className="email-wrapper">
+        <input type="text" className="email-input" ref={emailInput} />
+        <button className="button-send" onClick={handleSendEmail}>
+          메일로 전송하기
+        </button>
+      </div>
       <div className="button-group">
         <button className="exit-btn" onClick={handleExit}>
-          나가기
+          돌아가기
         </button>
       </div>
     </div>
