@@ -24,8 +24,8 @@ const ScheduleManager = () => {
   // 에러의 데이터를 관리하는 상태변수
   const [error,setError] = useState('');
 
-  const ROOM_CODE = '474fd815';
-  const URL_ID = '174040496771a556e4';
+  const ROOM_CODE = '558d191e';
+  const URL_ID = '174044205512126b1d';
   const API_BASE_URL = 'http://localhost:8999/api/fish/schedule';
 
 
@@ -238,9 +238,29 @@ const ScheduleManager = () => {
 
 
   const modifySchedule = async (id, updatedData) => {
-    // 날짜와 시간 형식 수정 - 초가 중복되지 않도록 주의
-    const startDateTime = `${updatedData.startDate}T${updatedData.startTime}`;
-    const endDateTime = `${updatedData.endDate}T${updatedData.endTime}`;
+    // 시간 문자열 정규화 함수
+    const normalizeTimeString = (timeStr) => {
+      // 입력이 없는 경우 처리
+      if (!timeStr) return '00:00:00';
+
+      // 콜론(:) 개수로 형식 확인
+      const colonCount = (timeStr.match(/:/g) || []).length;
+
+      if (colonCount === 0) {
+        // 형식이 없는 경우 (예: "1430")
+        return `${timeStr.substring(0, 2)}:${timeStr.substring(2, 4)}:00`;
+      } else if (colonCount === 1) {
+        // HH:MM 형식
+        return `${timeStr}:00`;
+      } else {
+        // 이미 초가 있는 경우 (HH:MM:SS)
+        return timeStr;
+      }
+    };
+
+    // 날짜와 시간을 합쳐 ISO 형식으로 변환 (정규화 적용)
+    const startDateTime = `${updatedData.startDate}T${normalizeTimeString(updatedData.startTime)}`;
+    const endDateTime = `${updatedData.endDate}T${normalizeTimeString(updatedData.endTime)}`;
 
     if (endDateTime < startDateTime) {
       handleError("입력 오류", "일정 종료시간은 시작시간보다 나중이어야 합니다.");
@@ -252,8 +272,8 @@ const ScheduleManager = () => {
       scheduleId: id,
       title: updatedData.title,
       content: "",
-      startTime: startDateTime,  // 이미 정확한 형식인지 확인
-      endTime: endDateTime       // 이미 정확한 형식인지 확인
+      startTime: startDateTime,
+      endTime: endDateTime
     };
 
     console.log('수정 요청 본문:', requestBody);
@@ -271,6 +291,7 @@ const ScheduleManager = () => {
       console.log('수정 응답:', data);
 
       if (response.ok) {
+        // 성공 시 전체 일정 다시 불러오기
         await fetchScheduleData();
         return true;
       } else {
