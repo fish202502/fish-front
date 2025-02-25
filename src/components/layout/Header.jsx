@@ -1,24 +1,32 @@
 import React from "react";
 import "./Header.css"; // CSS 파일 연결
+import { NavLink, useParams } from "react-router-dom";
 
 const Header = () => {
-  const menuItems = [
-    { name: "홈", color: "#ff0000" },   // 빨강
-    { name: "일정", color: "#F6D6D6" }, // 주황
-    { name: "체크리스트", color: "#7BD3EA" }, // 노랑
-    { name: "지출", color: "#A1EEBD" }, // 초록
-    { name: "갤러리", color: "#F6F7C4" }, // 파랑
-    { name: "메모", color: "#4b0082" }, // 남색
-    { name: "설정", color: "#9400d3" }, // 보라
-  ];
+
+  const activeLink = ({isActive}) => isActive ? "active" : '';
+
+  const {roomCode,url} =useParams();
+    const menuItems = [
+      { id:"home" ,name: "홈"},   // 빨강
+      { id:"schedule" ,name: "일정"}, // 주황
+      { id:"check" ,name: "체크리스트" }, // 노랑
+      { id:"expense" ,name: "지출" }, // 초록
+      { id:"photo" ,name: "갤러리" }, // 파랑
+      { id:"chat" ,name: "채팅방"}, // 남색
+      { id:"setting" ,name: "설정" }, // 보라
+    ];
 
   return (
     <nav className="header-nav">
       <ul className="nav-list">
         {menuItems.map((item, index) => (
-          <li key={index} className="nav-item" style={{ backgroundColor: item.color }}>
+          <NavLink key={index} 
+          className={`nav-item nav-item-${index} ${activeLink}`}
+          to={`/${item.id}/${roomCode}/${url}`}
+          >
             {item.name}
-          </li>
+          </NavLink>
         ))}
       </ul>
     </nav>

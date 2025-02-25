@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-// import Chat from "../chat/chat";
+import Chat from "../chat/chat";
 import RootLayout from "../../pages/RootLayout";
 import CreateRoom from "../room/CreateRoom";
 import FinancialManager from "../financial/FinancialManager";
@@ -19,10 +19,10 @@ export const router = createBrowserRouter([
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
       },
-      // {
-      //   path: "chat/:roomCode",
-      //   element: <Chat />,
-      // },
+      {
+        path: "chat/:roomCode/:url",
+        element: <Chat />,
+      },
     ],
   },
 ]);
