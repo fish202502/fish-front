@@ -54,6 +54,7 @@ const GalleryManager = () => {
         url: photo.url,
         uploadedAt: new Date().toISOString().split('T')[0]
       }));
+      console.log(transformedPhotos);
 
       setPhotos(transformedPhotos);
     } catch (error) {
@@ -88,8 +89,10 @@ const GalleryManager = () => {
         url: data.url,
         uploadedAt: new Date().toISOString().split('T')[0]
       };
+      console.log(newPhoto)
 
-      setPhotos(prevPhotos => [...prevPhotos, newPhoto]);
+      // 새로운 사진을 추가한 후 목록을 다시 가져옵니다
+      await fetchPhotos();
     } catch (error) {
       console.error('업로드 사진 에러:', error);
       throw error;
@@ -115,8 +118,8 @@ const GalleryManager = () => {
 
         if (!response.ok) throw new Error('사진삭제에 실패했습니다');
 
-        // 삭제된 이미지를 상태에서 제거합니다
-        setPhotos(prevPhotos => prevPhotos.filter(photo => photo.id !== deletePhoto));
+        // 백엔드와 상태 동기화를 위해 목록을 다시 가져옵니다
+        await fetchPhotos();
       } catch (error) {
         console.error('사진 삭제 에러:', error);
       } finally {
