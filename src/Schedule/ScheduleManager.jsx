@@ -142,18 +142,16 @@ const ScheduleManager = () => {
       return false;
     }
 
-    // 종료 시간 필수 입력 체크
-    if (!endTime) {
-      handleError("입력 오류", "종료 시간은 필수로 입력해야 합니다.");
-      return false;
-    }
+
 
     // 종료 날짜를 선택하지 않으면 시작 날짜로 자동 입력
     const finalEndDate = endDate || startDate;
+    // 종료 시간을 입력하지 않으면 시작 시간으로 자동 입력
+    const finalEndTime = endTime || startTime;
 
     // 날짜와 시간을 합쳐 ISO 형식으로 변환
     const startDateTime = `${startDate}T${startTime}:00`;
-    const endDateTime = `${finalEndDate}T${endTime}:00`;
+    const endDateTime = `${finalEndDate}T${finalEndTime}:00`;
 
     if(endDateTime < startDateTime) {
       handleError("입력오류", "일정종료시간은 시작시간보다 나중이어야 합니다.")
