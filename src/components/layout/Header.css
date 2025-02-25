@@ -1,31 +1,81 @@
 .header-nav {
-  width: 100%;
+  height: 100px;
+  width: 66.66%;
+  margin: 20px 0 20px auto; /* 오른쪽 끝 정렬 */
   background-color: #f8f5f5;
   padding: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  padding-right: 20px; /* 오른쪽 여백 */
 }
 
 .nav-list {
   display: flex;
-  justify-content: right;
   align-items: center;
   padding: 0;
   list-style: none;
 }
 
 .nav-item {
-  padding: 15px 40px;
-  margin-left: -10px;
+  width: 120px;
+  height: 30px; /* 기본 높이 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 18px;
   font-weight: bold;
-  color: rgb(255, 255, 255);
-  text-align: center;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.5s ease;
+  color: white;
+  margin: -7px;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, height 0.3s ease;
+  text-decoration: none;
+
+  /* 기존 사다리꼴 모양 유지 */
+  clip-path: polygon(10% 10%, 90% 10%, 100% 100%, 0% 100%);
+  border-top-left-radius: 33px; /* 왼쪽 위 모서리 둥글게 */
+  border-top-right-radius: 33px; /* 오른쪽 위 모서리 둥글게 */
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
-/* 마우스를 올리면 위로 살짝 떠오르는 효과 */
-.nav-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* 떠오를 때 그림자 추가 */
+/* 각 메뉴 색상 지정 */
+.nav-item-0 { background-color: #ee6565; }  /* 홈 */
+.nav-item-1 { background-color: #F6D6D6; }  /* 일정 */
+.nav-item-2 { background-color: #7BD3EA; }  /* 체크리스트 */
+.nav-item-3 { background-color: #91dbac; }  /* 지출 */
+.nav-item-4 { background-color: #bcbd7b; }  /* 갤러리 */
+.nav-item-5 { background-color: #b36ae7; }  /* 메모 */
+.nav-item-6 { background-color: #a729dd; }  /* 설정 */
+
+/* 호버 또는 활성화 상태일 때 위로 올라가면서 크기 증가 */
+.nav-item:hover,
+.nav-item.active {
+  height: 50px;
+  transform: translateY(-10px); /* 위로 살짝 올라감 */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .header-nav {
+    width: 90%;
+    padding-right: 0;
+    justify-content: center;
+  }
+
+  .nav-list {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-item {
+    width: 100px;
+    height: 45px;
+    font-size: 16px;
+  }
 }
