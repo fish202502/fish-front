@@ -32,8 +32,8 @@ const GalleryManager = () => {
   const [loading, setLoading] = useState(false);
 
   // API 상수
-  const ROOM_CODE = '7340c7bb';
-  const URL_ID = '174037426298d6e418';
+  const ROOM_CODE = '10b507dd';
+  const URL_ID = '1740453889520469b6';
   const API_BASE_URL = 'http://localhost:8999/api/fish/photo';
 
   // 컴포넌트가 처음 마운트될 때 이미지 목록을 가져옵니다
