@@ -245,10 +245,7 @@ const CheckListManager = () => {
         throw new Error('삭제할 카테고리를 찾을 수 없습니다.');
       }
       
-      // 삭제 전 확인
-      if (!window.confirm(`"${categoryToDelete.name}" 카테고리를 삭제하시겠습니까? 이 카테고리의 모든 항목이 함께 삭제됩니다.`)) {
-        return; // 사용자가 취소한 경우
-      }
+    
       
       // 올바른 API 경로 사용
       const deleteUrl = `http://localhost:8999/api/fish/check/category/${roomCode}/${url}/${categoryId}`;
