@@ -18,7 +18,6 @@ function Chat() {
   // 메시지 컨테이너를 위한 ref 생성
   const messagesEndRef = useRef(null);
 
-  console.log(roomCode);
 
   useEffect(() => {
     const ws = new WebSocket(`ws://localhost:8999/ws/chat/${roomCode}`);
@@ -111,11 +110,11 @@ function Chat() {
         </div>
         <div
           key={index}
-          className={`${styles.message} ${
-            data.sender === name && data.sessionId === mySessionId
-              ? styles.myMessage
-              : styles.otherMessage
-          }`}
+          className={`${data.type === "H" 
+            ? styles.systemMessage 
+            : data.sender === name && data.sessionId === mySessionId 
+              ? `${styles.message} ${styles.myMessage}`
+              : `${styles.message} ${styles.otherMessage}`}`}
         >
           <p>{data.type === "M" ? data.message : data.message}</p>
         </div>
