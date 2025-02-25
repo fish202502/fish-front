@@ -23,7 +23,7 @@ const Header = () => {
         {menuItems.map((item, index) => (
           <NavLink key={index} 
           className={`nav-item nav-item-${index} ${activeLink}`}
-          to={`/${item.id}/${roomCode}/${url}`}
+          to={`/room/${item.id}/${roomCode}/${url}`}
           >
             {item.name}
           </NavLink>
