@@ -9,8 +9,8 @@ const FinancialManager = () => {
   const [error, setError] = useState(null);
 
   // API 상수
-  const ROOM_CODE = 'd8df09f5';
-  const URL_ID = '1739944073733eb7c6';
+  const ROOM_CODE = '10b507dd';
+  const URL_ID = '1740453889520469b6';
   const API_BASE_URL = 'http://localhost:8999/api/fish/expense';
 
   // API에서 데이터 가져오기

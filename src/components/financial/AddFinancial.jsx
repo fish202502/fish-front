@@ -123,7 +123,6 @@ const AddFinancial = ({ addFinancial }) => {
           type="file"
           name="images"
           accept="image/*" 
-          value={formData.Images}
           onChange={handlePreview}
           className="file-upload-input" 
         />

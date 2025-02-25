@@ -24,7 +24,7 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial }) => {
 
   // 이미지 클릭 핸들러
   const handleImageClick = (imageUrl) => {
-    setSelectedImage(imageUrl);
+    setSelectedImage("http://localhost:8999"+imageUrl);
     setImageModalOpen(true);
   };
 
@@ -202,6 +202,7 @@ const handleSave = () => {
                     />
 
                     <input 
+                      className="modifiImage"
                       type="file" 
                       accept="image/*" 
                       onChange={handleImageUpload} 
@@ -210,7 +211,7 @@ const handleSave = () => {
                     {previewImg && (
                       <div>
                         <img 
-                          src={previewImg} 
+                          src={`http://localhost:8999${previewImg}`} 
                           alt="미리보기" 
                           className="preview-image" 
                         />
@@ -248,7 +249,7 @@ const handleSave = () => {
                     
                     {financial.images && financial.images.length > 0 && (
                       <img 
-                        src={financial.images[0]} 
+                        src={"http://localhost:8999"+financial.images[0]} 
                         alt="지출 이미지" 
                         className="list-image"
                         onClick={() => handleImageClick(financial.images[0])}
