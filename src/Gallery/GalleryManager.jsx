@@ -32,8 +32,8 @@ const GalleryManager = () => {
   const [loading, setLoading] = useState(false);
 
   // API 상수
-  const ROOM_CODE = '10b507dd';
-  const URL_ID = '1740453889520469b6';
+  const ROOM_CODE = '7340c7bb';
+  const URL_ID = '174037426298d6e418';
   const API_BASE_URL = 'http://localhost:8999/api/fish/photo';
 
   // 컴포넌트가 처음 마운트될 때 이미지 목록을 가져옵니다
@@ -48,12 +48,13 @@ const GalleryManager = () => {
       if (!response.ok) throw new Error('사진을 조회하는데 실패했습니다.');
 
       const data = await response.json();
-      // 서버에서 받은 데이터를 현재 구조에 맞게 변환합니다
-      const transformedPhotos = data.map(photo => ({
-        id: photo.imageId,
-        url: photo.url,
-        uploadedAt: new Date().toISOString().split('T')[0]
-      }));
+      // 서버에서 받은 데이터를 현재 구조에 맞게 변환하고 최신 사진을 뒤로 정렬합니다
+      const transformedPhotos = data
+        .map(photo => ({
+          id: photo.imageId,
+          url: photo.url,
+          uploadedAt: new Date().toISOString()
+        }));
       console.log(transformedPhotos);
 
       setPhotos(transformedPhotos);
@@ -83,13 +84,12 @@ const GalleryManager = () => {
       const data = await response.json();
       console.log('Upload response:', data);
 
-      // 새 이미지를 상태에 추가합니다
+      // 새로운 사진을 배열의 맨 앞에 추가
       const newPhoto = {
         id: data.imageId,
         url: data.url,
-        uploadedAt: new Date().toISOString().split('T')[0]
+        uploadedAt: new Date().toISOString()
       };
-      console.log(newPhoto)
 
       // 새로운 사진을 추가한 후 목록을 다시 가져옵니다
       await fetchPhotos();

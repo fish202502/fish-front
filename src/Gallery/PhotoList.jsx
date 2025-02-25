@@ -11,7 +11,7 @@ const PhotoList = ({photos, removePhoto, onPhotoClick }) => {
         ): (
           <div className={styles.photoList}>
             {photos.map((photo) => (
-          <PhotoItem key={photo.id.toString()} photo={photo} onDelete={() => removePhoto(photo.id)} onPhotoClick ={onPhotoClick}/>
+          <PhotoItem key={photo.id} photo={photo} onDelete={() => removePhoto(photo.id)} onPhotoClick ={onPhotoClick}/>
         ))}
       </div>
 
