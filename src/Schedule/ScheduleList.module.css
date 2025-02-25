@@ -24,6 +24,7 @@
     padding: 10px;
     border-radius: 8px;
     margin-top: 15px;
+    margin-bottom: 20px;
 }
 
 /* 일정 항목 스타일 */
@@ -67,6 +68,8 @@
     font-size: 20px;
 }
 
-.buttonContainer{
-    width: 20%;
+.editInputContainer input {
+    margin-right: 10px;
 }
+
+
