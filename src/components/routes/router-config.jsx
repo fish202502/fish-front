@@ -5,6 +5,8 @@ import CreateRoom from "../room/CreateRoom";
 import FinancialManager from "../financial/FinancialManager";
 import { BsChatHeart } from "react-icons/bs";
 import MainNavigation from "../../pages/MainLayout";
+import CheckList from "../checkList/CheckList";
+import CheckListManager from "../checkList/CheckListManager";
 
 // 라우터 설정
 export const router = createBrowserRouter([
@@ -20,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
+      },
+      {
+        path: "check/:roomCode/:url",
+        element: <CheckListManager />,
       },
       {
         path: "chat/:roomCode/:url",
