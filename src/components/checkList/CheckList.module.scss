@@ -1,36 +1,55 @@
+.emptyMessage{
+  display: flex;
+  justify-content: center;
+  font-size: 20px;
+  margin: auto 0;
+  color: gray;
+}
+
 .checklistContainer {
   background: #ffffff;
+  width: 95%;
+  height: 95vh;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-
+  min-height: 100px; /* 최소 높이 설정 */
+  display: flex;
+  flex-direction: column;
 }
+
+
 
 .formContainer {
   display: flex;
   gap: 10px;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .inputField {
   padding: 10px;
-  border: 1px solid #ddd;
   border-radius: 5px;
   flex: 1;
+  
+  &:focus {
+    outline: none;
+    border-color: #5EC2DB;
+    box-shadow: 0 0 0 3px rgba(123, 211, 234, 0.2);
+  }
 }
 
 .addButton {
-  background-color: #007bff;
+  background-color: #7BD3EA;
   color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #5EC2DB;
   }
 
   &:disabled {
@@ -42,31 +61,81 @@
 .listContainer {
   margin-top: 10px;
 }
-.modifyButton{
-  color: #fd131391;
-  font-weight: bold;
-  background: greenyellow;
-  border-radius: 20px;
-  width: 70px;
-  height: 40px;
-  
-}
 
 .listItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f9f9f9;
-  padding: 10px;
+  background: #f8fdfe;
+  padding: 12px;
   border-radius: 5px;
-  transition: background 0.3s ease;
+  margin-bottom: 8px;
+  border: 1px solid #e8f7fb;
 
+  div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+}
+
+.checkListCheckBox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #7BD3EA;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:checked {
+    background-color: #7BD3EA;
+    border-color: #7BD3EA;
+  }
+}
+
+.editButton, .deleteButton, .modifyButton {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editButton {
+  background-color: #7BD3EA;
+  color: white;
+  
   &:hover {
-    background: #f1f1f1;
+    background-color: #5EC2DB;
+  }
+}
+
+.deleteButton {
+  background-color: #ff7675;
+  color: white;
+  
+  &:hover {
+    background-color: #e74c3c;
+  }
+}
+
+.modifyButton {
+  background-color: #A1EEBD;
+  color: #2c3e50;
+  
+  &:hover {
+    background-color: #8EE5A8;
   }
 }
 
 .completed {
   text-decoration: line-through;
-  opacity: 0.6;
+  opacity: 0.7;
 }

@@ -1,14 +1,101 @@
 .beforeComment{
     font-size: 25px;
+    color: #aaaaaa;
+}
+.scheduleDateContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.05);  /* 매우 연한 테두리 */
+    background: linear-gradient(
+            to bottom,
+            white,
+            rgba(255, 255, 255, 0.98)
+    );
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    padding: 25px;
+    width: 60%;
+}
+.dateContainer{
+    display: flex;
+    flex-direction: column;
 }
 label{
     font-size: 20px;
+    color: #aaaaaa;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
-input{
-    margin-left: 5px;
-    width: 120px;
+.dateInput{
+    width: 570px;
     height: 25px;
 }
-.endDate{
+input:focus {
+    border-color: #E48F8F;
 
 }
+
+
+.confirmBtn{
+    display: inline-block;
+    background-color: #F6D6D6;
+    color: white;
+    border: none;
+    width: 590px;
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+
+}
+
+.confirmBtn:hover {
+    background-color: #eab0b0;
+    transform: scale(1.05);
+}
+
+.fixBtn{
+    display: inline-block;
+    background-color: #eeb1b1;
+    color: white;
+    border: none;
+    width: 70px;
+    height: 40px;
+    margin-right: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+
+}
+
+.fixBtn:hover {
+    background-color: #e07878;
+
+}
+
+.fixContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(0, 0, 0, 0.05);  /* 매우 연한 테두리 */
+    background: linear-gradient(
+            to bottom,
+            white,
+            rgba(255, 255, 255, 0.98)
+    );
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    padding: 0 25px;
+    width: 60%;
+}
+

@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
-import Chat from "../chat/chat";
+// import Chat from "../chat/chat";
 import RootLayout from "../../pages/RootLayout";
+import CreateRoom from "../room/CreateRoom";
+import FinancialManager from "../financial/FinancialManager";
 
 // 라우터 설정
 export const router = createBrowserRouter([
@@ -10,9 +12,17 @@ export const router = createBrowserRouter([
     // errorElement: <ErrorPage />,
     children: [
       {
-        path: "chat/:roomCode",
-        element: <Chat />,
+        path: "new",
+        element: <CreateRoom />,
       },
+      {
+        path: "expense/:roomCode/:url",
+        element: <FinancialManager />,
+      },
+      // {
+      //   path: "chat/:roomCode",
+      //   element: <Chat />,
+      // },
     ],
   },
 ]);

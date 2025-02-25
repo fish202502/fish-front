@@ -1,30 +1,27 @@
-import React, { useState } from "react";
-import styles from "./Header.module.scss";
+import React from "react";
+import "./Header.css"; // CSS 파일 연결
 
 const Header = () => {
-  const [select, SetSelected] = useState("체크리스트");
-  const handleChangeSelect = (e) => {
-    SetSelected(e.target.value);
-    console.log(e.target.value);
-  };
+  const menuItems = [
+    { name: "홈", color: "#ff0000" },   // 빨강
+    { name: "일정", color: "#F6D6D6" }, // 주황
+    { name: "체크리스트", color: "#7BD3EA" }, // 노랑
+    { name: "지출", color: "#A1EEBD" }, // 초록
+    { name: "갤러리", color: "#F6F7C4" }, // 파랑
+    { name: "메모", color: "#4b0082" }, // 남색
+    { name: "설정", color: "#9400d3" }, // 보라
+  ];
 
   return (
-    <>
-      <div className={styles.Header}>
-        <div>Header</div> 
-        <div className={styles.MainHeaderTitleContainer}>
-          <ul className={styles.MainHeaderTitle}>
-            <li>읽기 권한</li>
-            <li>수정 권한</li>
-          </ul>
-          <select onChange={handleChangeSelect}>
-            <option value="일정">일정계획</option>
-            <option value="지출">지출관리</option>
-            <option value="체크리스트">체크리스트</option>
-          </select>
-        </div> 
-      </div>
-    </>
+    <nav className="header-nav">
+      <ul className="nav-list">
+        {menuItems.map((item, index) => (
+          <li key={index} className="nav-item" style={{ backgroundColor: item.color }}>
+            {item.name}
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 

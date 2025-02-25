@@ -1,9 +1,24 @@
-.photo_list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+.photoListContainer {
+    background: white;
+    margin: 10px 20px;
+    border-radius: 20px;
+    max-width: 100%;
+    padding: 20px;
+}
+
+.photoList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     justify-content: center;
     padding: 20px;
-
 }
+
+.photoListContainer p {
+    text-align: center;
+    font-size: 20px;
+    color: #888888;
+}
+
+
 

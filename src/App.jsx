@@ -1,7 +1,7 @@
 import GalleryManager from "./Gallery/GalleryManager.jsx";
 
 import ScheduleManager from "./Schedule/ScheduleManager";
-import Chat from "./components/chat/chat.jsx";
+// import Chat from "./components/chat/chat.jsx";
 import CheckListAdd from "./components/checkList/CheckListAdd.jsx";
 import CheckListManager from "./components/checkList/CheckListManager.jsx";
 import FinancialManager from "./components/financial/FinancialManager";

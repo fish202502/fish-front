@@ -33,10 +33,11 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
   }
 
 
-  const handleSubmit = e => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    const isSuccess= addSchedule(enteredTitle,enteredStartDate,enteredStartTime,enteredEndDate,enteredEndTime);
+    const isSuccess= await addSchedule(
+        enteredTitle,enteredStartDate,enteredStartTime,enteredEndDate,enteredEndTime);
 
     if(isSuccess){
 
@@ -46,32 +47,75 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
     setEnteredEndDate('');
     setEnteredEndTime('');
 
-    };
-
-
-
-
+    }
 
   }
 
 
   return (
-    <>
+      <>
+        <form className={styles.addScheduleContainer} onSubmit={handleSubmit}>
+          <p> Add New Schedule</p>
+          <div className={styles.titleContainer}>
+            <label className={styles.titleLabel}>Title</label>
+            <input
+                type="text"
+                className={styles.scheduleTitle}
+                onChange={handleTitleInput}
+                value={enteredTitle}
+            />
+          </div>
 
-      <form className={styles.addScheduleContainer} onSubmit={handleSubmit}>
-        <label>일정 제목: </label>
-        <input type="text" placeholder="일정 제목" onInput={handleTitleInput} value={enteredTitle}/>
-        <label> 시작날짜: </label>
-        <input type="date" onChange={handleStartDateInput} value={enteredStartDate} min={tripStartDate} max={tripEndDate}/>
-        <label> 시작시간: </label>
-        <input type="time" onChange={handleStartTimeInput} value={enteredStartTime}/>
-        <label> 종료날짜: </label>
-        <input type="date" onChange={handleEndDateInput} value={enteredEndDate} min={enteredStartDate} max={tripEndDate}/>
-        <label> 종료시간: </label>
-        <input type="time" onChange={handleEndTimeInput} value={enteredEndTime}/>
-        <button type="submit">➕ 추가</button>
-      </form>
-    </>
+          {/* 시작 날짜 & 시작 시간 */}
+          <div className={styles.formGroup}>
+            <div className={styles.dateInputContainer}>
+              <label>시작 날짜</label>
+              <input
+                  type="date"
+                  onChange={handleStartDateInput}
+                  value={enteredStartDate}
+                  min={tripStartDate}
+                  max={tripEndDate}
+              />
+            </div>
+            <div className={styles.dateInputContainer}>
+              <label>시작 시간</label>
+              <input
+                  type="time"
+                  onChange={handleStartTimeInput}
+                  value={enteredStartTime}
+              />
+            </div>
+          </div>
+
+          {/* 종료 날짜 & 종료 시간 */}
+          <div className={styles.formGroup}>
+            <div className={styles.dateInputContainer}>
+              <label>종료 날짜</label>
+              <input
+                  type="date"
+                  onChange={handleEndDateInput}
+                  value={enteredEndDate}
+                  min={enteredStartDate}
+                  max={tripEndDate}
+              />
+            </div>
+            <div className={styles.dateInputContainer}>
+              <label>종료 시간</label>
+              <input
+                  type="time"
+                  onChange={handleEndTimeInput}
+                  value={enteredEndTime}
+              />
+            </div>
+          </div>
+
+          {/* 버튼 */}
+          <div className={styles.BtnContainer}>
+            <button type="submit" className={styles.submitBtn}>추가</button>
+          </div>
+        </form>
+      </>
   );
 };
 

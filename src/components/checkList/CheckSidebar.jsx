@@ -8,8 +8,8 @@ const CheckSidebar = ({ categories, selectedCategory, onSelectCategory }) => {
         {categories.map(category => (
           <li
             key={category.id}
-            onClick={() => onSelectCategory(category.name)}
-            className={`${styles.categoryli} ${selectedCategory === category.name ? styles.selected : ''}`}
+            onClick={() => onSelectCategory(category.id)}
+            className={`${styles.categoryli} ${selectedCategory === category.id ? styles.selected : ''}`}
           >
             {category.name}
           </li>

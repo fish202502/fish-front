@@ -52,20 +52,26 @@ const AddFinancial = ({ addFinancial }) => {
     // FormData 객체 생성
     const submitFormData = new FormData();
     
-    // 데이터 추가
-    submitFormData.append('spender', formData.spender);
-    submitFormData.append('amount', formData.amount);
-    submitFormData.append('description', formData.description);
-    submitFormData.append('spendAt', formData.spendAt);
+    // JSON 데이터 생성
+    const expenseData = {
+      spender: formData.spender,
+      description: formData.description,
+      amount: Number(formData.amount),
+      spendAt: formData.spendAt
+    };
+    
+    // JSON 데이터를 Blob으로 변환하여 application/json 타입으로 추가
+    const jsonBlob = new Blob([JSON.stringify(expenseData)], { type: 'application/json' });
+    submitFormData.append('expense', jsonBlob);
     
     // 이미지가 있는 경우 추가
     if (imageFile) {
       submitFormData.append('images', imageFile);
     }
-
+  
     // 데이터 전송
     addFinancial(submitFormData);
-
+    
     // 폼 초기화
     setFormData({
       spender: "",
@@ -80,8 +86,9 @@ const AddFinancial = ({ addFinancial }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form className="addForm"onSubmit={handleSubmit}>
         <input
+          className="addInput"
           type="text"
           name="spender"
           placeholder="지출자 이름"
@@ -89,6 +96,7 @@ const AddFinancial = ({ addFinancial }) => {
           onChange={handleChange}
         />
         <input
+        className="addInput"
           type="text"
           name="description"
           placeholder="지출 내용"
@@ -96,6 +104,7 @@ const AddFinancial = ({ addFinancial }) => {
           onChange={handleChange}
         />
         <input
+        className="addInput"
           type="number"
           name="amount"
           placeholder="금액"
@@ -103,13 +112,21 @@ const AddFinancial = ({ addFinancial }) => {
           onChange={handleChange}
         />
         <input
+        className="addInput"
           type="datetime-local"
           name="spendAt"
           value={formData.spendAt}
           onChange={handleChange}
         />
 
-        <input type="file" accept="image/*" onChange={handlePreview} />
+        <input 
+          type="file"
+          name="images"
+          accept="image/*" 
+          value={formData.Images}
+          onChange={handlePreview}
+          className="file-upload-input" 
+        />
 
         {previewImg && (
           <div>

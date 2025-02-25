@@ -15,7 +15,8 @@ const CheckListSearch = ({ categories, onSelectCategory }) => {
       );
       
       if (foundCategory) {
-        onSelectCategory(foundCategory.name);
+        // 카테고리 ID 전달 (이름 대신)
+        onSelectCategory(foundCategory.id);
         setSearchTerm("");
         setNotFound(false);
       } else {

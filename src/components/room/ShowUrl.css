@@ -1,0 +1,94 @@
+/* 전체 컨테이너 */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #eef2f3;
+  padding: 20px;
+}
+
+/* 제목 스타일 */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* 안내 문구 스타일 */
+.copy-info {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+/* 각 URL 그룹 스타일 */
+.url-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.url-group p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* 링크 스타일 */
+input {
+  width: 300px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  text-align: center;
+  cursor: pointer;  /* 클릭 가능하게 */
+  transition: background-color 0.3s ease;
+}
+
+/* 링크 클릭 시 배경 색 변경 */
+input:active,
+input:focus {
+  background-color: #d7eafc;
+  outline: none;
+}
+
+/* 바로가기 / 입장하기 버튼 */
+.go-btn {
+  margin-left: 10px;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.go-btn:hover {
+  background-color: #219150;
+}
+
+/* 나가기 버튼 */
+.exit-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.exit-btn:hover {
+  background-color: #c0392b;
+}
