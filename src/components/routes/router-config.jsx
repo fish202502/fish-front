@@ -5,6 +5,7 @@ import CreateRoom from "../room/CreateRoom";
 import FinancialManager from "../financial/FinancialManager";
 import { BsChatHeart } from "react-icons/bs";
 import MainNavigation from "../../pages/MainLayout";
+import { permissionCheckLoader } from "../../config/permission-config";
 
 // 라우터 설정
 export const router = createBrowserRouter([
@@ -16,6 +17,8 @@ export const router = createBrowserRouter([
   {
     path: "/room",
     element: <MainNavigation />,
+    loader: permissionCheckLoader,
+    id:"room",
     children: [
       {
         path: "expense/:roomCode/:url",

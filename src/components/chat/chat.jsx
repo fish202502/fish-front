@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, use } from "react";
 import Modal from "./Modal"; // 모달 컴포넌트 임포트
 import styles from "./Chat.module.css"; // CSS 모듈 임포트
+import { usePermission } from "../../pages/MainLayout"; // 🔥 추가
 import { data, useParams } from "react-router-dom";
 
 function Chat() {
@@ -13,6 +14,8 @@ function Chat() {
   const [showModal, setShowModal] = useState(true);
   const { roomCode, url } = useParams();
 
+  const permissionData = usePermission();
+
   // 인풋창에 대한 ref 생성
   const inputRef = useRef(null);
   // 메시지 컨테이너를 위한 ref 생성
@@ -20,33 +23,17 @@ function Chat() {
 
   // 권한 체크
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8999/api/fish/rooms/${roomCode}/${url}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-
-        const data = await response.json();
-        console.log(data);
-        if (data.type === false) {
-          setPermission(false);
-          setName("permission-false");
-        }else{
-          setPermission(true);
-        }
-      } catch (error) {
-        console.error("API 호출 중 오류 발생:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // ✅ 페이지 로드 시 한 번만 실행
+    setPermission(permissionData.permission);
+    
+    if (permissionData.permission === false) {
+      setName("permission-false");
+    }
+  }, []); 
 
   useEffect(() => {
+
+    console.log(roomCode);
+    
     const ws = new WebSocket(`ws://localhost:8999/ws/chat/${roomCode}`);
     setSocket(ws);
 
@@ -152,7 +139,7 @@ function Chat() {
 
   return (
     <div className={styles.chatContainer}>
-      {(showModal&& permission) && <Modal onNameSubmit={handleNameSubmit} />}
+      {showModal && permission && <Modal onNameSubmit={handleNameSubmit} />}
       <h1 className={styles.title}>대화방</h1>
       <div className={styles.messagesContainer}>
         {messages.map((msg, index) => (
@@ -165,16 +152,18 @@ function Chat() {
         <input
           ref={inputRef} // 인풋에 ref 연결
           type="text"
-          disabled={!permission} 
+          disabled={!permission}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="메세지를 입력하세요."
           className={styles.input}
           onKeyDown={handleKeyDown}
         />
-        <button 
-        disabled={!permission} 
-        onClick={sendMessage} className={styles.sendButton}>
+        <button
+          disabled={!permission}
+          onClick={sendMessage}
+          className={styles.sendButton}
+        >
           보내기
         </button>
       </div>
