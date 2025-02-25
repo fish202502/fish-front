@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
 }
 
 .modalContent {
@@ -35,7 +36,7 @@
 .modalSubmitButton {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #4A90E2;
+  background-color: #4a90e2;
   color: white;
   border: none;
   border-radius: 5px;
