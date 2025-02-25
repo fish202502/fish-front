@@ -3,7 +3,7 @@ import AddFinancial from "./AddFinancial";
 import FinancialList from "./FinancialList";
 import "./FinancialManager.css";
 import { useParams } from "react-router-dom";
-
+import { EXPENSE_API_URL } from "../../config/host-config";
 
 const FinancialManager = () => {
   const [financials, setFinancials] = useState([]);
@@ -15,7 +15,7 @@ const FinancialManager = () => {
   // API 상수
   const ROOM_CODE = "10b507dd";
   const URL_ID = "1740453889520469b6";
-  const API_BASE_URL = "http://localhost:8999/api/fish/expense";
+  
 
   // API에서 데이터 가져오기
   useEffect(() => {
@@ -30,7 +30,7 @@ const FinancialManager = () => {
 
       try {
         // API 호출
-        const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`);
+        const response = await fetch(`${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`);
 
         if (!response.ok) {
           throw new Error("네트워크 응답이 올바르지 않습니다");
@@ -82,7 +82,7 @@ const FinancialManager = () => {
 
       // 이미 FormData 객체가 준비되어 있으니, 다른 처리 없이 그대로 전송
       // Content-Type을 지정하지 않으면 브라우저가 자동으로 multipart/form-data로 설정
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
+      const response = await fetch(`${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`, {
         method: "POST",
         body: formData,
       });
@@ -97,7 +97,7 @@ const FinancialManager = () => {
 
       // 데이터 다시 불러오기
       const refetchResponse = await fetch(
-        `${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`
+        `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`
       );
       if (!refetchResponse.ok) {
         throw new Error("데이터 새로고침에 실패했습니다");
@@ -118,7 +118,7 @@ const FinancialManager = () => {
 
       // API 호출
       const response = await fetch(
-        `${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`,
+        `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}/${id}`,
         {
           method: "DELETE",
         }
@@ -147,7 +147,7 @@ const FinancialManager = () => {
 
       // API 호출 - Content-Type 헤더를 명시적으로 설정하지 않음
       const response = await fetch(
-        `${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${id}`,
+        `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}/${id}`,
         {
           method: "PUT",
           // headers 설정을 제거하거나 비워둠 (브라우저가 자동으로 설정하도록)
@@ -163,7 +163,7 @@ const FinancialManager = () => {
 
       // 나머지 코드는 동일...
       const refetchResponse = await fetch(
-        `${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`
+        `${EXPENSE_API_URL}/${ROOM_CODE}/${URL_ID}`
       );
       if (!refetchResponse.ok) {
         throw new Error("데이터 새로고침에 실패했습니다");
