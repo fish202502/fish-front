@@ -57,7 +57,7 @@ input[type="file"] {
 }
 
 .uploadLabel:hover {
-    background-color: #d6d6d6;
+    background-color: rgba(159, 159, 159, 0.3);
 }
 
 .uploadLabel::before {
