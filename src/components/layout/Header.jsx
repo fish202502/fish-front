@@ -7,11 +7,16 @@ import {
   useRouteLoaderData,
 } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+
 import { usePermission } from "../../pages/MainLayout"; // 🔥 추가
 
 const Header = () => {
   const activeLink = ({ isActive }) => (isActive ? "active" : "");
   const [permission, setPermission] = useState(null);
+  const [showUrl, setShowUrl] = useState(false);
+
+  const navigate = useNavigate();
 
   const { roomCode, url } = useParams();
 
@@ -30,6 +35,10 @@ const Header = () => {
   useEffect(() => {
     setPermission(permissionData.permission);
   }, []);
+
+  const handleBtn = () => {
+    navigate("/", { state: { roomCode: roomCode, url: url } });
+  };
   return (
     <>
       <nav className="header-nav">
@@ -39,7 +48,9 @@ const Header = () => {
             visibility: !permission ? "hidden" : "visible",
           }}
         >
-          <button className="room-info-btn">방정보 변경</button>
+          <button onClick={handleBtn} className="room-info-btn">
+            방정보 변경
+          </button>
         </div>
         <ul className="nav-list">
           {menuItems.map((item, index) => (

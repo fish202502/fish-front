@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 const ShowUrl = ({ data, handlecreateBtn }) => {
   const [readUrl, setReadUrl] = useState("");
   const [writeUrl, setWriteUrl] = useState("");
+
+  const [readNaviUrl, setReadNaviUrl] = useState("");
+  const [writeNaviUrl, setWriteNaviUrl] = useState("");
+
   const [roomCode, setRoomCode] = useState("");
   const emailInput = useRef(null);
 
@@ -31,9 +35,16 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
     });
   };
 
-  // 새 창에서 링크 열기
-  const handleOpenLink = (url) => {
-    navigate(url)
+
+  //링크 이동
+  const handleOpenReadLink = () => {
+    navigate(`/room/chat/${data.roomCode}/${data.readUrl}`);
+  };
+
+  const handleOpenWriteLink = () => {
+    console.log("click");
+    
+    navigate(`/room/chat/${data.roomCode}/${data.writeUrl}`);
   };
 
   // 나가기 버튼 기능
@@ -57,7 +68,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
         }
       );
       const result = await response.json();
-      if(response.ok){
+      if (response.ok) {
         setConfirmModal(true);
       }
     } catch (error) {
@@ -65,12 +76,12 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
     }
   };
 
-  const closeModal= ()=>{
+  const closeModal = () => {
     setConfirmModal(false);
-  }
+  };
   return (
     <div className="container">
-      {confrimModal && <SendModal onModal={closeModal}/>}
+      {confrimModal && <SendModal onModal={closeModal} />}
       <h1 className="title">방 생성 완료!</h1>
       <p className="copy-info">📌 링크를 클릭하면 복사됩니다.</p>{" "}
       {/* 안내 문구 추가 */}
@@ -82,14 +93,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
           readOnly
           onClick={(e) => handleCopy(e.target.value)} // 클릭하면 복사
         />
-        <button
-          className="go-btn"
-          onClick={() =>
-            handleOpenLink(
-              `/room/chat/${data.roomCode}/${data.readUrl}`
-            )
-          }
-        >
+        <button className="go-btn" onClick={handleOpenReadLink}>
           바로가기
         </button>
       </div>
@@ -101,14 +105,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
           readOnly
           onClick={(e) => handleCopy(e.target.value)} // 클릭하면 복사
         />
-        <button
-          className="go-btn"
-          onClick={() =>
-            handleOpenLink(
-              `/room/chat/${data.roomCode}/${data.writeUrl}`
-            )
-          }
-        >
+        <button className="go-btn" onClick={handleOpenWriteLink}>
           바로가기
         </button>
       </div>

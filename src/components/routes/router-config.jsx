@@ -5,14 +5,15 @@ import CreateRoom from "../room/CreateRoom";
 import FinancialManager from "../financial/FinancialManager";
 import { BsChatHeart } from "react-icons/bs";
 import MainNavigation from "../../pages/MainLayout";
-import { permissionCheckLoader } from "../../config/permission-config";
+import { permissionCheckLoader, validateRoomParams } from "../../config/permission-config";
+import ErrorPage from "../../pages/ErrorPage";
 
 // 라우터 설정
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <CreateRoom />,
-    // errorElement: <ErrorPage />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/room",
@@ -23,10 +24,14 @@ export const router = createBrowserRouter([
       {
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
+        loader: validateRoomParams, // ✅ 추가
+        errorElement: <ErrorPage />, 
       },
       {
         path: "chat/:roomCode/:url",
         element: <Chat />,
+        loader: validateRoomParams, // ✅ 추가
+        errorElement: <ErrorPage />, 
       },
     ],
   },

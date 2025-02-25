@@ -1,7 +1,9 @@
-import { redirect, useParams } from "react-router-dom";
+import { data, redirect, useParams } from "react-router-dom";
 
 export const permissionCheckLoader = async ({ params }) => {
   const { roomCode, url } = params;
+
+  if (!roomCode || !url || roomCode ==='undefined') return redirect("/error");
 
   try {
     const response = await fetch(
@@ -21,8 +23,18 @@ export const permissionCheckLoader = async ({ params }) => {
 
     return { permission: data.type };
   } catch (error) {
-    console.error("API 호출 중 오류 발생:", error);
+    validateRoomParams();
     return { permission: false };
   }
+};
+
+export const validateRoomParams = async ({ params }) => {
+  const { roomCode, url } = params;
+
+  if (!roomCode || !url) {
+    throw new Response("잘못된 접근입니다.", { status: 400 });
+  }
+
+  return { roomCode, url }; // 정상일 경우 데이터 반환
 };
 
