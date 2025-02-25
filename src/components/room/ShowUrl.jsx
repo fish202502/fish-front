@@ -1,12 +1,15 @@
 import React, { use, useEffect, useRef, useState } from "react";
 import "./ShowUrl.css";
 import { SendModal } from "./SendModal";
+import { useNavigate } from "react-router-dom";
 
 const ShowUrl = ({ data, handlecreateBtn }) => {
   const [readUrl, setReadUrl] = useState("");
   const [writeUrl, setWriteUrl] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const emailInput = useRef(null);
+
+  const navigate = useNavigate();
 
   const [confrimModal, setConfirmModal] = useState(false);
 
@@ -30,7 +33,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
 
   // 새 창에서 링크 열기
   const handleOpenLink = (url) => {
-    window.open(url, "_blank");
+    navigate(url)
   };
 
   // 나가기 버튼 기능
@@ -83,7 +86,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
           className="go-btn"
           onClick={() =>
             handleOpenLink(
-              readUrl
+              `/room/chat/${data.roomCode}/${data.readUrl}`
             )
           }
         >
@@ -102,7 +105,7 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
           className="go-btn"
           onClick={() =>
             handleOpenLink(
-             writeUrl
+              `/room/chat/${data.roomCode}/${data.writeUrl}`
             )
           }
         >
