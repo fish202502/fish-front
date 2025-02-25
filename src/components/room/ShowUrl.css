@@ -92,3 +92,33 @@ input:focus {
 .exit-btn:hover {
   background-color: #c0392b;
 }
+
+.email-wrapper {
+  display: flex;
+  height: 40px; /* 높이 유지 */
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.email-input {
+  height: 100%; /* 부모 높이와 맞춤 */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  text-align: left;
+  padding: 0 0 0 10px;
+}
+
+.button-send {
+  height: 100%; /* 부모 높이와 맞춤 */
+  padding: 0 20px;
+  font-weight: bold;
+  background-color: #4facf8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
