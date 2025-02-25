@@ -1,18 +1,19 @@
 .header-nav {
   z-index: 10;
   height: 100px;
-  width: 66.66%;
-  margin: 20px 0 20px auto; /* 오른쪽 끝 정렬 */
+  width: 100%;
+  margin: 20px 0 20px auto; /* 기존 코드 유지 */
   background-color: #f8f5f5;
-  padding: 10px 0;
+  padding: 10px 20px; /* 좌우 패딩 추가 */
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  padding-right: 20px; /* 오른쪽 여백 */
+  align-items: center;
+  justify-content: space-between; /* 왼쪽/오른쪽 끝으로 정렬 */
 }
 
 .nav-list {
+  margin-right: 20px;
   display: flex;
   align-items: center;
   padding: 0;
@@ -20,8 +21,8 @@
 }
 
 .nav-item {
-  width: 120px;
-  height: 30px; /* 기본 높이 */
+  width: 200px;
+  height: 50px; /* 기본 높이 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,8 +38,8 @@
 
   /* 기존 사다리꼴 모양 유지 */
   clip-path: polygon(10% 10%, 90% 10%, 100% 100%, 0% 100%);
-  border-top-left-radius: 33px; /* 왼쪽 위 모서리 둥글게 */
-  border-top-right-radius: 33px; /* 오른쪽 위 모서리 둥글게 */
+  border-top-left-radius: 53px; /* 왼쪽 위 모서리 둥글게 */
+  border-top-right-radius: 53px; /* 오른쪽 위 모서리 둥글게 */
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -55,7 +56,7 @@
 /* 호버 또는 활성화 상태일 때 위로 올라가면서 크기 증가 */
 .nav-item:hover,
 .nav-item.active {
-  height: 50px;
+  height: 70px;
   transform: translateY(-10px); /* 위로 살짝 올라감 */
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   z-index: 10;
@@ -79,4 +80,109 @@
     height: 45px;
     font-size: 16px;
   }
+}
+
+.room-info-btn {
+  margin-left: 150px;
+  background-color: #4CAF50; /* 초록색 배경 */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-right: 20px; /* 오른쪽 여백 */
+  height: 40px; /* 🔥 버튼 높이 고정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.room-info-btn:disabled {
+  background-color: #d3d3d3; /* 연한 회색 배경 */
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.6;
+  border: none; /* 🔥 테두리 유지 */
+  height: 40px; /* 🔥 높이 유지 */
+  padding: 10px 20px; /* 🔥 패딩 유지 */
+  display: flex; /* 🔥 flex 추가 */
+  align-items: center; /* 🔥 중앙 정렬 */
+  justify-content: center; /* 🔥 중앙 정렬 */
+}
+
+
+.room-info-btn:hover {
+  background-color: #45a049; /* 호버 시 색상 변경 */
+  transform: scale(1.05); /* 약간 확대 */
+}
+
+.room-info-btn:active {
+  background-color: #3e8e41; /* 클릭 시 색상 변경 */
+  transform: scale(0.95); /* 약간 축소 */
+}
+
+@media (max-width: 768px) {
+  .room-info-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+    margin-right: 10px;
+  }
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px; /* 크기 키움 */
+  border-radius: 12px; /* 모서리 둥글게 */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  width: 400px; /* 모달 너비 키움 */
+}
+
+.modal-content p {
+  font-size: 18px; /* 기본 글자 크기 키움 */
+  margin-bottom: 10px;
+}
+
+.modal-content p.warning-text {
+  font-family: "돋움", Dotum, sans-serif; /* 돋움체 적용 */
+  font-size: 20px; /* 크기 키움 */
+  font-weight: bold;
+  color: red; /* 빨간색 적용 */
+}
+
+.modal-buttons {
+  margin-top: 15px;
+}
+
+.confirm-btn, .cancel-btn {
+  margin: 0 15px;
+  padding: 10px 20px; /* 버튼 크기 키움 */
+  border: none;
+  cursor: pointer;
+  font-size: 16px; /* 버튼 글자 크기 키움 */
+  border-radius: 5px;
+}
+
+.confirm-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: black;
 }
