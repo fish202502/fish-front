@@ -13,8 +13,8 @@ const CheckListManager = () => {
   const [error, setError] = useState(null);
 
   // 룸 코드와 URL 정보
-  const roomCode = 'ce89baca';
-  const url = '174039428319e605f1';
+  const roomCode = '8b3bc5c7';
+  const url = '1740448140214cf114';
   const baseUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
 
   // 데이터 가져오기
@@ -39,10 +39,22 @@ const CheckListManager = () => {
             content: cat.content
           })));
           
-          // 체크리스트 아이템 설정
+          // 체크리스트 아이템 설정 - 서버 데이터 형식에서 클라이언트 형식으로 변환
           const itemsMap = {};
           data.category.forEach(cat => {
-            itemsMap[cat.categoryId] = cat.checkListItemList || [];
+            if (cat.checkListItemList) {
+              itemsMap[cat.categoryId] = cat.checkListItemList.map(item => ({
+                id: item.checkListItemId,
+                checkListItemId: item.checkListItemId,
+                content: item.content,
+                assignee: item.assignee,
+                category: item.category,
+                isChecked: item.isChecked,
+                completed: item.isChecked // isChecked 값을 completed로 복사
+              }));
+            } else {
+              itemsMap[cat.categoryId] = [];
+            }
           });
           
           setChecklistItems(itemsMap);
@@ -149,16 +161,18 @@ const CheckListManager = () => {
       const data = await response.json();
       console.log("응답 데이터:", data);
       
-      // 성공적으로 추가된 경우, 로컬 상태 업데이트
-      // 서버 응답에서 아이템 ID를 가져옵니다 - 응답 구조에 따라 조정 필요할 수 있음
-      const itemId = data.id || Date.now(); // 응답에 ID가 없으면 임시 ID 생성
+      // 체크리스트 아이템 ID 결정
+      const checkListItemId = data.checkListItemId || data.id || Date.now();
       
+      // 성공적으로 추가된 경우, 로컬 상태 업데이트
       setChecklistItems({
         ...checklistItems,
         [categoryId]: [...(checklistItems[categoryId] || []), {
-          id: itemId,
+          id: checkListItemId,
+          checkListItemId: checkListItemId, // 서버 ID 저장
           content: item.content,
           assignee: item.assignee,
+          isChecked: false,
           completed: false
         }]
       });
@@ -167,6 +181,7 @@ const CheckListManager = () => {
       alert(`체크리스트 항목 추가 중 오류가 발생했습니다: ${err.message}`);
     }
   };
+
   const handleDeleteItem = async (categoryId, itemId) => {
     try {
       // 선택된 카테고리의 체크리스트 아이템 목록에서 삭제할 항목의 checkListItemId 찾기
@@ -208,6 +223,7 @@ const CheckListManager = () => {
       alert(`체크리스트 항목 삭제 중 오류가 발생했습니다: ${err.message}`);
     }
   };
+
   const handleUpdateItem = async (categoryId, itemId, updatedItem) => {
     try {
       // 선택된 카테고리의 체크리스트 아이템 목록에서 수정할 항목의 checkListItemId 찾기
@@ -223,12 +239,16 @@ const CheckListManager = () => {
       // 올바른 API 경로 사용
       const updateUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
       console.log("체크리스트 아이템 수정 요청 URL:", updateUrl);
-      console.log("체크리스트 아이템 수정 요청 본문:", JSON.stringify({
+      
+      // 현재 isChecked 상태 유지
+      const requestBody = {
         checkListItemId: checkListItemId,
         assignee: updatedItem.assignee,
         content: updatedItem.content,
         isChecked: itemToUpdate.isChecked || false
-      }));
+      };
+      
+      console.log("체크리스트 아이템 수정 요청 본문:", JSON.stringify(requestBody));
       
       // API를 통해 체크리스트 아이템 업데이트 요청
       const response = await fetch(updateUrl, {
@@ -236,12 +256,7 @@ const CheckListManager = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          checkListItemId: checkListItemId,
-          assignee: updatedItem.assignee,
-          content: updatedItem.content,
-          isChecked: itemToUpdate.isChecked || false
-        })
+        body: JSON.stringify(requestBody)
       });
       
       console.log("응답 상태:", response.status);
@@ -259,7 +274,9 @@ const CheckListManager = () => {
           item.id === itemId ? { 
             ...item, 
             ...updatedItem,
-            checkListItemId: checkListItemId // checkListItemId 유지
+            checkListItemId: checkListItemId, // checkListItemId 유지
+            isChecked: item.isChecked, // 현재 isChecked 상태 유지
+            completed: item.isChecked // completed 값도 isChecked와 동기화
           } : item
         ),
       });
@@ -288,13 +305,16 @@ const CheckListManager = () => {
       
       // 올바른 API 경로 사용 (체크리스트 수정과 같은 경로 사용)
       const updateUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
-      console.log("체크리스트 완료 상태 변경 요청 URL:", updateUrl);
-      console.log("체크리스트 완료 상태 변경 요청 본문:", JSON.stringify({
+      
+      const requestBody = {
         checkListItemId: checkListItemId,
         assignee: currentItem.assignee,
         content: currentItem.content,
         isChecked: newCheckedStatus
-      }));
+      };
+      
+      console.log("체크리스트 완료 상태 변경 요청 URL:", updateUrl);
+      console.log("체크리스트 완료 상태 변경 요청 본문:", JSON.stringify(requestBody));
       
       // API를 통해 체크리스트 아이템 완료 상태 업데이트 요청
       const response = await fetch(updateUrl, {
@@ -302,12 +322,7 @@ const CheckListManager = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          checkListItemId: checkListItemId,
-          assignee: currentItem.assignee,
-          content: currentItem.content,
-          isChecked: newCheckedStatus
-        })
+        body: JSON.stringify(requestBody)
       });
       
       console.log("응답 상태:", response.status);
