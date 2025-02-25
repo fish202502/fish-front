@@ -8,7 +8,9 @@ const CreateRoom = () => {
 
   const handleCreateBtn = async () => {
     try {
-      const response = await fetch("http://localhost:8900/api/fish/rooms");
+      const response = await fetch("http://localhost:8999/api/fish/rooms",{
+        method:'POST',
+      });
       const result = await response.json();
       console.log(result); // API 응답 확인
 

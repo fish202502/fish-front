@@ -34,6 +34,7 @@ function Chat() {
         console.log(data);
         if (data.type === false) {
           setPermission(false);
+          setName("permission-false");
         }else{
           setPermission(true);
         }
@@ -151,7 +152,7 @@ function Chat() {
 
   return (
     <div className={styles.chatContainer}>
-      {showModal && <Modal onNameSubmit={handleNameSubmit} />}
+      {(showModal&& permission) && <Modal onNameSubmit={handleNameSubmit} />}
       <h1 className={styles.title}>대화방</h1>
       <div className={styles.messagesContainer}>
         {messages.map((msg, index) => (
@@ -164,13 +165,16 @@ function Chat() {
         <input
           ref={inputRef} // 인풋에 ref 연결
           type="text"
+          disabled={!permission} 
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="메세지를 입력하세요."
           className={styles.input}
           onKeyDown={handleKeyDown}
         />
-        <button onClick={sendMessage} className={styles.sendButton}>
+        <button 
+        disabled={!permission} 
+        onClick={sendMessage} className={styles.sendButton}>
           보내기
         </button>
       </div>
