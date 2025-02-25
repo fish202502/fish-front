@@ -7,6 +7,8 @@ import { BsChatHeart } from "react-icons/bs";
 import MainNavigation from "../../pages/MainLayout";
 import CheckList from "../checkList/CheckList";
 import CheckListManager from "../checkList/CheckListManager";
+import ScheduleManager from "../../Schedule/ScheduleManager";
+import GalleryManager from "../../Gallery/GalleryManager";
 
 // 라우터 설정
 export const router = createBrowserRouter([
@@ -31,6 +33,14 @@ export const router = createBrowserRouter([
         path: "chat/:roomCode/:url",
         element: <Chat />,
       },
+      {
+        path: "schedule/:roomCode/:url",
+        element: <ScheduleManager/>
+      },
+      {
+        path: "photo/:roomCode/:url",
+        element:<GalleryManager/>
+      }
     ],
   },
 ]);
