@@ -37,8 +37,12 @@ function Chat() {
     };
 
     ws.onmessage = (event) => {
-      const [sender, sessionId, text] = event.data.split(":");
-      setMySessionId(sessionId);
+      const data = JSON.parse(event.data);
+
+      // 처음 인삿말 정보로 세션id 저장
+      if (data.type === "H") {
+        setMySessionId(data.sessionId);
+      }
       setMessages((prevMessages) => [...prevMessages, event.data]);
     };
 
@@ -93,25 +97,27 @@ function Chat() {
 
   // 메세지 처리
   const randMessage = (msg, index) => {
-    const [sender, sessionId, text] = msg.split(":");
+    const data = JSON.parse(msg);
     return (
       <>
         <div
           className={`${styles.sender} ${
-            msg.includes(name) && sessionId === mySessionId
+            data.sender === name && data.sessionId === mySessionId
               ? styles.myName
               : styles.otherName
           }`}
         >
-          {text ? sender : ""}
+          {data.type === "M" ? data.sender : ""}
         </div>
         <div
           key={index}
           className={`${styles.message} ${
-            msg.includes(name) && sessionId === mySessionId ? styles.myMessage : styles.otherMessage
+            data.sender === name && data.sessionId === mySessionId
+              ? styles.myMessage
+              : styles.otherMessage
           }`}
         >
-          <p>{text ? text : msg}</p>
+          <p>{data.type === "M" ? data.message : data.message}</p>
         </div>
       </>
     );
