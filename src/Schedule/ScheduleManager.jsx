@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import AddSchedule from "./AddSchedule";
-import ScheduleList from "./ScheduleList";
+import React, {useState, useEffect, use} from "react";
+import AddSchedule from "./AddSchedule.jsx";
+import ScheduleList from "./ScheduleList.jsx";
 import ScheduleDate from "./ScheduleDate.jsx";
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 import styles from "./ScheduleManager.module.css";
-
-const DUMMY_SCHEDULES = [];
+import {useParams} from "react-router-dom";
+import {SCHEDULE_API_URL} from "../config/host-config.js";
 
 const ScheduleManager = () => {
-  const [schedules, setSchedules] = useState(DUMMY_SCHEDULES);
+  const [schedules, setSchedules] = useState([]);
   const [tripStartDate, setTripStartDate] = useState('');
   const [tripEndDate, setTripEndDate] = useState('');
   const [scheduleId, setScheduleId] = useState(null);
@@ -17,19 +17,41 @@ const ScheduleManager = () => {
   const [hasPeriod, setHasPeriod] = useState(false);  // 여행 기간 존재 여부
   const [isEditingPeriod, setIsEditingPeriod] = useState(false); // 여행 기간 수정 여부
   const [invalidSchedules, setInvalidSchedules] = useState([]); // 유효하지 않은 일정 목록
-
+  // 권한 상태추가
+  const [permission,setPermission] = useState(null);
   // 에러의 데이터를 관리하는 상태변수
   const [error, setError] = useState('');
 
-  const ROOM_CODE = '0becd19e';
-  const URL_ID = '174046472453e2c764';
-  const API_BASE_URL = 'http://localhost:8999/api/fish/schedule';
+  const {roomCode,url} = useParams();
+  const API_BASE_URL = 'http://localhost:8999/api/fish/rooms';
+
+  useEffect(()=>{
+    const fetchPermssion = async () =>{
+      try{
+        const response = await fetch(
+          `${API_BASE_URL}/${roomCode}/${url}`,
+          {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+          }
+        );
+        const data = await response.json();
+        console.log("권한 확인 응답:",data);
+        setPermission(true);
+      }catch (error){
+        console.error("권한 확인중 오류발생",error);
+        handleError("권한 오류", "권한 확인에 실패했습니다.");
+        setPermission(false); // 오류시 권한 없음으로 설정
+      }
+    };
+    fetchPermssion();
+  },[roomCode,url])
 
   // 전체 일정 정보를 불러오는 함수
   const fetchScheduleData = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`); // 실제 엔드포인트로 수정 필요
+      const response = await fetch(`${SCHEDULE_API_URL}/${roomCode}/${url}`); // 실제 엔드포인트로 수정 필요
       const data = await response.json();
 
       if (response.ok) {
@@ -96,9 +118,6 @@ const ScheduleManager = () => {
     });
   };
 
-  // handleDateRange 함수만 수정합니다
-// ScheduleManager.jsx 파일에서 이 함수를 찾아 대체해주세요
-
 // 여행기간을 저장하는 API 호출을 처리하는 함수
   const handleDateRange = async (start, end) => {
     try {
@@ -121,9 +140,8 @@ const ScheduleManager = () => {
           hasInvalidSchedules = true;
         }
       }
-
       // 여행 기간은 항상 저장 시도
-      const response = await fetch(`${API_BASE_URL}/trip/${ROOM_CODE}/${URL_ID}`, {
+      const response = await fetch(`${SCHEDULE_API_URL}/trip/${roomCode}/${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,6 +212,10 @@ const ScheduleManager = () => {
 
   // 일정 추가 함수
   const addSchedule = async (title, startDate, startTime, endDate, endTime) => {
+    if(!permission){
+      handleError("권한없음", "추가 권한이 없습니다.");
+      return;
+    }
     if (!title.trim()) {
       handleError("입력 오류", "일정 제목을 입력해야 합니다.");
       return false;
@@ -229,7 +251,7 @@ const ScheduleManager = () => {
     console.log('요청 본문:', requestBody); // 디버깅용
 
     try {
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
+      const response = await fetch(`${SCHEDULE_API_URL}/${roomCode}/${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -269,9 +291,13 @@ const ScheduleManager = () => {
   };
 
   const removeSchedule = async (scheduleItemId) => {
+    if(!permission){
+      handleError("권한없음","삭제권한이 없습니다.")
+      return;
+    }
     try {
       // DELETE 요청을 보냅니다. API 엔드포인트는 실제 주소로 수정해야 합니다.
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}/${scheduleItemId}`, {
+      const response = await fetch(`${SCHEDULE_API_URL}/${roomCode}/${url}/${scheduleItemId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -310,6 +336,10 @@ const ScheduleManager = () => {
   };
 
   const modifySchedule = async (id, updatedData) => {
+    if(!permission){
+      handleError("권한없음","수정권한이 없습니다.")
+      return;
+    }
     // 시간 문자열 정규화 함수
     const normalizeTimeString = (timeStr) => {
       // 입력이 없는 경우 처리
@@ -364,7 +394,7 @@ const ScheduleManager = () => {
     console.log('수정 요청 본문:', requestBody);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/${ROOM_CODE}/${URL_ID}`, {
+      const response = await fetch(`${SCHEDULE_API_URL}/${roomCode}/${url}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -466,21 +496,25 @@ const ScheduleManager = () => {
                       <p className={styles.beforeComment}>
                         ✈ 여행기간: {tripStartDate} ~ {tripEndDate}
                       </p>
-                      <button
-                        onClick={toggleEditingPeriod}
-                        className={styles.fixBtn}
-                      >
+                      {permission && (
+                        <button
+                          onClick={toggleEditingPeriod}
+                          className={styles.modifyBtn}
+                        >
                         수정
                       </button>
+                        )}
                     </div>
                   )}
 
                   {/* 여행 기간 수정 중에도 AddSchedule과 ScheduleList 계속 표시 */}
-                  <AddSchedule
-                    addSchedule={addSchedule}
-                    tripStartDate={tripStartDate}
-                    tripEndDate={tripEndDate}
-                  />
+                  {permission && (
+                    <AddSchedule
+                      addSchedule={addSchedule}
+                      tripStartDate={tripStartDate}
+                      tripEndDate={tripEndDate}
+                    />
+                  )}
                   <ScheduleList
                     schedules={schedules}
                     removeSchedule={removeSchedule}
@@ -488,6 +522,7 @@ const ScheduleManager = () => {
                     tripStartDate={tripStartDate}
                     tripEndDate={tripEndDate}
                     invalidSchedules={invalidSchedules} // 유효하지 않은 일정 목록 전달
+                    permission={permission}
                   />
                 </>
               )}

@@ -1,14 +1,17 @@
 import styles from './ScheduleList.module.css'
 import {useState} from "react";
-import AddSchedule from "./AddSchedule.jsx";
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 
-const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate, tripEndDate, invalidSchedules = []}) => {
+const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate, tripEndDate, invalidSchedules,permission= false }) => {
     const [editingId, setEditingId] = useState(null);
     const [editData, setEditData] = useState({title: "", startDate: "", startTime: "", endDate: "", endTime: ""});
     const [error, setError] = useState(null);
 
     const handleEditClick = (schedule) => {
+        if (!permission) {
+            setError("편집 권한이 없습니다.");
+            return;
+        }
         setEditingId(schedule.id);
         setEditData({
             title: schedule.title,
@@ -26,7 +29,6 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
     const handleSave = async (e) => {
         e.preventDefault();
 
-        // modifySchedule이 이제 Promise를 반환하므로 await 사용
         const isSuccess = await modifySchedule(editingId, editData);
 
         if (isSuccess) {
@@ -101,7 +103,6 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
                                           <input type="time" name="endTime" value={editData.endTime}
                                                  onChange={handleChange}/>
                                       </section>
-
                                       <section className={styles.buttonContainer}>
                                           <button onClick={(e) => handleSave(e)}>확인</button>
                                           <button onClick={() => setEditingId(null)}>취소</button>
@@ -114,11 +115,12 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
                                           <span className={styles.title}>{schedule.title}</span>
                                           <span>🕒 {schedule.startDateTime.replace("T", " ")} - {schedule.endDateTime.replace("T", " ")} </span>
                                       </section>
-
+                                      {permission &&
                                       <section>
                                           <button onClick={() => handleEditClick(schedule)}>✏️ 수정</button>
                                           <button onClick={() => handleDelete(schedule.id)}>❌ 삭제</button>
                                       </section>
+                                      }
                                   </>
                                 )}
                             </li>

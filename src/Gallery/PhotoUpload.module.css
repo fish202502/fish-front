@@ -13,12 +13,6 @@
     transition: border-color 0.3s ease-in-out;
 }
 
-
-input[type="file"] {
-    display: none;
-}
-
-
 .uploadBtn {
     display: inline-block;
     background-color: #ffd876;
@@ -41,7 +35,6 @@ input[type="file"] {
     background-color: #ff7c0d;
 }
 
-
 .uploadLabel {
     display: inline-flex;
     align-items: center;
@@ -63,4 +56,8 @@ input[type="file"] {
 .uploadLabel::before {
     content: "📁";
     font-size: 18px;
+}
+
+input[type="file"] {
+    display: none;
 }

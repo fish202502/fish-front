@@ -1,20 +1,13 @@
 import React, {useEffect, useState} from "react";
 import styles from './AddSchedule.module.css'
-import ErrorModal from "../ui/Modal/ErrorModal.jsx";
-
-import ScheduleDate from "./ScheduleDate.jsx";
-import error from "eslint-plugin-react/lib/util/error.js";
 
 const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
-
 
   const [enteredTitle,setEnteredTitle] = useState("");
   const [enteredStartDate,setEnteredStartDate] =useState('');
   const [enteredStartTime,setEnteredStartTime] =useState('');
   const [enteredEndDate,setEnteredEndDate] =useState('');
   const [enteredEndTime,setEnteredEndTime] =useState('');
-
-
 
   const handleTitleInput = e =>{
     setEnteredTitle(e.target.value);
@@ -32,7 +25,6 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
     setEnteredEndTime(e.target.value);
   }
 
-
   const handleSubmit = async(e) => {
     e.preventDefault();
 
@@ -40,17 +32,13 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
         enteredTitle,enteredStartDate,enteredStartTime,enteredEndDate,enteredEndTime);
 
     if(isSuccess){
-
-    setEnteredTitle('');
+      setEnteredTitle('');
     setEnteredStartDate('');
     setEnteredStartTime('');
     setEnteredEndDate('');
     setEnteredEndTime('');
-
     }
-
   }
-
 
   return (
       <>
@@ -65,8 +53,6 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
                 value={enteredTitle}
             />
           </div>
-
-          {/* 시작 날짜 & 시작 시간 */}
           <div className={styles.formGroup}>
             <div className={styles.dateInputContainer}>
               <label>시작 날짜</label>
@@ -87,8 +73,6 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
               />
             </div>
           </div>
-
-          {/* 종료 날짜 & 종료 시간 */}
           <div className={styles.formGroup}>
             <div className={styles.dateInputContainer}>
               <label>종료 날짜</label>
@@ -109,8 +93,6 @@ const AddSchedule = ({addSchedule, tripStartDate, tripEndDate}) => {
               />
             </div>
           </div>
-
-          {/* 버튼 */}
           <div className={styles.BtnContainer}>
             <button type="submit" className={styles.submitBtn}>추가</button>
           </div>
