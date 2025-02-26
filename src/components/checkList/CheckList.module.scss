@@ -139,3 +139,52 @@
   text-decoration: line-through;
   opacity: 0.7;
 }
+
+/* CheckList.module.scss에 추가할 스타일 */
+
+/* 읽기 전용 모드 컨테이너 스타일 */
+.readOnly {
+  position: relative;
+}
+
+/* 비활성화된 폼 스타일 */
+.disabledForm {
+  opacity: 0.8;
+}
+
+/* 비활성화된 버튼 스타일 */
+.disabledButton {
+  background-color: #e9ecef !important;
+  color: #adb5bd !important;
+  border-color: #ced4da !important;
+  cursor: not-allowed !important;
+  opacity: 0.65;
+}
+
+/* 권한 없음 메시지 */
+.permissionMessage {
+  color: #856404;
+  background-color: #fff3cd;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin: 8px 0;
+  text-align: center;
+  border: 1px solid #ffeeba;
+}
+
+/* 비활성화된 입력 필드 */
+.readOnly input[disabled] {
+  background-color: #f5f5f5;
+  border-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* 버튼 호버 효과 제거 */
+.disabledButton:hover {
+  background-color: #e9ecef !important;
+  color: #adb5bd !important;
+  transform: none !important;
+  box-shadow: none !important;
+}

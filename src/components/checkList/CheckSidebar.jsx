@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './CheckSidebar.module.scss';
 import ErrorModal from '../ui/Modal/ErrorModal';
 
-const CheckSidebar = ({ categories, selectedCategory, onSelectCategory, onUpdateCategory, onDeleteCategory }) => {
+const CheckSidebar = ({ categories, selectedCategory, onSelectCategory, onUpdateCategory, onDeleteCategory, hasPermission }) => {
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [editedCategoryName, setEditedCategoryName] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -10,12 +10,20 @@ const CheckSidebar = ({ categories, selectedCategory, onSelectCategory, onUpdate
 
   const handleEditClick = (e, categoryId, categoryName) => {
     e.stopPropagation(); // 이벤트 버블링 방지
+    
+    // 권한이 없으면 편집 모드로 전환하지 않음
+    if (!hasPermission) return;
+    
     setEditingCategoryId(categoryId);
     setEditedCategoryName(categoryName);
   };
 
   const handleSaveEdit = (e, categoryId) => {
     e.stopPropagation(); // 이벤트 버블링 방지
+    
+    // 권한이 없으면 저장하지 않음
+    if (!hasPermission) return;
+    
     if (editedCategoryName.trim()) {
       onUpdateCategory(categoryId, editedCategoryName.trim());
       setEditingCategoryId(null);
@@ -24,6 +32,10 @@ const CheckSidebar = ({ categories, selectedCategory, onSelectCategory, onUpdate
 
   const handleDeleteClick = (e, categoryId) => {
     e.stopPropagation(); // 이벤트 버블링 방지
+    
+    // 권한이 없으면 삭제 모달을 열지 않음
+    if (!hasPermission) return;
+    
     setCategoryToDelete(categoryId);
     setModalOpen(true);
   };
@@ -77,41 +89,48 @@ const CheckSidebar = ({ categories, selectedCategory, onSelectCategory, onUpdate
                   onClick={(e) => e.stopPropagation()}
                   autoFocus
                   className={styles.editInput}
+                  disabled={!hasPermission}
                 />
                 <div className={styles.actionButtons}>
                   <button
                     onClick={(e) => handleSaveEdit(e, category.id)}
                     className={styles.saveButton}
+                    disabled={!hasPermission}
+                    title="저장"
                   >
-                    저장
+                    <span className={styles.buttonIcon}>💾</span>
                   </button>
                   <button
                     onClick={handleCancelEdit}
                     className={styles.cancelButton}
+                    title="취소"
                   >
-                    취소
+                    <span className={styles.buttonIcon}>❌</span>
                   </button>
                 </div>
               </div>
             ) : (
               <div className={styles.categoryItem}>
                 <span className={styles.categoryName}>{category.name}</span>
-                <div className={styles.categoryActions}>
-                  <button
-                    onClick={(e) => handleEditClick(e, category.id, category.name)}
-                    className={styles.editButton}
-                    title="수정"
-                  >
-                    ✏️
-                  </button>
-                  <button
-                    onClick={(e) => handleDeleteClick(e, category.id)}
-                    className={styles.deleteButton}
-                    title="삭제"
-                  >
-                    🗑️
-                  </button>
-                </div>
+                {/* 권한이 있을 때만 수정/삭제 버튼 표시 */}
+                {hasPermission && (
+                  <div className={styles.categoryActions}>
+                    <button
+                      onClick={(e) => handleEditClick(e, category.id, category.name)}
+                      className={styles.editButton}
+                      title="수정"
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      onClick={(e) => handleDeleteClick(e, category.id)}
+                      className={styles.deleteButton}
+                      title="삭제"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </li>
