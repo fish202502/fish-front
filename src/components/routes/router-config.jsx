@@ -11,6 +11,7 @@ import CheckList from "../checkList/CheckList";
 import CheckListManager from "../checkList/CheckListManager";
 import ScheduleManager from "../../Schedule/ScheduleManager";
 import GalleryManager from "../../Gallery/GalleryManager";
+import ChatNameProvider from "../../context/ChatNameProvider";
 
 // 라우터 설정
 export const router = createBrowserRouter([
@@ -37,7 +38,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "chat/:roomCode/:url",
-        element: <Chat />,
+        element: 
+        <ChatNameProvider>
+        <Chat />
+        </ChatNameProvider>
+        ,
       },
       {
         path: "schedule/:roomCode/:url",

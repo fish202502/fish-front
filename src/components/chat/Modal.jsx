@@ -1,11 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import styles from './Modal.module.css'; // CSS 모듈 임포트
+import ChatNameContext from '../../context/chat-context';
 
 function Modal({ onNameSubmit }) {
   const [userName, setUserName] = useState('');
   const inputRef = useRef(null); // input에 대한 참조를 생성
 
+  const {chatName,setChatName} = useContext(ChatNameContext);
+
   useEffect(() => {
+    console.log(chatName);
+    
+    if(chatName){
+      setUserName(chatName);
+      inputRef.current.value = chatName;
+    }
     // 컴포넌트가 렌더링될 때마다 input에 포커스
     if (inputRef.current) {
       inputRef.current.focus();
