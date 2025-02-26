@@ -100,3 +100,74 @@
   text-align: center;
   border: 1px solid #f5c6cb;
 }
+
+/* CheckListManager.module.scss에 추가할 스타일 */
+
+/* 읽기 전용 모드 스타일 */
+.readOnly {
+  position: relative;
+  
+  /* 읽기 전용 모드 표시 */
+  &:after {
+    content: "읽기 전용 모드";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10;
+  }
+  
+  /* 읽기 전용 모드에서 버튼 스타일 */
+  :global {
+    button[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background-color: #e9ecef;
+      color: #6c757d;
+    }
+    
+    input[disabled],
+    textarea[disabled] {
+      background-color: #f8f9fa;
+      border-color: #ced4da;
+      color: #6c757d;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* 권한 메시지 스타일 */
+.permissionMessage {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 10px 0;
+  border: 1px solid #ffeeba;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* 에러 메시지 스타일 */
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 10px 0;
+  border: 1px solid #f5c6cb;
+  text-align: center;
+}
+
+/* 로딩 표시 스타일 */
+.loading {
+  text-align: center;
+  padding: 15px;
+  font-style: italic;
+  color: #6c757d;
+}

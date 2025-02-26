@@ -4,6 +4,9 @@ import CheckList from './CheckList';
 import CheckSidebar from './CheckSidebar';
 import styles from './CheckListManager.module.scss';
 import CheckListSearch from './CheckListSearch';
+import { useParams } from 'react-router-dom';
+import { usePermission } from '../../pages/MainLayout';
+import { CHECK_API_URL } from '../../config/host-config';
 
 const CheckListManager = () => {
   const [categories, setCategories] = useState([]);
@@ -11,24 +14,49 @@ const CheckListManager = () => {
   const [checklistItems, setChecklistItems] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [permission, setPermission] = useState(null); // 권한 상태 추가
 
-  // 룸 코드와 URL 정보
-  const roomCode = '8b3bc5c7';
-  const url = '1740448140214cf114';
-  const baseUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
+  // 권한 정보 가져오기
+  const permissionData = usePermission();
+  
+  // 라우터 파라미터 가져오기
+  const { roomCode, url } = useParams();
+
+  // 권한 체크
+  useEffect(() => {
+    console.log("권한 데이터:", permissionData);
+    setPermission(permissionData.permission);
+  }, [permissionData]);
 
   // 데이터 가져오기
   useEffect(() => {
     const fetchData = async () => {
+      if (!roomCode || !url) {
+        console.error("roomCode 또는 url이 없습니다:", { roomCode, url });
+        setError("필요한 파라미터가 없습니다");
+        return;
+      }
+
       try {
         setIsLoading(true);
-        const response = await fetch(baseUrl);
+        const response = await fetch(`${CHECK_API_URL}/${roomCode}/${url}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
+        
+        console.log("API 응답 상태:", response.status);
         
         if (!response.ok) {
-          throw new Error('서버에서 데이터를 가져오는데 실패했습니다.');
+          const errorText = await response.text();
+          console.error("API 오류 응답:", errorText);
+          throw new Error(`네트워크 응답이 올바르지 않습니다 (${response.status})`);
         }
         
         const data = await response.json();
+        console.log("불러온 데이터:", data);
         
         // 카테고리 데이터 설정
         if (data && data.category) {
@@ -66,19 +94,27 @@ const CheckListManager = () => {
         }
       } catch (err) {
         console.error('Error fetching checklist data:', err);
-        setError('체크리스트 데이터를 가져오는 중 오류가 발생했습니다.');
+        setError('체크리스트 데이터를 불러오는 중 오류가 발생했습니다: ' + err.message);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    if (roomCode && url) {
+      fetchData();
+    }
+  }, [roomCode, url, CHECK_API_URL]);
 
   const handleAddCategory = async (newCategoryContent) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("추가 권한이 없습니다.");
+      return;
+    }
+    
     try {
       // 올바른 API 경로를 사용합니다
-      const categoryUrl = `http://localhost:8999/api/fish/check/category/${roomCode}/${url}`;
+      const categoryUrl = `${CHECK_API_URL}/category/${roomCode}/${url}`;
       console.log("카테고리 추가 요청 URL:", categoryUrl);
       console.log("카테고리 추가 요청 본문:", JSON.stringify({ content: newCategoryContent }));
       
@@ -98,7 +134,7 @@ const CheckListManager = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("응답 에러:", errorText);
-        throw new Error(`카테고리 추가에 실패했습니다. 상태 코드: ${response.status}`);
+        throw new Error(`카테고리 추가에 실패했습니다 (${response.status})`);
       }
       
       const data = await response.json();
@@ -122,14 +158,20 @@ const CheckListManager = () => {
       }
     } catch (err) {
       console.error('Error adding category:', err);
-      alert(`카테고리 추가 중 오류가 발생했습니다: ${err.message}`);
+      setError(`카테고리 추가 중 오류가 발생했습니다: ${err.message}`);
     }
   };
 
   const handleAddChecklistItem = async (categoryId, item) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("추가 권한이 없습니다.");
+      return;
+    }
+    
     try {
       // 올바른 API 경로 사용
-      const itemUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
+      const itemUrl = `${CHECK_API_URL}/${roomCode}/${url}`;
       console.log("체크리스트 아이템 추가 요청 URL:", itemUrl);
       console.log("체크리스트 아이템 추가 요청 본문:", JSON.stringify({
         categoryId: categoryId,
@@ -155,7 +197,7 @@ const CheckListManager = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("응답 에러:", errorText);
-        throw new Error(`체크리스트 항목 추가에 실패했습니다. 상태 코드: ${response.status}`);
+        throw new Error(`체크리스트 항목 추가에 실패했습니다 (${response.status})`);
       }
       
       const data = await response.json();
@@ -178,11 +220,17 @@ const CheckListManager = () => {
       });
     } catch (err) {
       console.error('Error adding checklist item:', err);
-      alert(`체크리스트 항목 추가 중 오류가 발생했습니다: ${err.message}`);
+      setError(`체크리스트 항목 추가 중 오류가 발생했습니다: ${err.message}`);
     }
   };
 
   const handleUpdateCategory = async (categoryId, newCategoryContent) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("수정 권한이 없습니다.");
+      return;
+    }
+    
     try {
       // 카테고리를 찾아서 존재하는지 확인
       const categoryToUpdate = categories.find(cat => cat.id === categoryId);
@@ -192,7 +240,7 @@ const CheckListManager = () => {
       }
       
       // 올바른 API 경로 사용
-      const updateUrl = `http://localhost:8999/api/fish/check/category/${roomCode}/${url}`;
+      const updateUrl = `${CHECK_API_URL}/category/${roomCode}/${url}`;
       console.log("카테고리 수정 요청 URL:", updateUrl);
       console.log("카테고리 수정 요청 본문:", JSON.stringify({
         categoryId: categoryId,
@@ -216,7 +264,7 @@ const CheckListManager = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("응답 에러:", errorText);
-        throw new Error(`카테고리 수정에 실패했습니다. 상태 코드: ${response.status}`);
+        throw new Error(`카테고리 수정에 실패했습니다 (${response.status})`);
       }
       
       // 로컬 상태 업데이트
@@ -232,11 +280,17 @@ const CheckListManager = () => {
       console.log('카테고리가 성공적으로 수정되었습니다.');
     } catch (err) {
       console.error('Error updating category:', err);
-      alert(`카테고리 수정 중 오류가 발생했습니다: ${err.message}`);
+      setError(`카테고리 수정 중 오류가 발생했습니다: ${err.message}`);
     }
   };
   
   const handleDeleteCategory = async (categoryId) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("삭제 권한이 없습니다.");
+      return;
+    }
+    
     try {
       // 카테고리를 찾아서 존재하는지 확인
       const categoryToDelete = categories.find(cat => cat.id === categoryId);
@@ -245,10 +299,8 @@ const CheckListManager = () => {
         throw new Error('삭제할 카테고리를 찾을 수 없습니다.');
       }
       
-    
-      
       // 올바른 API 경로 사용
-      const deleteUrl = `http://localhost:8999/api/fish/check/category/${roomCode}/${url}/${categoryId}`;
+      const deleteUrl = `${CHECK_API_URL}/category/${roomCode}/${url}/${categoryId}`;
       console.log("카테고리 삭제 요청 URL:", deleteUrl);
       
       // API를 통해 카테고리 삭제 요청
@@ -261,7 +313,7 @@ const CheckListManager = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("응답 에러:", errorText);
-        throw new Error(`카테고리 삭제에 실패했습니다. 상태 코드: ${response.status}`);
+        throw new Error(`카테고리 삭제에 실패했습니다 (${response.status})`);
       }
       
       // 로컬 상태 업데이트
@@ -285,10 +337,17 @@ const CheckListManager = () => {
       console.log('카테고리가 성공적으로 삭제되었습니다.');
     } catch (err) {
       console.error('Error deleting category:', err);
-      alert(`카테고리 삭제 중 오류가 발생했습니다: ${err.message}`);
+      setError(`카테고리 삭제 중 오류가 발생했습니다: ${err.message}`);
     }
   };
+  
   const handleDeleteItem = async (categoryId, itemId) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("삭제 권한이 없습니다.");
+      return;
+    }
+    
     try {
       // 선택된 카테고리의 체크리스트 아이템 목록에서 삭제할 항목의 checkListItemId 찾기
       const itemToDelete = checklistItems[categoryId].find(item => item.id === itemId);
@@ -301,7 +360,7 @@ const CheckListManager = () => {
       const checkListItemId = itemToDelete.checkListItemId || itemId;
       
       // 올바른 API 경로 사용
-      const deleteUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}/${checkListItemId}`;
+      const deleteUrl = `${CHECK_API_URL}/${roomCode}/${url}/${checkListItemId}`;
       console.log("체크리스트 아이템 삭제 요청 URL:", deleteUrl);
       
       // API를 통해 체크리스트 아이템 삭제 요청
@@ -309,12 +368,12 @@ const CheckListManager = () => {
         method: 'DELETE'
       });
       
-      console.log("응답 상태:", response.status);
+      console.log("삭제 응답 상태:", response.status);
       
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("응답 에러:", errorText);
-        throw new Error(`체크리스트 항목 삭제에 실패했습니다. 상태 코드: ${response.status}`);
+        console.error("삭제 오류 응답:", errorText);
+        throw new Error(`체크리스트 항목 삭제에 실패했습니다 (${response.status})`);
       }
       
       // 로컬 상태 업데이트
@@ -326,11 +385,17 @@ const CheckListManager = () => {
       console.log('체크리스트 항목이 성공적으로 삭제되었습니다.');
     } catch (err) {
       console.error('Error deleting checklist item:', err);
-      alert(`체크리스트 항목 삭제 중 오류가 발생했습니다: ${err.message}`);
+      setError(`체크리스트 항목 삭제 중 오류가 발생했습니다: ${err.message}`);
     }
   };
 
   const handleUpdateItem = async (categoryId, itemId, updatedItem) => {
+    // 권한이 없으면 함수 실행하지 않음
+    if (!permission) {
+      setError("수정 권한이 없습니다.");
+      return;
+    }
+    
     try {
       // 선택된 카테고리의 체크리스트 아이템 목록에서 수정할 항목의 checkListItemId 찾기
       const itemToUpdate = checklistItems[categoryId].find(item => item.id === itemId);
@@ -343,7 +408,7 @@ const CheckListManager = () => {
       const checkListItemId = itemToUpdate.checkListItemId || itemId;
       
       // 올바른 API 경로 사용
-      const updateUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
+      const updateUrl = `${CHECK_API_URL}/${roomCode}/${url}`;
       console.log("체크리스트 아이템 수정 요청 URL:", updateUrl);
       
       // 현재 isChecked 상태 유지
@@ -365,12 +430,12 @@ const CheckListManager = () => {
         body: JSON.stringify(requestBody)
       });
       
-      console.log("응답 상태:", response.status);
+      console.log("수정 응답 상태:", response.status);
       
       if (!response.ok) {
         const errorText = await response.text();
-        console.error("응답 에러:", errorText);
-        throw new Error(`체크리스트 항목 수정에 실패했습니다. 상태 코드: ${response.status}`);
+        console.error("수정 오류 응답:", errorText);
+        throw new Error(`체크리스트 항목 수정에 실패했습니다 (${response.status})`);
       }
       
       // 로컬 상태 업데이트
@@ -390,7 +455,7 @@ const CheckListManager = () => {
       console.log('체크리스트 항목이 성공적으로 수정되었습니다.');
     } catch (err) {
       console.error('Error updating checklist item:', err);
-      alert(`체크리스트 항목 수정 중 오류가 발생했습니다: ${err.message}`);
+      setError(`체크리스트 항목 수정 중 오류가 발생했습니다: ${err.message}`);
     }
   };
   
@@ -410,7 +475,7 @@ const CheckListManager = () => {
       const newCheckedStatus = !currentItem.isChecked;
       
       // 올바른 API 경로 사용 (체크리스트 수정과 같은 경로 사용)
-      const updateUrl = `http://localhost:8999/api/fish/check/${roomCode}/${url}`;
+      const updateUrl = `${CHECK_API_URL}/${roomCode}/${url}`;
       
       const requestBody = {
         checkListItemId: checkListItemId,
@@ -436,7 +501,7 @@ const CheckListManager = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("응답 에러:", errorText);
-        throw new Error(`체크리스트 항목 완료 상태 변경에 실패했습니다. 상태 코드: ${response.status}`);
+        throw new Error(`체크리스트 항목 완료 상태 변경에 실패했습니다 (${response.status})`);
       }
       
       // 로컬 상태 업데이트
@@ -454,7 +519,7 @@ const CheckListManager = () => {
       console.log('체크리스트 항목 완료 상태가 성공적으로 변경되었습니다.');
     } catch (err) {
       console.error('Error toggling checklist item completion:', err);
-      alert(`체크리스트 항목 완료 상태 변경 중 오류가 발생했습니다: ${err.message}`);
+      setError(`체크리스트 항목 완료 상태 변경 중 오류가 발생했습니다: ${err.message}`);
     }
   };
 
@@ -472,7 +537,9 @@ const CheckListManager = () => {
   }
 
   return (
-    <div className={styles.mainContainer}>
+    <div className={`${styles.mainContainer} ${!permission ? styles.readOnly : ''}`}>
+      {/* 권한 없음 메시지 */}
+          
       <div className={styles.sidebar}>
         <div className={styles.searchContainer}>
           <CheckListSearch 
@@ -481,20 +548,23 @@ const CheckListManager = () => {
           />
         </div>
         <CheckSidebar 
-  categories={categories}
-  selectedCategory={selectedCategoryId}
-  onSelectCategory={setSelectedCategoryId}
-  onUpdateCategory={handleUpdateCategory}
-  onDeleteCategory={handleDeleteCategory}
-/>
+          categories={categories}
+          selectedCategory={selectedCategoryId}
+          onSelectCategory={setSelectedCategoryId}
+          onUpdateCategory={handleUpdateCategory}
+          onDeleteCategory={handleDeleteCategory}
+          hasPermission={permission} // 권한 정보 전달
+        />
         
         <CheckListAdd 
           onAddCategory={handleAddCategory} 
           categories={categories}
+          disabled={permission === false} // 권한 정보 전달
         />
       </div>
      
-      <div className={styles.managerContent}><p className={styles.mainTitleName}>📝체크리스트</p>
+      <div className={styles.managerContent}>
+        <p className={styles.mainTitleName}>📝체크리스트</p>
         <CheckList
           categoryId={selectedCategoryId}
           items={checklistItems[selectedCategoryId] || []}
@@ -503,6 +573,7 @@ const CheckListManager = () => {
           onToggleComplete={handleToggleComplete}
           onDeleteItem={handleDeleteItem}
           onUpdateItem={handleUpdateItem}
+          hasPermission={permission} // 권한 정보 전달
         />
       </div>
     </div>

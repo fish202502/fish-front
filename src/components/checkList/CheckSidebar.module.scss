@@ -4,7 +4,25 @@
   padding: 0;
   margin: 0;
 }
-
+.categoryItem{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.editContainer{
+  width: 100%;
+  display: flex;
+  
+}
+.editInput{
+  width: 70%;
+  
+}
+.actionButtons{
+  width: 80%;
+  display: flex;
+  
+}
 .categoryli {
   padding: 10px 12px;
   margin-bottom: 8px;
@@ -21,6 +39,7 @@
   color: rgb(34, 35, 39);
   font-weight: bold;
 }
+
 
 
 
