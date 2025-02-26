@@ -26,6 +26,10 @@ export const router = createBrowserRouter([
     id:"room",
     children: [
       {
+        path: "home/:roomCode/:url",
+        element: <FinancialManager/>
+      },
+      {
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
         loader: validateRoomParams, // ✅ 추가
@@ -33,6 +37,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "check/:roomCode/:url",
+        loader: validateRoomParams,
         element: <CheckListManager />,
       },
       {

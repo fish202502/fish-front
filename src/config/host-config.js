@@ -19,7 +19,7 @@ const API_BASE_URL = `${backendHostName}/api/fish`;
 const EXPENSE = '/expense';
 const CHECK= '/check';
 const SCHEDULE = '/schedule'
-const CHAT = 'chat'
+const CHAT = '/chat'
 const PHOTO = '/photo'
 
 // 만약에 클라이언트가 localhost면 
