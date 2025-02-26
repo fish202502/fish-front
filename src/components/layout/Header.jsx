@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Header.css"; // CSS 파일 연결
-import {
-  NavLink,
-  useParams,
-} from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { usePermission } from "../../pages/MainLayout";
 
@@ -21,8 +18,31 @@ const Header = () => {
   }, []);
 
   const handleConfirm = () => {
-    navigate("/", { state: { roomCode, url } });
+    updateRoomData();
     setShowModal(false);
+  };
+
+  const updateRoomData = async () => {
+    if (!roomCode || !url || roomCode === "undefined")
+      return redirect("/error");
+
+    try {
+      const response = await fetch(
+        `http://localhost:8999/api/fish/rooms/${roomCode}/${url}?type=all`,
+        {
+          method: "PUT",
+        }
+      );
+      const data = await response.json();
+      window.location.href
+      =`http://localhost:5173/room/setting/${data.roomCode}/${data.writeUrl}`;
+
+      if (!response.ok) {
+        throw new Error("서버 요청 실패");
+      }
+    } catch (error) {
+      console.error("에러 발생:", error);
+    }
   };
 
   return (
@@ -60,21 +80,26 @@ const Header = () => {
 
       {/* 🔥 모달 컴포넌트 */}
       {showModal && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <p>정말로 변경하시겠습니까?</p>
-      <p className="warning-text">변경 시 URL을 반드시 새로 공유해주세요</p>
-      <div className="modal-buttons">
-        <button className="confirm-btn" onClick={handleConfirm}>
-          확인
-        </button>
-        <button className="cancel-btn" onClick={() => setShowModal(false)}>
-          취소
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>정말로 변경하시겠습니까?</p>
+            <p className="warning-text">
+              변경 시 URL을 반드시 새로 공유해주세요
+            </p>
+            <div className="modal-buttons">
+              <button className="confirm-btn" onClick={handleConfirm}>
+                확인
+              </button>
+              <button
+                className="cancel-btn"
+                onClick={() => setShowModal(false)}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -1,0 +1,98 @@
+.mainFrame {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.deleteContainer {
+  width: 10%;
+  margin-top: 10px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.currentRoomContainer {
+  width: 10%;
+  margin-top: 10px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.currentRoom{
+  font-size: 24px;
+}
+.deleteBtn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.deleteBtn:hover {
+  background: #d9363e;
+}
+
+/* 모달 스타일 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.buttonGroup {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.confirmBtn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.deleteContent{
+  font-size: 24px;
+}
+.cancelBtn {
+  background: #ddd;
+  color: black;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.confirmBtn:hover {
+  background: #d9363e;
+}
+
+.cancelBtn:hover {
+  background: #bbb;
+}

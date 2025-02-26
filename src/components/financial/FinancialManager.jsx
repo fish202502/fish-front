@@ -93,7 +93,7 @@ const FinancialManager = () => {
         }
       } catch (error) {
         console.error("데이터를 불러오는 중 오류 발생:", error);
-        setError("데이터를 불러오는 데 실패했습니다: " + error.message);
+
       } finally {
         setIsLoading(false);
       }
@@ -314,13 +314,12 @@ const FinancialManager = () => {
     }
   };
 
- // FinancialManager.js 내부의 render 부분만 수정
-// 이 부분만 복사해서 해당 파일의 return 부분을 대체하세요
+
 
 return (
   <>
     <div className={`main-frame ${!permission ? 'read-only' : ''}`}>
-      <h2 className="main-title">📅 여행 지출 관리</h2>
+      <h2 className="main-title">📅 Trip Expense Manager</h2>
 
       {/* 로딩 표시 */}
       {isLoading && <div className="loading">데이터를 불러오는 중...</div>}

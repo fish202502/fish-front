@@ -7,8 +7,7 @@ const PermissionContext = createContext(null);
 
 const MainNavigation = () => {
   const permissionData = useRouteLoaderData("room");
-  console.log(permissionData,"ss");
-  
+
   return (
     <>
       <PermissionContext.Provider value={permissionData}>

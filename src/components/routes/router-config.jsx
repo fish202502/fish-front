@@ -5,12 +5,16 @@ import CreateRoom from "../room/CreateRoom";
 import FinancialManager from "../financial/FinancialManager";
 import { BsChatHeart } from "react-icons/bs";
 import MainNavigation from "../../pages/MainLayout";
-import { permissionCheckLoader, validateRoomParams } from "../../config/permission-config";
+import { permissionCheckLoader } from "../../config/permission-config";
 import ErrorPage from "../../pages/ErrorPage";
 import CheckList from "../checkList/CheckList";
 import CheckListManager from "../checkList/CheckListManager";
 import ScheduleManager from "../../Schedule/ScheduleManager";
 import GalleryManager from "../../Gallery/GalleryManager";
+import ChatNameProvider from "../../context/ChatNameProvider";
+import ShowUrl from "../room/ShowUrl";
+import UrlContext from "../../context/url-context";
+import UrlProvider from "../../context/UrlProvider";
 import Setting from "../roomSetting/Setting";
 
 // 라우터 설정
@@ -33,17 +37,19 @@ export const router = createBrowserRouter([
       {
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
-        loader: validateRoomParams, // ✅ 추가
         errorElement: <ErrorPage />, 
       },
       {
         path: "check/:roomCode/:url",
-        loader: validateRoomParams,
         element: <CheckListManager />,
       },
       {
         path: "chat/:roomCode/:url",
-        element: <Chat />,
+        element: 
+        <ChatNameProvider>
+        <Chat />
+        </ChatNameProvider>
+        ,
       },
       {
         path: "schedule/:roomCode/:url",
@@ -54,9 +60,13 @@ export const router = createBrowserRouter([
         element:<GalleryManager/>
       },
       {
-        path:"setting/:roomCode/:url",
-        element: <Setting/>
-      }
+        path: "setting/:roomCode/:url",
+        element:
+        <UrlProvider>
+        <ShowUrl />
+        <Setting/>
+        </UrlProvider>
+      },
     ],
   },
 ]);
