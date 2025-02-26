@@ -59,7 +59,9 @@ const CreateRoom = () => {
           + 방 만들기
         </div>
       ) : (
-      data && <ShowUrl handlecreateBtn={handleCreateBtn} data={data} />
+      data && <ShowUrl
+      after={true}
+      handlecreateBtn={handleCreateBtn} data={data} />
       )}
     </div>
   );

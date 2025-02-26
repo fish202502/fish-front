@@ -19,9 +19,13 @@ export const permissionCheckLoader = async ({ params }) => {
     }
 
     const data = await response.json();
-    console.log("✅ permissionCheckLoader result:", data.type);
 
-    return { permission: data.type };
+    return { 
+      permission: data.type,
+      roomCode : data.roomCode,
+      readUrl : data.readUrl,
+      writeUrl : data.writeUrl
+     };
   } catch (error) {
     validateRoomParams();
     return { permission: false };

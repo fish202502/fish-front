@@ -12,6 +12,9 @@ import CheckListManager from "../checkList/CheckListManager";
 import ScheduleManager from "../../Schedule/ScheduleManager";
 import GalleryManager from "../../Gallery/GalleryManager";
 import ChatNameProvider from "../../context/ChatNameProvider";
+import ShowUrl from "../room/ShowUrl";
+import UrlContext from "../../context/url-context";
+import UrlProvider from "../../context/UrlProvider";
 
 // 라우터 설정
 export const router = createBrowserRouter([
@@ -51,7 +54,14 @@ export const router = createBrowserRouter([
       {
         path: "photo/:roomCode/:url",
         element:<GalleryManager/>
-      }
+      },
+      {
+        path: "setting/:roomCode/:url",
+        element:
+        <UrlProvider>
+        <ShowUrl />
+        </UrlProvider>
+      },
     ],
   },
 ]);

@@ -28,16 +28,30 @@ const Header = () => {
   return (
     <>
       <nav className="header-nav">
+
+
         <div
           style={{
             width: !permission ? 0 : "auto",
             visibility: !permission ? "hidden" : "visible",
-          }}
-        >
+          }}>
           <button onClick={() => setShowModal(true)} className="room-info-btn">
             방정보 변경
           </button>
         </div>
+
+
+        <div
+          style={{
+            width: !permission ? 0 : "auto",
+            visibility: !permission ? "hidden" : "visible",
+          }}>
+          <button onClick={() => setShowModal(true)} className="room-info-btn">
+            url 공유하기
+          </button>
+        </div>
+
+
         <ul className="nav-list">
           {[
             { id: "home", name: "홈" },
