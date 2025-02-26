@@ -6,6 +6,7 @@ import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 import styles from "./ScheduleManager.module.css";
 import {useParams} from "react-router-dom";
 import {SCHEDULE_API_URL} from "../config/host-config.js";
+import {usePermission} from "../pages/MainLayout.jsx";
 
 const ScheduleManager = () => {
   const [schedules, setSchedules] = useState([]);
@@ -19,33 +20,22 @@ const ScheduleManager = () => {
   const [invalidSchedules, setInvalidSchedules] = useState([]); // 유효하지 않은 일정 목록
   // 권한 상태추가
   const [permission,setPermission] = useState(null);
+  const permissionData = usePermission();
+  const [name, setName] = useState("");
   // 에러의 데이터를 관리하는 상태변수
   const [error, setError] = useState('');
 
   const {roomCode,url} = useParams();
   const API_BASE_URL = 'http://localhost:8999/api/fish/rooms';
 
-  useEffect(()=>{
-    const fetchPermssion = async () =>{
-      try{
-        const response = await fetch(
-          `${API_BASE_URL}/${roomCode}/${url}`,
-          {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-          }
-        );
-        const data = await response.json();
-        console.log("권한 확인 응답:",data);
-        setPermission(true);
-      }catch (error){
-        console.error("권한 확인중 오류발생",error);
-        handleError("권한 오류", "권한 확인에 실패했습니다.");
-        setPermission(false); // 오류시 권한 없음으로 설정
-      }
-    };
-    fetchPermssion();
-  },[roomCode,url])
+  // 권한 체크
+  useEffect(() => {
+    console.log("권한 데이터:", permissionData);
+    setPermission(permissionData.permission);
+    if(permissionData.permission === false){
+      setName("permission-false");
+    }
+  }, [permissionData]);
 
   // 전체 일정 정보를 불러오는 함수
   const fetchScheduleData = async () => {

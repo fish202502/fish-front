@@ -7,6 +7,8 @@ import ErrorModal from "../ui/Modal/ErrorModal.jsx";
 import styles from "./GalleryManager.module.css"
 import DeleteConfirmModal from "../ui/Modal/DeleteConfirmModal.jsx";
 import {PHOTO_API_URL} from "../config/host-config.js"
+import {usePermission} from "../pages/MainLayout.jsx";
+
 
 const GalleryManager = () => {
   // 권한 상태 추가
@@ -18,31 +20,20 @@ const GalleryManager = () => {
   const [error,setError] = useState(null);
   // 라우터 파라미터 가져오기
   const {roomCode,url} =useParams();
+  const permissionData = usePermission();
+  const [name, setName] = useState("");
 
   const API_BASE_URL = 'http://localhost:8999/api/fish/rooms'
   const IMAGE_BASE_URL = 'http://localhost:8999';
 
+  // 권한 체크
   useEffect(() => {
-    const fetchPermission = async () =>{
-      try{
-        const response = await fetch (
-          `${API_BASE_URL}/${roomCode}/${url}`,
-          {
-              method:"POST",
-              headers:{"Content-Type":"application/json"},
-          });
-        const data = await response.json();
-        console.log("권한 확인 응답",data);
-
-        setPermission(true)
-      }catch(error){
-        console.log("권한확인중 오류 발생",error);
-        handleError("권한 오류","권한 확인에 실패했습니다.");
-        setPermission(false);
-      }
-    };
-    fetchPermission();
-  }, [roomCode,url]);
+    console.log("권한 데이터:", permissionData);
+    setPermission(permissionData.permission);
+    if(permissionData.permission === false){
+      setName("permission-false");
+    }
+  }, [permissionData]);
 
   // 컴포넌트가 처음 마운트될 때 이미지 목록을 가져옵니다
   useEffect(()=>{
