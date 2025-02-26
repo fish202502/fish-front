@@ -4,6 +4,7 @@ import FinancialList from "./FinancialList";
 import "./FinancialManager.css";
 import { useParams } from "react-router-dom";
 import { usePermission } from "../../pages/MainLayout";
+import { EXPENSE_API_URL } from "../../config/host-config";
 
 const FinancialManager = () => {
   const [financials, setFinancials] = useState([]);
@@ -17,7 +18,7 @@ const FinancialManager = () => {
   const { roomCode, url } = useParams();
 
   // API 기본 URL 설정
-  const EXPENSE_API_URL = 'http://localhost:8999/api/fish/expense';
+
 
   // 권한 체크
   useEffect(() => {
