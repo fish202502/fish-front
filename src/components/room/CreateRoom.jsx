@@ -10,31 +10,31 @@ const CreateRoom = () => {
   const location = useLocation();
   const { roomCode, url } = location.state || {};
 
-  useEffect(() => {
-    const updateRoomData = async () => {
-      if (!roomCode || !url || roomCode ==='undefined') return redirect("/error");
+  // useEffect(() => {
+  //   const updateRoomData = async () => {
+  //     if (!roomCode || !url || roomCode ==='undefined') return redirect("/error");
 
-      try {
-        const response = await fetch(
-          `http://localhost:8999/api/fish/rooms/${roomCode}/${url}?type=all`,
-          {
-            method: "PUT",
-          }
-        );
-        const data = await response.json();
-        setData(data);
-        setCreateFlag(true);
+  //     try {
+  //       const response = await fetch(
+  //         `http://localhost:8999/api/fish/rooms/${roomCode}/${url}?type=all`,
+  //         {
+  //           method: "PUT",
+  //         }
+  //       );
+  //       const data = await response.json();
+  //       setData(data);
+  //       setCreateFlag(true);
         
-        if (!response.ok) {
-          throw new Error("서버 요청 실패");
-        }
-      } catch (error) {
-        console.error("에러 발생:", error);
-      }
-    };
+  //       if (!response.ok) {
+  //         throw new Error("서버 요청 실패");
+  //       }
+  //     } catch (error) {
+  //       console.error("에러 발생:", error);
+  //     }
+  //   };
 
-    updateRoomData();
-  }, []);
+  //   updateRoomData();
+  // }, []);
 
   const handleCreateBtn = async () => {
     try {

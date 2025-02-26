@@ -5,7 +5,7 @@ import CreateRoom from "../room/CreateRoom";
 import FinancialManager from "../financial/FinancialManager";
 import { BsChatHeart } from "react-icons/bs";
 import MainNavigation from "../../pages/MainLayout";
-import { permissionCheckLoader, validateRoomParams } from "../../config/permission-config";
+import { permissionCheckLoader } from "../../config/permission-config";
 import ErrorPage from "../../pages/ErrorPage";
 import CheckList from "../checkList/CheckList";
 import CheckListManager from "../checkList/CheckListManager";
@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
       {
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
-        loader: validateRoomParams, // ✅ 추가
+        // loader: validateRoomParams, // ✅ 추가
         errorElement: <ErrorPage />, 
       },
       {

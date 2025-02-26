@@ -10,6 +10,7 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
   const [writeUrl, setWriteUrl] = useState("");
 
   const [fromHome, setFromHome] = useState(false);
+  const [permission, setPermission] = useState(true);
   const permissionData = usePermission();
 
   const [roomCode, setRoomCode] = useState("");
@@ -32,8 +33,10 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
     }
     setRoomCode(roomData.roomCode);
     emailInput.current.focus();
-
     setFromHome(after);
+    if(permissionData){
+      setPermission(permissionData.permission);
+    }
   }, []);
 
   // 링크 클릭 시 자동 복사
@@ -102,7 +105,7 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
             바로가기
           </button>}
         </div>
-      {permissionData.permission && <div className="url-group">
+      {(fromHome || permission) && <div className="url-group">
         <p>✍️ 쓰기 전용 링크 </p>
         <input
           type="text"
@@ -123,7 +126,7 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
       {fromHome && (
         <div className="button-group">
           <button className="exit-btn" onClick={handleExit}>
-            돌아가기
+           새로 방만들기
           </button>
         </div>
       )}
