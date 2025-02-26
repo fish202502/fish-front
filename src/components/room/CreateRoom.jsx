@@ -1,16 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ShowUrl from "./ShowUrl";
 import "./CreateRoom.css"; // CSS 연결
+import { useLocation } from "react-router-dom";
 
 const CreateRoom = () => {
   const [createFlag, setCreateFlag] = useState(false);
   const [data, setData] = useState(null); // API 데이터 상태
 
+  const location = useLocation();
+  const { roomCode, url } = location.state || {};
+
+  useEffect(() => {
+    const updateRoomData = async () => {
+      if (!roomCode || !url || roomCode ==='undefined') return redirect("/error");
+
+      try {
+        const response = await fetch(
+          `http://localhost:8999/api/fish/rooms/${roomCode}/${url}?type=all`,
+          {
+            method: "PUT",
+          }
+        );
+        const data = await response.json();
+        setData(data);
+        setCreateFlag(true);
+        
+        if (!response.ok) {
+          throw new Error("서버 요청 실패");
+        }
+      } catch (error) {
+        console.error("에러 발생:", error);
+      }
+    };
+
+    updateRoomData();
+  }, []);
+
   const handleCreateBtn = async () => {
     try {
-      const response = await fetch("http://localhost:8999/api/fish/rooms",{
-        method:'POST',
+      const response = await fetch("http://localhost:8999/api/fish/rooms", {
+        method: "POST",
       });
+
       const result = await response.json();
       console.log(result); // API 응답 확인
 
@@ -28,7 +59,7 @@ const CreateRoom = () => {
           + 방 만들기
         </div>
       ) : (
-        data && <ShowUrl handlecreateBtn={handleCreateBtn} data={data} />
+      data && <ShowUrl handlecreateBtn={handleCreateBtn} data={data} />
       )}
     </div>
   );
