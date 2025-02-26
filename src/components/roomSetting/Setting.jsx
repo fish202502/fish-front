@@ -34,6 +34,7 @@ const Setting = () => {
     let modalState;
     if (showDelModal) {
       modalState = "del";
+      deleteRoom();
     } else if (showModiModal) {
       modalState = "modi";
       updateRoomData();
@@ -81,6 +82,28 @@ const Setting = () => {
       console.error("에러 발생:", error);
     }
   };
+
+  const deleteRoom = async()=>{
+    if (!roomCode || !url || roomCode === "undefined")
+      return redirect("/error");
+
+    try {
+      const response = await fetch(
+        `http://localhost:8999/api/fish/rooms/${roomCode}/${url}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await response.json();
+      window.location.href = `http://localhost:5173`;
+
+      if (!response.ok) {
+        throw new Error("서버 요청 실패");
+      }
+    } catch (error) {
+      console.error("에러 발생:", error);
+    }
+  }
 
   return (
     <>
