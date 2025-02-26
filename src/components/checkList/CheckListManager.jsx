@@ -94,7 +94,6 @@ const CheckListManager = () => {
         }
       } catch (err) {
         console.error('Error fetching checklist data:', err);
-        setError('체크리스트 데이터를 불러오는 중 오류가 발생했습니다: ' + err.message);
       } finally {
         setIsLoading(false);
       }

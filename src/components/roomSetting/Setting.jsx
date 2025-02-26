@@ -1,15 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Setting.module.scss";
+import { usePermission } from "../../pages/MainLayout";
 
 const Setting = () => {
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [permission, setPermission] = useState(null);
+  const permissionData = usePermission();
+
+  useEffect(() => {
+    console.log("권한 데이터" , permissionData );
+    
+    setPermission(permissionData.permission);
+
+  }, []);
+  let currentRoom ="";
+
+  if(!permission){
+    currentRoom ="읽기"
+  }else{
+    currentRoom = "쓰기"
+  }
+
 
   const handleDelete = () => {
     alert("방이 삭제되었습니다.");
     setIsModalOpen(false);
     // 여기에서 실제 삭제 로직 추가 (예: API 호출)
   };
-  const currentRoom = "읽기"
+  
+
   return (
     <div className={styles.mainFrame}>
       <h2>방 설정</h2>
