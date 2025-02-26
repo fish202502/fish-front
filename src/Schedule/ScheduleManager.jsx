@@ -451,7 +451,7 @@ const ScheduleManager = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${!permission ? 'read-only' : ''}`}>
       {error && <ErrorModal title={error.title} message={error.message} onClose={closeErrorModal} />}
       <div className={styles.diaryContainer}>
         <h2 className={styles.title}> Travel Planner </h2>
