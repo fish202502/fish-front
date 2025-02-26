@@ -13,14 +13,13 @@
 }
 .main-title {
   font-size: 40px;
-  
+  text-align: center;
   color: white;
-  margin-top: -10px;
+  margin-top: 5px;
   margin-bottom: 15px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   
 }
-
 
 .Frame {
   max-width: 600px;
@@ -126,6 +125,44 @@ ul {
   background-color: #f1a5a5;
 }
 
+
+/* 읽기 전용 모드 스타일 */
+.read-only{
+  position: relative;
+  
+  /* 읽기 전용 모드 표시 */
+  &:after {
+    content: "읽기 전용 모드";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10;
+  }
+  
+  /* 읽기 전용 모드에서 버튼 스타일 */
+  :global {
+    button[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background-color: #e9ecef;
+      color: #6c757d;
+    }
+    
+    input[disabled],
+    textarea[disabled] {
+      background-color: #f8f9fa;
+      border-color: #ced4da;
+      color: #6c757d;
+      cursor: not-allowed;
+    }
+  }
+}
 /* 반응형 디자인을 위한 미디어 쿼리 */
 @media (max-width: 480px) {
   .financial-content {
