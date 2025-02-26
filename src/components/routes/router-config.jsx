@@ -63,8 +63,8 @@ export const router = createBrowserRouter([
         path: "setting/:roomCode/:url",
         element:
         <UrlProvider>
-        <ShowUrl />
         <Setting/>
+        <ShowUrl />
         </UrlProvider>
       },
     ],

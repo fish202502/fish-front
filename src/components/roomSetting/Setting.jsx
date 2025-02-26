@@ -1,65 +1,121 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Setting.module.scss";
 import { usePermission } from "../../pages/MainLayout";
+import { useParams } from "react-router-dom";
 
 const Setting = () => {
-  
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [permission, setPermission] = useState(null);
   const permissionData = usePermission();
 
+  const [showDelModal, setShowDelModal] = useState(false);
+  const [showModiModal, setShowModiModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const [message, setMessage] = useState("");
+  const [strongMessage, setStrongMessage] = useState("");
+
+  const { roomCode, url } = useParams();
+
   useEffect(() => {
-    console.log("권한 데이터" , permissionData );
-    
+    console.log("권한 데이터", permissionData);
+
     setPermission(permissionData.permission);
-
   }, []);
-  let currentRoom ="";
+  let currentRoom = "";
 
-  if(!permission){
-    currentRoom ="읽기"
-  }else{
-    currentRoom = "쓰기"
+  if (!permission) {
+    currentRoom = "읽기";
+  } else {
+    currentRoom = "쓰기";
   }
 
+  // 모달 핸들러
+  const handleConfirm = () => {
+    let modalState;
+    if (showDelModal) {
+      modalState = "del";
+    } else if (showModiModal) {
+      modalState = "modi";
+      updateRoomData();
+    }
+    setShowModal(false);
+  };
 
   const handleDelete = () => {
-    alert("방이 삭제되었습니다.");
-    setIsModalOpen(false);
-    // 여기에서 실제 삭제 로직 추가 (예: API 호출)
+    setMessage("정말 삭제하시겠습니까?");
+    setStrongMessage("삭제된 방은 복구되지 않습니다.");
+    setShowModal(true);
+    setShowDelModal(true);
   };
-  
+  const handleModi = () => {
+    setMessage("방정보를 변경하시겠습니까?");
+    setStrongMessage("변경 후 url을 다시 공유해주세요.");
+    setShowModal(true);
+    setShowModiModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setShowDelModal(false);
+    setShowModiModal(false);
+  };
+
+  const updateRoomData = async () => {
+    if (!roomCode || !url || roomCode === "undefined")
+      return redirect("/error");
+
+    try {
+      const response = await fetch(
+        `http://localhost:8999/api/fish/rooms/${roomCode}/${url}?type=all`,
+        {
+          method: "PUT",
+        }
+      );
+      const data = await response.json();
+      window.location.href = `http://localhost:5173/room/setting/${data.roomCode}/${data.writeUrl}`;
+
+      if (!response.ok) {
+        throw new Error("서버 요청 실패");
+      }
+    } catch (error) {
+      console.error("에러 발생:", error);
+    }
+  };
 
   return (
-    <div className={styles.mainFrame}>
-      <h2>방 설정</h2>
-      <div className={styles.currentRoomContainer}>
-        <p className={styles.currentRoom}>방 권한 : {currentRoom} 권한</p>
-       
+    <>
+      <div className={styles.mainFrame}>
+        <div className={styles.currentRoomContainer}>
+          <p className={styles.currentRoom}>방 권한 : {currentRoom} 권한</p>
+        </div>
+        {permission && (
+          <div className={styles.deleteContainer}>
+            <button onClick={handleModi} className={styles.deleteBtn}>
+              방 url변경
+            </button>
+            <button onClick={handleDelete} className={styles.deleteBtn}>
+              방 삭제하기
+            </button>
+          </div>
+        )}
       </div>
-      <div className={styles.deleteContainer}>
-        <p className={styles.deleteContent}>방 삭제</p>
-        <button onClick={() => setIsModalOpen(true)} className={styles.deleteBtn}>
-          삭제하기
-        </button>
-      </div>
-
-      {isModalOpen && (
+      {showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
-            <p>정말 삭제하시겠습니까?</p>
-            <div className={styles.buttonGroup}>
-              <button onClick={handleDelete} className={styles.confirmBtn}>
+            <p>{message}</p>
+            <p className={styles.warningText}>{strongMessage}</p>
+            <div className={styles.modalButtons}>
+              <button className={styles.confirmBtn} onClick={handleConfirm}>
                 확인
               </button>
-              <button onClick={() => setIsModalOpen(false)} className={styles.cancelBtn}>
+              <button className={styles.cancelBtn} onClick={handleCloseModal}>
                 취소
               </button>
             </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
