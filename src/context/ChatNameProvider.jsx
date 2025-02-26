@@ -7,14 +7,23 @@ const ChatNameProvider = ({ children }) => {
     return storedName ? JSON.parse(storedName) : null;
   });
 
+  const [mySessionIds, setMySessionIds] = useState(() => {
+    const storedIds = sessionStorage.getItem("mySessionIds");
+    return storedIds ? JSON.parse(storedIds) : [];
+  });
+
   useEffect(() => {
     if (chatName) {
       sessionStorage.setItem("chatName", JSON.stringify(chatName));
     }
   }, [chatName]);
 
+  useEffect(() => {
+    sessionStorage.setItem("mySessionIds", JSON.stringify(mySessionIds));
+  }, [mySessionIds]);
+
   return (
-    <ChatNameContext.Provider value={{ chatName, setChatName }}>
+    <ChatNameContext.Provider value={{ chatName, setChatName, mySessionIds, setMySessionIds }}>
       {children}
     </ChatNameContext.Provider>
   );
