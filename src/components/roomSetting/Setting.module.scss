@@ -1,4 +1,6 @@
 .mainFrame {
+  display: flex;
+  justify-content: center;
   padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
@@ -43,8 +45,8 @@
   background: #d9363e;
 }
 
-/* 모달 스타일 */
 .modalOverlay {
+  z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
@@ -52,47 +54,51 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .modalContent {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 30px; /* 크기 키움 */
+  border-radius: 12px; /* 모서리 둥글게 */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
   text-align: center;
+  width: 400px; /* 모달 너비 키움 */
+
+  p {
+    font-size: 18px; /* 기본 글자 크기 키움 */
+    margin-bottom: 10px;
+  }
+
+  .warningText {
+    font-family: "돋움", Dotum, sans-serif; /* 돋움체 적용 */
+    font-size: 20px; /* 크기 키움 */
+    font-weight: bold;
+    color: red; /* 빨간색 적용 */
+  }
 }
 
-.buttonGroup {
+.modalButtons {
   margin-top: 15px;
-  display: flex;
-  justify-content: space-around;
+}
+
+.confirmBtn,
+.cancelBtn {
+  margin: 0 15px;
+  padding: 10px 20px; /* 버튼 크기 키움 */
+  border: none;
+  cursor: pointer;
+  font-size: 16px; /* 버튼 글자 크기 키움 */
+  border-radius: 5px;
 }
 
 .confirmBtn {
-  background: #ff4d4f;
+  background-color: #007bff;
   color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
 }
-.deleteContent{
-  font-size: 24px;
-}
+
 .cancelBtn {
-  background: #ddd;
+  background-color: #ccc;
   color: black;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.confirmBtn:hover {
-  background: #d9363e;
-}
-
-.cancelBtn:hover {
-  background: #bbb;
 }
