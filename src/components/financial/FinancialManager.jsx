@@ -320,7 +320,7 @@ const FinancialManager = () => {
 return (
   <>
     <div className={`main-frame ${!permission ? 'read-only' : ''}`}>
-      <h2 className="main-title">📅 여행 지출 관리</h2>
+      <h2 className="main-title">📅 Trip Expense Manager</h2>
 
       {/* 로딩 표시 */}
       {isLoading && <div className="loading">데이터를 불러오는 중...</div>}
