@@ -7,6 +7,7 @@ import CheckListSearch from './CheckListSearch';
 import { useParams } from 'react-router-dom';
 import { usePermission } from '../../pages/MainLayout';
 import { CHECK_API_URL } from '../../config/host-config';
+import ErrorModal from '../../ui/Modal/ErrorModal';
 
 const CheckListManager = () => {
   const [categories, setCategories] = useState([]);
@@ -15,6 +16,13 @@ const CheckListManager = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [permission, setPermission] = useState(null); // 권한 상태 추가
+  const [modal , setModal] = useState(false);
+  const [permissionError , setPermissionError] = useState('');
+
+
+  const closePermissionModal = () => {
+    setPermissionError(null);
+  };
 
   // 권한 정보 가져오기
   const permissionData = usePermission();
@@ -463,6 +471,15 @@ const CheckListManager = () => {
       // 선택된 카테고리의 체크리스트 아이템 목록에서 해당 항목 찾기
       const currentItem = checklistItems[categoryId].find(item => item.id === itemId);
       
+      // Check permission first
+    if (!permission) {
+      // Show the permission error modal
+      setPermissionError({
+        title: "읽기 전용 모드",
+        message: "읽기 전용 모드에서는 체크리스트를 수정할 수 없습니다."
+      });
+      return; 
+    }
       if (!currentItem) {
         throw new Error('체크리스트 항목을 찾을 수 없습니다.');
       }
@@ -500,7 +517,7 @@ const CheckListManager = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error("응답 에러:", errorText);
-        throw new Error(`체크리스트 항목 완료 상태 변경에 실패했습니다 (${response.status})`);
+        setModal()
       }
       
       // 로컬 상태 업데이트
@@ -539,6 +556,14 @@ const CheckListManager = () => {
     <div className={`${styles.mainContainer} ${!permission ? styles.readOnly : ''}`}>
       {/* 권한 없음 메시지 */}
           
+      {permissionError && (
+        <ErrorModal 
+          title={permissionError.title}
+          message={permissionError.message}
+          onClose={closePermissionModal}
+        />
+      )}
+      
       <div className={styles.sidebar}>
         <div className={styles.searchContainer}>
           <CheckListSearch 
