@@ -90,12 +90,13 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
   return (
     <div className="container-Show">
       {confrimModal && <SendModal onModal={closeModal} />}
-      {fromHome ? <h1 className="title">방 생성 완료!</h1> : ""}
+      {fromHome ? <h1 className="showTitle">방 생성 완료!</h1> : ""}
       <p className="copy-info">📌 링크를 클릭하면 복사됩니다.</p>{" "}
       {/* 안내 문구 추가 */}
         <div className="url-group">
-          <p>📖 읽기 전용 링크 </p>
+          <p>📖 읽기 전용 링크 : </p>
           <input
+            className="readUrlInput"
             type="text"
             value={readUrl}
             readOnly
@@ -106,8 +107,9 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
           </button>}
         </div>
       {(fromHome || permission) && <div className="url-group">
-        <p>✍️ 쓰기 전용 링크 </p>
+        <p>✍️ 쓰기 전용 링크 : </p>
         <input
+            className="writeUrlInput"
           type="text"
           value={writeUrl}
           readOnly
