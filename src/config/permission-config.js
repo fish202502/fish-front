@@ -1,6 +1,7 @@
-import { data, redirect, useParams } from "react-router-dom";
+import { data, redirect, useNavigate, useParams } from "react-router-dom";
 
 export const permissionCheckLoader = async ({ params }) => {
+
   const { roomCode, url } = params;
 
   if (!roomCode || !url || roomCode ==='undefined') return redirect("/error");
@@ -19,22 +20,17 @@ export const permissionCheckLoader = async ({ params }) => {
     }
 
     const data = await response.json();
-    console.log("✅ permissionCheckLoader result:", data.type);
 
-    return { permission: data.type };
-  } catch (error) {
-    validateRoomParams();
-    return { permission: false };
+return { 
+  permission: data.type,
+  roomCode : data.roomCode,
+  readUrl : data.readUrl,
+  writeUrl : data.writeUrl
+};
+} catch (error) {
+    return redirect("/error")
   }
 };
 
-export const validateRoomParams = async ({ params }) => {
-  const { roomCode, url } = params;
 
-  if (!roomCode || !url) {
-    throw new Response("잘못된 접근입니다.", { status: 400 });
-  }
-
-  return { roomCode, url }; // 정상일 경우 데이터 반환
-};
 
