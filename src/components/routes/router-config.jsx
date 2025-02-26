@@ -37,12 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
-        // loader: validateRoomParams, // ✅ 추가
         errorElement: <ErrorPage />, 
       },
       {
         path: "check/:roomCode/:url",
-        loader: validateRoomParams,
         element: <CheckListManager />,
       },
       {
