@@ -38,13 +38,13 @@ const ShowUrl = ({ data, handlecreateBtn }) => {
 
   //링크 이동
   const handleOpenReadLink = () => {
-    navigate(`/room/chat/${data.roomCode}/${data.readUrl}`);
+    navigate(`/room/schedule/${data.roomCode}/${data.readUrl}`);
   };
 
   const handleOpenWriteLink = () => {
     console.log("click");
     
-    navigate(`/room/chat/${data.roomCode}/${data.writeUrl}`);
+    navigate(`/room/schedule/${data.roomCode}/${data.writeUrl}`);
   };
 
   // 나가기 버튼 기능
