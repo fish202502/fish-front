@@ -40,13 +40,12 @@ const Header = () => {
         </div>
         <ul className="nav-list">
           {[
-            { id: "home", name: "홈" },
             { id: "schedule", name: "일정" },
             { id: "check", name: "체크리스트" },
             { id: "expense", name: "지출" },
             { id: "photo", name: "갤러리" },
             { id: "chat", name: "채팅방" },
-            { id: "setting", name: "설정" },
+            { id: "setting", name: "방설정" },
           ].map((item, index) => (
             <NavLink
               key={index}
