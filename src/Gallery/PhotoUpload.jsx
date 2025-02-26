@@ -2,21 +2,12 @@ import React, {useState, useRef} from 'react';
 import ErrorModal from "../ui/Modal/ErrorModal.jsx"
 import styles from "./PhotoUpload.module.css"
 
-
-
-
-
 const PhotoUpload = ({handleAddPhoto}) => {
 
   const [enteredFile,setEnteredFile] = useState(null);
-
   // 에러의 데이터를 관리하는 상태변수
   const [error,setError] = useState(null);
-
   const fileInputRef = useRef(null);
-
-
-
 
   const fileChangeHandler = (e) =>{
     const file = e.target.files[0];
@@ -25,11 +16,8 @@ const PhotoUpload = ({handleAddPhoto}) => {
     }
   }
 
-
   const handleSubmit =  (e) => {
     e.preventDefault();
-
-
     if(!enteredFile){
       setError({
         title: '유효하지 않은 입력값',
@@ -46,15 +34,12 @@ const PhotoUpload = ({handleAddPhoto}) => {
       fileInputRef.current.value = "";
       return;
     }
-
-     handleAddPhoto(enteredFile);
-
+    handleAddPhoto(enteredFile);
     setEnteredFile(null);
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-
   };
 
   // 에러모달을 닫아주는 함수
@@ -62,16 +47,11 @@ const PhotoUpload = ({handleAddPhoto}) => {
     setError(null);
   };
 
-
-
   return (
     <>
       {error && <ErrorModal title={error.title} message={error.message} onClose={closeModal}/>}
-
       <div className={styles.container}>
-
-
-      <div className={styles.addContainer}>
+        <div className={styles.addContainer}>
         {/* 파일 업로드 라벨 추가 */}
         <label htmlFor="fileUpload" className={styles.uploadLabel}>
           파일 선택
@@ -82,15 +62,11 @@ const PhotoUpload = ({handleAddPhoto}) => {
           onChange={fileChangeHandler}
           ref={fileInputRef}
         />
-
-        <button className={styles.uploadBtn} onClick={handleSubmit}>
+          <button className={styles.uploadBtn} onClick={handleSubmit}>
           추가
         </button>
       </div>
-
-
       </div>
-
     </>
   );
 };

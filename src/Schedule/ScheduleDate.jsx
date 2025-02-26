@@ -86,7 +86,7 @@ const ScheduleDate = ({onDateRangeChange, initialStartDate, initialEndDate, noMo
                     min={tripStartDate}
                     className={styles.dateInput}
                   />
-                  <div >
+                  <div>
                       <button onClick={confirmDates} className={styles.editBtn}>확인</button>
                       {onCancel && (
                         <button onClick={cancelEdit} className={styles.editBtn}>취소</button>

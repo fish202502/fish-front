@@ -2,7 +2,7 @@ import React from 'react';
 import PhotoItem from "./PhotoItem.jsx";
 import styles from "./PhotoList.module.css"
 
-const PhotoList = ({photos, removePhoto, onPhotoClick }) => {
+const PhotoList = ({photos, removePhoto, onPhotoClick,permission }) => {
 
   return (
     <div className={styles.photoListContainer}>
@@ -11,7 +11,7 @@ const PhotoList = ({photos, removePhoto, onPhotoClick }) => {
         ): (
           <div className={styles.photoList}>
             {photos.map((photo) => (
-          <PhotoItem key={photo.id} photo={photo} onDelete={() => removePhoto(photo.id)} onPhotoClick ={onPhotoClick}/>
+          <PhotoItem key={photo.id} photo={photo} onDelete={() => removePhoto(photo.id)} onPhotoClick ={onPhotoClick} permission={permission}/>
         ))}
       </div>
 

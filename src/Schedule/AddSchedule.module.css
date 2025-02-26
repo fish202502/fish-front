@@ -1,4 +1,3 @@
-/* 전체 일정 추가 컨테이너 */
 .addScheduleContainer {
     /*background: #F6D6D6;*/
     padding: 25px;
@@ -15,8 +14,6 @@
     font-size: 20px;
     font-weight: bold;
 }
-
-    /* 일정 제목 입력 */
 .titleContainer {
     width: 90%;
     /*display: flex;*/
@@ -26,47 +23,35 @@
     font-size: 20px;
 
 }
-
-
 .titleContainer input{
     margin-top: 10px;
 }
-
 .scheduleTitle {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ddd;
     font-size: 16px;
-
 }
-
 .scheduleTitle:focus {
     border-color: #E48F8F;
     box-shadow: 0 0 5px rgba(228, 143, 143, 0.5);
 }
-
-/* 날짜와 시간 입력을 한 줄에 배치 */
 .formGroup {
     display: flex;
-
     width: 100%;
     margin-bottom: 10px;
 }
-
-/* 날짜와 시간 입력 필드 스타일 */
 .dateInputContainer {
     display: flex;
     flex-direction: column;
     flex: 1;
 }
-
 .dateInputContainer label {
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 5px;
 }
-
 .dateInputContainer input {
     width: 80%;
     padding: 8px;
@@ -75,18 +60,13 @@
     font-size: 15px;
     transition: border-color 0.3s ease-in-out;
 }
-
 .dateInputContainer input:focus {
     border-color: #E48F8F;
 }
-
-/* 버튼 컨테이너 */
 .BtnContainer {
     display: flex;
     margin-top: 15px;
 }
-
-/* 버튼 스타일 */
 .submitBtn {
     background-color: #eeb1b1;
     color: white;
@@ -108,9 +88,6 @@
 
 }
 
-.travelDateContainer{
-    display: flex;
-}
 
 
 

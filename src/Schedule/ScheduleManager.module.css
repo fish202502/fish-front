@@ -10,16 +10,6 @@
     background: #f8f8f8;
 }
 
-.title {
-    font-size: 45px;
-    text-align: center;
-    color: white;
-    margin-bottom: 15px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-
-}
-
-/* 일정 입력 폼 스타일 */
 .diaryContainer{
     width: 90%;
     background: #F6D6D6;
@@ -27,8 +17,15 @@
     padding-bottom: 30px;
 }
 
-.whiteContainer {
+.title {
+    font-size: 45px;
+    text-align: center;
+    color: white;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
+.whiteContainer {
     background: white;
     margin: 10px 20px;
     border-radius: 20px;
@@ -40,29 +37,6 @@
     flex-direction: column;
 }
 
-.saveBtn{
-    display: inline-block;
-    background-color: #eeb1b1;
-    color: white;
-    border: none;
-    width: 200px;
-    height: 40px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out;
-
-}
-
-.saveBtn:hover {
-    background-color: #e07878;
-
-}
-
-/* ScheduleManager.module.css에 추가 */
 .fixContainer {
     display: flex;
     align-items: center;
@@ -84,7 +58,28 @@
     color: #aaaaaa;
 }
 
-.fixBtn {
+.saveBtn{
+    display: inline-block;
+    background-color: #eeb1b1;
+    color: white;
+    border: none;
+    width: 200px;
+    height: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+
+}
+
+.saveBtn:hover {
+    background-color: #e07878;
+}
+
+.modifyBtn {
     display: inline-block;
     background-color: #eeb1b1;
     color: white;
@@ -99,6 +94,6 @@
     transition: background 0.3s ease-in-out;
 }
 
-.fixBtn:hover {
+.modifyBtn:hover {
     background-color: #e07878;
 }
