@@ -22,7 +22,6 @@
     font-size: 45px;
     text-align: center;
     color: white;
-    margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -66,7 +65,6 @@
     &:after {
       content: "읽기 전용 모드";
       position: absolute;
-      top: 10px;
       right:5px;
       /* 나머지 스타일은 그대로 */
     }

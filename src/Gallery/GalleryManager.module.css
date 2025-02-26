@@ -25,3 +25,34 @@
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
     padding-bottom: 30px;
 }
+
+.read-only {
+    position: relative;
+    width: 100%; /* 부모의 너비를 채우도록 설정 */
+
+    &:after {
+        content: "읽기 전용 모드";
+        position: absolute;
+        right:5px;
+        /* 나머지 스타일은 그대로 */
+    }
+
+
+    /* 읽기 전용 모드에서 버튼 스타일 */
+    :global {
+        button[disabled] {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        input[disabled],
+        textarea[disabled] {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+    }
+}

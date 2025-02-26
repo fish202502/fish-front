@@ -451,10 +451,10 @@ const ScheduleManager = () => {
   };
 
   return (
-    <div className={`${styles.container} ${!permission ? 'read-only' : ''}`}>
-      {error && <ErrorModal title={error.title} message={error.message} onClose={closeErrorModal} />}
+    <div className={styles.container}>
+      {error && <ErrorModal title={error.title} message={error.message} onClose={closeErrorModal}  />}
       <div className={styles.diaryContainer}>
-        <h2 className={styles.title}> Travel Planner </h2>
+        <h2 className={`${styles.title} ${!permission ? 'read-only' : ''} `}> Travel Planner </h2>
         <div className={styles.whiteContainer}>
           {isLoading ? (
             <p>일정을 불러오는 중...</p>
