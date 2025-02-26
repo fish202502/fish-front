@@ -3,7 +3,7 @@ import "./AddFinancial.css";
 import ErrorModal from "../ui/Modal/ErrorModal"
 
 
-const AddFinancial = ({ addFinancial }) => {
+const AddFinancial = ({ addFinancial, disabled }) => {
   const [formData, setFormData] = useState({
     spender: "",          // 지출자 이름
     description: "",      // 설명
@@ -16,6 +16,9 @@ const AddFinancial = ({ addFinancial }) => {
 
   // 입력 필드 변경 핸들러
   const handleChange = (e) => {
+    // 읽기 권한일 경우 변경 불가
+    if (disabled) return;
+    
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -25,6 +28,9 @@ const AddFinancial = ({ addFinancial }) => {
 
   // 이미지 처리 함수
   const handlePreview = (e) => {
+    // 읽기 권한일 경우 변경 불가
+    if (disabled) return;
+    
     const file = e.target.files[0];
     if (!file) return;
 
@@ -41,6 +47,13 @@ const AddFinancial = ({ addFinancial }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // 읽기 권한일 경우 제출 불가
+    if (disabled) {
+      alert("읽기 권한만 있어 추가할 수 없습니다.");
+      return;
+    }
+    
     if (!formData.spender.trim() || !formData.amount) {
       alert("지출자와 금액을 올바르게 입력하세요!");
       return;
@@ -52,6 +65,9 @@ const AddFinancial = ({ addFinancial }) => {
   };
 
   const handleConfirmAdd = () => {
+    // 읽기 권한일 경우 추가 불가
+    if (disabled) return;
+    
     // FormData 객체 생성
     const submitFormData = new FormData();
     
@@ -89,7 +105,7 @@ const AddFinancial = ({ addFinancial }) => {
 
   return (
     <>
-      <form className="addForm"onSubmit={handleSubmit}>
+      <form className={`addForm ${disabled ? 'disabled-form' : ''}`} onSubmit={handleSubmit}>
         <input
           className="addInput"
           type="text"
@@ -97,29 +113,33 @@ const AddFinancial = ({ addFinancial }) => {
           placeholder="지출자 이름"
           value={formData.spender}
           onChange={handleChange}
+          disabled={disabled}
         />
         <input
-        className="addInput"
+          className="addInput"
           type="text"
           name="description"
           placeholder="지출 내용"
           value={formData.description}
           onChange={handleChange}
+          disabled={disabled}
         />
         <input
-        className="addInput"
+          className="addInput"
           type="number"
           name="amount"
           placeholder="금액"
           value={formData.amount}
           onChange={handleChange}
+          disabled={disabled}
         />
         <input
-        className="addInput"
+          className="addInput"
           type="datetime-local"
           name="spendAt"
           value={formData.spendAt}
           onChange={handleChange}
+          disabled={disabled}
         />
 
         <input 
@@ -128,6 +148,7 @@ const AddFinancial = ({ addFinancial }) => {
           accept="image/*" 
           onChange={handlePreview}
           className="file-upload-input" 
+          disabled={disabled}
         />
 
         {previewImg && (
@@ -139,20 +160,34 @@ const AddFinancial = ({ addFinancial }) => {
             />
             <button 
               type="button" 
-              className="financialButton" 
+              className={`financialButton ${disabled ? 'disabled-button' : ''}`}
               onClick={() => {
-                setPreviewImg(null);
-                setImageFile(null);
+                if (!disabled) {
+                  setPreviewImg(null);
+                  setImageFile(null);
+                }
               }}
+              disabled={disabled}
             >
               ❌ 삭제
             </button>
           </div>
         )}
 
-        <button className="financialButton" type="submit">
+        <button 
+          className={`financialButton ${disabled ? 'disabled-button' : ''}`} 
+          type="submit"
+          disabled={disabled}
+          title={disabled ? "읽기 권한만 있어 추가할 수 없습니다" : ""}
+        >
           ➕ 추가
         </button>
+        
+        {disabled && (
+          <div className="read-only-message">
+            읽기 권한만 있어 추가할 수 없습니다.
+          </div>
+        )}
       </form>
 
       {modalOpen && (

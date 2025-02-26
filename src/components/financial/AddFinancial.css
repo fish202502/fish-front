@@ -30,3 +30,77 @@
     flex-wrap: wrap;
   }
   
+
+  /* AddFinancial.css에 추가 */
+
+/* 비활성화된 폼 스타일 */
+.disabled-form {
+  opacity: 0.8;
+  position: relative;
+  pointer-events: auto; /* 폼 자체의 이벤트는 활성화 */
+}
+
+/* 비활성화된 입력 필드 스타일 */
+.disabled-form input[disabled] {
+  background-color: #f5f5f5;
+  border-color: #ddd;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* 비활성화된 버튼 스타일 */
+.disabled-button {
+  background-color: #e9ecef !important;
+  color: #adb5bd !important;
+  border-color: #ced4da !important;
+  cursor: not-allowed !important;
+  opacity: 0.65;
+}
+
+/* 읽기 전용 메시지 스타일 */
+.read-only-message {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #ffeeba;
+}
+
+/* 파일 업로드 버튼 비활성화 스타일 */
+.disabled-form .file-upload-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 버튼 hover 효과 제거 */
+.disabled-button:hover {
+  background-color: #e9ecef !important;
+  color: #adb5bd !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 비활성화된 폼에 툴팁 스타일 */
+.disabled-form button[disabled]:hover {
+  position: relative;
+}
+
+.disabled-form button[disabled]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+  margin-bottom: 5px;
+}
