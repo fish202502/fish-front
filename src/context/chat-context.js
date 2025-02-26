@@ -1,8 +1,9 @@
 import { createContext } from "react";
 
-const ChatNameContext = createContext({
-  chatName : "",
-  setChatName : (name)=>{},
+const ChatName = createContext({
+  name : "",
+  setName : (name)=>{},
+  mySessionId:[],
 });
 
-export default ChatNameContext;
+export default ChatName;
