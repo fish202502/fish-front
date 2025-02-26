@@ -1,43 +1,28 @@
+
+
 /* 전체 컨테이너 */
-.container {
+.container-Show {
+  height: auto; /* 올바른 계산식 */
+  overflow: hidden; /* 스크롤 방지 */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #eef2f3;
+  background-color: #ffffff;
   padding: 20px;
+  width: 100%;
 }
-
-/* 제목 스타일 */
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #2c3e50;
-}
-
-/* 안내 문구 스타일 */
-.copy-info {
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 10px;
-}
-
-/* 각 URL 그룹 스타일 */
+/* URL 그룹이 많아져서 넘칠 경우 내부 스크롤만 허용 */
 .url-group {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   margin-bottom: 10px;
+  max-width: 100%;
+  overflow: hidden; /* 넘치는 요소 방지 */
+  gap: 10px;
 }
 
-.url-group p {
-  font-size: 18px;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-/* 링크 스타일 */
+/* URL 입력 필드 */
 input {
   width: 300px;
   padding: 8px;
@@ -46,16 +31,22 @@ input {
   border-radius: 5px;
   background-color: white;
   text-align: center;
-  cursor: pointer;  /* 클릭 가능하게 */
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-/* 링크 클릭 시 배경 색 변경 */
+/* URL 입력 필드 클릭 시 */
 input:active,
 input:focus {
   background-color: #d7eafc;
   outline: none;
 }
+
+/* 버튼 스타일 수정 */
+.go-btn, .exit-btn, .button-send {
+  white-space: nowrap; /* 버튼 텍스트 줄바꿈 방지 */
+}
+
 
 /* 바로가기 / 입장하기 버튼 */
 .go-btn {

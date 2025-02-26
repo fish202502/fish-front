@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, use } from "react";
+import React, { useState, useEffect, useRef, use, useContext } from "react";
 import Modal from "./Modal"; // 모달 컴포넌트 임포트
 import styles from "./Chat.module.css"; // CSS 모듈 임포트
 import { usePermission } from "../../pages/MainLayout"; // 🔥 추가
 import { data, useParams } from "react-router-dom";
+import ChatNameContext from "../../context/chat-context";
 
 function Chat() {
   const [messages, setMessages] = useState([]);
@@ -16,6 +17,8 @@ function Chat() {
 
   const permissionData = usePermission();
 
+  const {chatName,setChatName} = useContext(ChatNameContext);
+
   // 인풋창에 대한 ref 생성
   const inputRef = useRef(null);
   // 메시지 컨테이너를 위한 ref 생성
@@ -24,16 +27,15 @@ function Chat() {
   // 권한 체크
   useEffect(() => {
     setPermission(permissionData.permission);
-    
+
     if (permissionData.permission === false) {
       setName("permission-false");
     }
-  }, []); 
+  }, []);
 
   useEffect(() => {
-
     console.log(roomCode);
-    
+
     const ws = new WebSocket(`ws://localhost:8999/ws/chat/${roomCode}`);
     setSocket(ws);
 
@@ -85,6 +87,7 @@ function Chat() {
   };
 
   const handleNameSubmit = (userName) => {
+    setChatName(userName);
     setName(userName);
     setShowModal(false);
   };
