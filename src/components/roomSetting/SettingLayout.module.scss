@@ -1,13 +1,27 @@
 .SettingFrame {
   background: #e3e3e3;
-  width: 75.3%;
+  width: 75.5%;
   padding-bottom: 60px;
-  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
+}
+
+.SettingFrame h2{
+  font-size: 40px;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 .FullSettingFrame{
   display: flex;
   justify-content: center;
   align-items: center;
 
+}
+.whiteContainer{
+  background: white;
+  width: 90%;
+  border-radius: 10px;
 }

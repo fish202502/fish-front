@@ -6,8 +6,11 @@ const SettingLayout = () => {
   return (
     <div className={styles.FullSettingFrame}>
     <div className={styles.SettingFrame}>
+      <h2>⚙️Setting</h2>
+      <div className={styles.whiteContainer}>
       <Setting />
       <ShowUrl />
+      </div>
     </div>
 
 
