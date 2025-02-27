@@ -1,9 +1,9 @@
 .mainContainer {
   display: flex;
-  width: 90%;
+  width: 75%;
   height: 70vh;
   background-color: #7BD3EA;
-  margin: 2rem auto;
+  margin: 0 auto;
 
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
@@ -23,10 +23,10 @@
   }
 }
 .mainTitleName{
-  font-size: 40px;
+  font-size: 45px;
   color: white;
-  margin-top: -10px;
-  margin-bottom: 15px;
+  margin-top: 5px;
+  margin-bottom: 25px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   
 
