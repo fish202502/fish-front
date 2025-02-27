@@ -58,7 +58,7 @@ const CreateRoom = () => {
   };
 
   return (<>
-    <img src={logo} alt="로고이미지" className="urlImg" />
+    {createFlag && <img src={logo} alt="로고이미지" className="urlImg" />}
     <div className="Createcontainer">
           
       {!createFlag ? (
