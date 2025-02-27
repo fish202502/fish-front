@@ -6,13 +6,15 @@
   display: flex;
   align-items: center;
   justify-content: right;
-
+  font-size: 10px;
 }
 .header-nav img{
 
 }
 
 .nav-list {
+  width: 60%;
+  margin-top: 5%;
   margin-right: 13.8%;
   display: flex;
   align-items: center;
@@ -21,8 +23,8 @@
 }
 
 .nav-item {
-  width: 200px;
-  height: 50px; /* 기본 높이 */
+  width: 20%;
+  height: 3rem; /* 기본 높이 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,10 +40,8 @@
 
   /* 기존 사다리꼴 모양 유지 */
   clip-path: polygon(10% 10%, 90% 10%, 100% 100%, 0% 100%);
-  border-top-left-radius: 53px; /* 왼쪽 위 모서리 둥글게 */
-  border-top-right-radius: 53px; /* 오른쪽 위 모서리 둥글게 */
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-top-left-radius: 40%; /* 왼쪽 위 모서리 둥글게 */
+  border-top-right-radius: 40%; /* 오른쪽 위 모서리 둥글게 */
 }
 
 /* 각 메뉴 색상 지정 */
@@ -84,7 +84,9 @@
 
 /* 로고 사이즈 조절 */
 .logo-size{
-  margin-left: 15%;
+  position: absolute;
+  top: 10;
+  left: 300px;
   width: 200px;
   
   cursor: pointer;
