@@ -1,23 +1,19 @@
 .header-nav {
   z-index: 10;
-  height: 100px;
   width: 100%;
-  margin: 20px 0 20px auto; /* 기존 코드 유지 */
-  background-color: #f8f5f5;
-  padding: 10px 20px; /* 좌우 패딩 추가 */
+  padding: 0 20px; /* 좌우 패딩 추가 */
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: right; /* 왼쪽/오른쪽 끝으로 정렬 */
 }
 
 .nav-list {
-  margin-right: 20px;
+  margin-right: 13.7%;
   display: flex;
   align-items: center;
-  padding: 0;
   list-style: none;
+  margin-bottom: -6px;
 }
 
 .nav-item {
@@ -49,7 +45,7 @@
 .nav-item-0 { background-color: #F6D6D6; }  /* 일정 */
 .nav-item-1 { background-color: #7BD3EA; }  /* 체크리스트 */
 .nav-item-2 { background-color: #91dbac; }  /* 지출 */
-.nav-item-3 { background-color: #bcbd7b; }  /* 갤러리 */
+.nav-item-3 { background-color: #e9ea93; }  /* 갤러리 */
 .nav-item-4 { background-color: #b36ae7; }  /* 메모 */
 .nav-item-5 { background-color: #a729dd; }  /* 설정 */
 

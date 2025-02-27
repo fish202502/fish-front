@@ -7,12 +7,13 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    background: #f8f8f8;
+
+
 
 }
 
 .diaryContainer{
-    width: 75%;
+    width: 72.3%;
     background: #F6D6D6;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
     padding-bottom: 30px;
