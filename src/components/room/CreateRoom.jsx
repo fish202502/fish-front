@@ -60,13 +60,13 @@ const CreateRoom = () => {
   return (
     <div className="container">
       {!createFlag ? (
-        <>
+        <div>
           <img src={logo} />
           <p>망고 웹사이트는 여행일정 및 공동 작업을 도와주는 사이트입니다. <br/>  방을 만드시고 싶으시면 아래 방만들기를 클릭해주세요.</p> 
           <div className="title" onClick={handleCreateBtn}>
             + 방 만들기
           </div>
-        </>
+        </div>
       ) : (
         data && (
           <ShowUrl after={true} onBack={toCreateRoom} data={data} />
