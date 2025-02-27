@@ -38,14 +38,35 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease, height 0.3s ease;
   text-decoration: none;
 
-  /* 기존 사다리꼴 모양 유지 */
-  clip-path: polygon(10% 10%, 90% 10%, 100% 100%, 0% 100%);
-  border-top-left-radius: 40%; /* 왼쪽 위 모서리 둥글게 */
-  border-top-right-radius: 40%; /* 오른쪽 위 모서리 둥글게 */
+  /* 사다리꼴 모양 개선 - 상단 모서리 더 둥글게 */
+  /* clip-path를 사용하여 사다리꼴 모양 유지하면서 상단 모서리 둥글게 */
+  clip-path: polygon(
+          10% 0%,     /* 왼쪽 상단 시작점 - 더 높게 조정 */
+          90% 0%,     /* 오른쪽 상단 시작점 - 더 높게 조정 */
+          100% 100%,  /* 오른쪽 하단 */
+          0% 100%     /* 왼쪽 하단 */
+  );
+
+  /* border-radius 대신 상단에 더 둥근 모양을 위한 가상 요소 사용 */
+  position: relative;
+  overflow: hidden;
+}
+
+/* 가상 요소를 사용하여 상단에 둥근 모양 만들기 */
+.nav-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  background: inherit;
+  z-index: -1;
 }
 
 /* 각 메뉴 색상 지정 */
-
 .nav-item-0 { background-color: #F6D6D6; }  /* 일정 */
 .nav-item-1 { background-color: #7BD3EA; }  /* 체크리스트 */
 .nav-item-2 { background-color: #91dbac; }  /* 지출 */
@@ -60,6 +81,12 @@
   transform: translateY(-10px); /* 위로 살짝 올라감 */
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
   z-index: 10;
+}
+
+/* 호버 상태에서 가상 요소도 조정 */
+.nav-item:hover::before,
+.nav-item.active::before {
+  height: 40%;
 }
 
 /* 반응형 디자인 */
@@ -88,7 +115,6 @@
   top: 10;
   left: 300px;
   width: 200px;
-  
+
   cursor: pointer;
 }
-
