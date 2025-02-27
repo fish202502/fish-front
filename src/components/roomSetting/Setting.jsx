@@ -45,8 +45,6 @@ const Setting = () => {
   const handleDelete = () => {
     setMessage("정말 삭제하시겠습니까?");
     setStrongMessage("삭제된 방은 복구되지 않습니다.");
-    sessionStorage.removeItem("chatName");
-    sessionStorage.removeItem("mySessionIds");
     setShowModal(true);
     setShowDelModal(true);
   };

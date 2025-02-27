@@ -10,8 +10,6 @@ function Modal({ onNameSubmit }) {
   const { chatName, setChatName } = useContext(ChatNameContext);
 
   useEffect(() => {
-    console.log(chatName);
-
     if (chatName) {
       setUserName(chatName);
       inputRef.current.value = chatName;

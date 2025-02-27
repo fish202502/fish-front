@@ -30,18 +30,12 @@ function Chat() {
   }, [permissionData]);
 
   useEffect(() => {
-    console.log(mySessionIds);
-    
-  }, [mySessionIds]);
-
-  useEffect(() => {
-    console.log(roomCode);
 
     const ws = new WebSocket(`ws://localhost:8999/ws/chat/${roomCode}`);
     setSocket(ws);
 
     ws.onopen = () => {
-      console.log("WebSocket 연결 완료");
+      // console.log("WebSocket 연결 완료");
       if (name) {
         const message = JSON.stringify({
           name: name,
@@ -54,8 +48,7 @@ function Chat() {
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log(data);
-      
+      // console.log(data);
 
       if (data.type === "H") {
         setMySessionIds((prevIds) => {
@@ -73,7 +66,7 @@ function Chat() {
     };
 
     ws.onclose = () => {
-      console.log("WebSocket 연결 종료");
+      // console.log("WebSocket 연결 종료");
     };
 
     return () => {
@@ -121,7 +114,7 @@ function Chat() {
       <>
         <div
           className={`${styles.sender} ${
-            data.sender === name && mySessionIds.includes(data.sessionId)
+             mySessionIds.includes(data.sessionId)
               ? styles.myName
               : styles.otherName
           }`}

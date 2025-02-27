@@ -46,9 +46,7 @@ export const router = createBrowserRouter([
       {
         path: "chat/:roomCode/:url",
         element: 
-        <ChatNameProvider>
         <Chat />
-        </ChatNameProvider>
         ,
       },
       {
@@ -61,11 +59,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "setting/:roomCode/:url",
-        element:
-        <UrlProvider>
+        element:<>
         <Setting/>
         <ShowUrl />
-        </UrlProvider>
+        </>
       },
     ],
   },
