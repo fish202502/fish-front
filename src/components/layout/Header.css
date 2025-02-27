@@ -111,8 +111,8 @@
 .logo-size{
   position: absolute;
   top: 10;
-  left: 300px;
-  width: 200px;
-
+  left: 15%;
+  width: 12%;
+  z-index: 50;
   cursor: pointer;
 }
