@@ -41,10 +41,10 @@ const Header = () => {
 
   return (
     <>
+      <img src={logo} alt="로고이미지" className="logo-size" onClick={openModal} />
       <nav className="header-nav">
         {/* ✅ 이미지 클릭 시 모달 열기 */}
-        <img src={logo} alt="로고이미지" className="logo-size" onClick={openModal} />
-        
+
         <ul className="nav-list">
           {[
             { id: "schedule", name: "일정" },
