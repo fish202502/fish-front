@@ -7,7 +7,9 @@
   height: 100vh;
   background-color: #eef2f3;
   padding: 20px;
+ 
 }
+
 
 .title {
   font-size: 24px;
@@ -21,4 +23,22 @@
 /* 마우스를 올리면 커짐 */
 .title:hover {
   transform: scale(1.1);  /* 10% 커짐 */
+}
+
+/* ShowUrl.css */
+.fullContainer {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
