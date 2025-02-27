@@ -14,6 +14,7 @@ const AddFinancial = ({ addFinancial, disabled }) => {
   const [previewImg, setPreviewImg] = useState(null);  // 미리보기용 Base64
   const [modalOpen, setModalOpen] = useState(false);
 
+
   // 입력 필드 변경 핸들러
   const handleChange = (e) => {
     // 읽기 권한일 경우 변경 불가
@@ -61,6 +62,12 @@ const AddFinancial = ({ addFinancial, disabled }) => {
       alert("날짜 값을 입력해 주십시오");
       return;
     }
+
+    if(formData.amount < 0 || formData.amount <100){
+      alert("금액은 100원 이상부터 추가 가능합니다")
+    return;
+    }
+
     setModalOpen(true);
   };
 
@@ -197,7 +204,11 @@ const AddFinancial = ({ addFinancial, disabled }) => {
           closeModal={() => setModalOpen(false)}
           onConfirm={handleConfirmAdd}
         />
-      )}
+        
+      )
+    
+      }
+     
     </>
   );
 };
