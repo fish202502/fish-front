@@ -1,15 +1,22 @@
 
+.fullContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-/* 전체 컨테이너 */
+}
+
 .container-Show {
   height: auto; /* 올바른 계산식 */
   overflow: hidden; /* 스크롤 방지 */
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: #ffffff;
   padding: 40px 20px;
-  width: 60%;
+
   box-sizing: border-box;
 }
 .showTitle {
@@ -83,7 +90,7 @@ input:focus {
   padding: 8px 12px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #27ae60;
+  background-color: rgba(134, 134, 134, 0.6);
   color: white;
   border: none;
   border-radius: 5px;

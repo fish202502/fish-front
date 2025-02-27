@@ -109,18 +109,18 @@ const Setting = () => {
     <>
       <div className={styles.mainFrame}>
         <div className={styles.currentRoomContainer}>
-          <p className={styles.currentRoom}>방 권한 : {currentRoom} 권한</p>
-        </div>
+          <p className={styles.currentRoom}> 현재 방 권한 : {currentRoom} 권한</p>
         {permission && (
           <div className={styles.deleteContainer}>
             <button onClick={handleModi} className={styles.deleteBtn}>
-              방 url변경
+              현재 방 url변경
             </button>
             <button onClick={handleDelete} className={styles.deleteBtn}>
-              방 삭제하기
+              현재 방 삭제하기
             </button>
           </div>
         )}
+        </div>
       </div>
       {showModal && (
         <div className={styles.modalOverlay}>

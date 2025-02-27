@@ -19,7 +19,7 @@ const ScheduleManager = () => {
   const [isEditingPeriod, setIsEditingPeriod] = useState(false); // 여행 기간 수정 여부
   const [invalidSchedules, setInvalidSchedules] = useState([]); // 유효하지 않은 일정 목록
   // 권한 상태추가
-  const [permission,setPermission] = useState(null);
+  const [permission,setPermission] = useState(false);
   const permissionData = usePermission();
   const [name, setName] = useState("");
   // 에러의 데이터를 관리하는 상태변수
@@ -467,6 +467,7 @@ const ScheduleManager = () => {
                   initialStartDate={tripStartDate}
                   initialEndDate={tripEndDate}
                   noModalNeeded={true} // 모달 표시하지 않음
+                  permission={permission}
                 />
               ) : (
                 // 여행 기간이 있는 경우, 기간 표시와 편집 모드에 따른 컴포넌트 표시
@@ -479,6 +480,7 @@ const ScheduleManager = () => {
                       initialEndDate={tripEndDate}
                       noModalNeeded={true} // 모달 표시하지 않음
                       onCancel={cancelEditingPeriod} // 취소 기능 추가
+                      permission ={permission}
                     />
                   ) : (
                     // 편집 모드가 아닐 때 기간 표시

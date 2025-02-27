@@ -87,7 +87,9 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
   const closeModal = () => {
     setConfirmModal(false);
   };
-  return (
+  return (<div className="fullContainer">
+
+
     <div className="container-Show">
       {confrimModal && <SendModal onModal={closeModal} />}
       {fromHome ? <h1 className="showTitle">방 생성 완료!</h1> : ""}
@@ -133,6 +135,7 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
         </div>
       )}
     </div>
+  </div>
   );
 };
 

@@ -143,9 +143,9 @@ function Chat() {
     );
   };
 
-  return (
-    <div className={styles.chatContainer}>
+  return (<>
       {showModal && permission && <Modal onNameSubmit={handleNameSubmit} />}
+    <div className={styles.chatContainer}>
       <h1 className={styles.title}>대화방</h1>
       <div className={styles.messagesContainer}>
         {messages.map((msg, index) => (
@@ -173,6 +173,9 @@ function Chat() {
         </button>
       </div>
     </div>
+
+
+  </>
   );
 }
 

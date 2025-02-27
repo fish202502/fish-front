@@ -1,6 +1,6 @@
 /* 채팅 전체 컨테이너 */
 .chatContainer {
-  max-width: 600px;
+  width: 90%;
   margin: auto;
   padding: 20px;
   background-color: #f9f9f9;
@@ -10,7 +10,7 @@
 
 .title {
   text-align: center;
-  color: #4A90E2;
+  color: #b99ae1;
   font-family: Arial, sans-serif;
 }
 
@@ -88,7 +88,7 @@
 .otherMessage {
   background-color: #eecadf;
   text-align: left;
-  border-radius: 5;
+  border-radius: 5px;
 }
 
 .otherMessage::after {
@@ -112,8 +112,8 @@
   height: auto;
   max-width: 100%;
   text-align: center;
-  border-bottom: 2px solid #bfdaf8;
-  border-top: 2px solid #bfdaf8;
+  border-bottom: 2px solid #b99ae1;
+  border-top: 2px solid #b99ae1;
 }
 
 /* 입력창 */
@@ -139,7 +139,7 @@
   padding: 12px 20px;
   font-size: 16px;
   height: 44px; /* 인풋과 동일한 높이 */
-  background-color: #4A90E2;
+  background-color: #b99ae1;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -149,7 +149,7 @@
 }
 
 .sendButton:hover {
-  background-color: #357ABD;
+  background-color: #9d75d2;
 }
 
 input:disabled{

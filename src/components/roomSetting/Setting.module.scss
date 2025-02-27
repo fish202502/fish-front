@@ -1,25 +1,25 @@
 .mainFrame {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding: 20px;
-  background: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .deleteContainer {
-  width: 10%;
+  width: 60%;
   margin-top: 10px;
   padding: 15px;
   background: #fff;
   border-radius: 8px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
 }
 
 .currentRoomContainer {
-  width: 10%;
+  width: 28%;
   margin-top: 10px;
   padding: 15px;
   background: #fff;
@@ -27,18 +27,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.1);
 }
 .currentRoom{
-  font-size: 24px;
+  font-size: 30px;
+  text-align: center;
 }
 .deleteBtn {
   background: #ff4d4f;
   color: white;
   border: none;
   padding: 8px 12px;
+  margin-right: 5px;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.2s;
+  width: auto;
+  height: auto;
 }
 
 .deleteBtn:hover {
