@@ -1,6 +1,6 @@
 .main-frame{
   border: 2px solid #9ff8ba;
-  width: 90%;
+  width: 75%;
   margin: 0 auto;
   background: #A1EEBD;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
@@ -13,10 +13,10 @@
   
 }
 .main-title {
-  font-size: 40px;
+  font-size: 45px;
   text-align: center;
   color: white;
-  margin-top: 5px;
+  margin-top: 20px;
   margin-bottom: 15px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   
