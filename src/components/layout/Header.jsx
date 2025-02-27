@@ -3,6 +3,8 @@ import "./Header.css"; // CSS 파일 연결
 import { NavLink, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { usePermission } from "../../pages/MainLayout";
+import logo from "../img/logo.png"
+
 
 const Header = () => {
   const activeLink = ({ isActive }) => (isActive ? "active" : "");
@@ -48,6 +50,7 @@ const Header = () => {
   return (
     <>
       <nav className="header-nav">
+      <img src={logo} alt="로고이미지" className='logo-size'/>
         <ul className="nav-list">
           {[
             { id: "schedule", name: "일정" },
