@@ -1,3 +1,13 @@
-.SettingFrame{
-  background: #000;
+.SettingFrame {
+  background: #e3e3e3;
+  width: 75.3%;
+  padding-bottom: 60px;
+  border-radius: 8px;
+
+}
+.FullSettingFrame{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }

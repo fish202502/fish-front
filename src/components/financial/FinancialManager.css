@@ -5,6 +5,7 @@
   background: #A1EEBD;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
   min-height: 70vh;
+  border-radius: 8px;
 }
 
 .frame{

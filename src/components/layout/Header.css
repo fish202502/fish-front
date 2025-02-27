@@ -51,7 +51,7 @@
 .nav-item-2 { background-color: #91dbac; }  /* 지출 */
 .nav-item-3 { background-color: #e9ea93; }  /* 갤러리 */
 .nav-item-4 { background-color: #b36ae7; }  /* 메모 */
-.nav-item-5 { background-color: #a729dd; }  /* 설정 */
+.nav-item-5 { background-color: #d2d2d2; }  /* 설정 */
 
 /* 호버 또는 활성화 상태일 때 위로 올라가면서 크기 증가 */
 .nav-item:hover,
