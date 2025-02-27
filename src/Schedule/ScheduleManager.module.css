@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    min-height: 100vh;
+    min-height: 300vh;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -17,6 +17,7 @@
     background: #F6D6D6;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
     padding-bottom: 30px;
+    min-height: 50vh;
 }
 
 .title {
@@ -36,6 +37,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    min-height: 50vh;
 }
 
 .fixContainer {
