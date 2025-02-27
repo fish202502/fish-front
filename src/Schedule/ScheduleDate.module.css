@@ -15,10 +15,11 @@
     padding: 25px;
     width: 60%;
     margin-bottom: 30px;
+    min-height: 40vh;
 }
 
 .beforeComment{
-    font-size: 25px;
+    font-size: 20px;
     color: #aaaaaa;
 }
 

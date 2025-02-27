@@ -36,12 +36,17 @@
 .modalSubmitButton {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #4a90e2;
+  background-color: #b99ae1;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
+
+.modalSubmitButton:hover{
+  background: #9d75d2;
+}
+
 .inputContainer {
   position: relative;
   display: flex;

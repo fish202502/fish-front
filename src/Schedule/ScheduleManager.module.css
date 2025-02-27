@@ -3,26 +3,27 @@
     top: 0;
     left: 0;
     width: 100vw;
-    min-height: 100vh;
+    min-height: 300vh;
     display: flex;
     align-items: center;
     flex-direction: column;
-    background: #f8f8f8;
+
+
 
 }
 
 .diaryContainer{
-    width: 90%;
+    width: 72.3%;
     background: #F6D6D6;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
     padding-bottom: 30px;
+    min-height: 50vh;
 }
 
 .title {
     font-size: 45px;
     text-align: center;
     color: white;
-    margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -36,6 +37,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    min-height: 50vh;
 }
 
 .fixContainer {
@@ -66,7 +68,6 @@
     &:after {
       content: "읽기 전용 모드";
       position: absolute;
-      top: 10px;
       right:5px;
       /* 나머지 스타일은 그대로 */
     }

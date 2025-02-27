@@ -136,10 +136,10 @@ function Chat() {
     );
   };
 
-  return (
-    <div className={styles.chatContainer}>
+  return (<>
       {showModal && permission && <Modal onNameSubmit={handleNameSubmit} />}
-      <h1 className={styles.title}>대화방</h1>
+    <div className={styles.chatContainer}>
+      <h1 className={styles.title}>CHATTING ROOM</h1>
       <div className={styles.messagesContainer}>
         {messages.map((msg, index) => (
           <div key={index}>{randMessage(msg, index)}</div>
@@ -166,6 +166,9 @@ function Chat() {
         </button>
       </div>
     </div>
+
+
+  </>
   );
 }
 

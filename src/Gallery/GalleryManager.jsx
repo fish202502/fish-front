@@ -162,7 +162,7 @@ const GalleryManager = () => {
         />
       )}
       <div className={styles.diaryContainer}>
-        <h1 className={styles.title}>Photo Book </h1>
+        <h2 className={`${styles.title} ${!permission ? 'read-only' : ''} `}>Photo Book </h2>
         <div className={styles.uploadContainer}>
           {permission &&
           <PhotoUpload

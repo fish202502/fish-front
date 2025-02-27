@@ -16,6 +16,7 @@ import ShowUrl from "../room/ShowUrl";
 import UrlContext from "../../context/url-context";
 import UrlProvider from "../../context/UrlProvider";
 import Setting from "../roomSetting/Setting";
+import SettingLayout from "../roomSetting/SettingLayout";
 
 // 라우터 설정
 export const router = createBrowserRouter([
@@ -28,16 +29,16 @@ export const router = createBrowserRouter([
     path: "/room",
     element: <MainNavigation />,
     loader: permissionCheckLoader,
-    id:"room",
+    id: "room",
     children: [
       {
         path: "home/:roomCode/:url",
-        element: <FinancialManager/>
+        element: <FinancialManager />,
       },
       {
         path: "expense/:roomCode/:url",
         element: <FinancialManager />,
-        errorElement: <ErrorPage />, 
+        errorElement: <ErrorPage />,
       },
       {
         path: "check/:roomCode/:url",
@@ -51,18 +52,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "schedule/:roomCode/:url",
-        element: <ScheduleManager/>
+        element: <ScheduleManager />,
       },
       {
         path: "photo/:roomCode/:url",
-        element:<GalleryManager/>
+        element: <GalleryManager />,
       },
       {
         path: "setting/:roomCode/:url",
-        element:<>
-        <Setting/>
-        <ShowUrl />
-        </>
+        element: (
+          <UrlProvider>
+            <SettingLayout/>
+          </UrlProvider>
+        ),
       },
     ],
   },
