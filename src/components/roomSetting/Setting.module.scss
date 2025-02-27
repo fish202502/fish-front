@@ -4,7 +4,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   border-radius: 8px;
   
 }
@@ -24,7 +23,6 @@
 .currentRoomContainer {
   width: 28%;
   margin-top: 10px;
-  padding: 15px;
   background: #fff;
   border-radius: 8px;
   display: flex;
@@ -36,6 +34,7 @@
 .currentRoom{
   font-size: 30px;
   text-align: center;
+  color: #aaaaaa
 }
 .deleteBtn {
   background: #ff4d4f;

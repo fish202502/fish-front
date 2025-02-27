@@ -72,7 +72,25 @@ const ScheduleManager = () => {
               };
             });
 
-            setSchedules(sortSchedules(formattedSchedules));
+            // 새로고침해도 경고 표시 사라지지 않게 유지
+            const sorted = sortSchedules(formattedSchedules);
+            setSchedules(sorted);
+
+            const startDateObj = new Date(startDate);
+            const endDateObj = new Date(endDate);
+            endDateObj.setHours(23, 59, 59); // 종료일 마지막 시간으로 설정
+
+            const invalid = sorted.filter(schedule => {
+              const scheduleStartDate = new Date(schedule.startDateTime);
+              const scheduleEndDate = new Date(schedule.endDateTime);
+
+              // 일정이 여행 기간을 벗어나는 경우
+              return (scheduleStartDate < startDateObj || scheduleEndDate > endDateObj);
+            });
+
+            if (invalid.length > 0) {
+              setInvalidSchedules(invalid);
+            }
           } else {
             // 일정이 없는 경우 빈 배열로 설정
             setSchedules([]);
