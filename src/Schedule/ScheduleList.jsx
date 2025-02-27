@@ -1,11 +1,17 @@
 import styles from './ScheduleList.module.css'
 import {useState} from "react";
 import ErrorModal from "../ui/Modal/ErrorModal.jsx";
+import DeleteConfirmModal from "../ui/Modal/DeleteConfirmModal.jsx";
 
 const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate, tripEndDate, invalidSchedules,permission= false }) => {
     const [editingId, setEditingId] = useState(null);
     const [editData, setEditData] = useState({title: "", startDate: "", startTime: "", endDate: "", endTime: ""});
     const [error, setError] = useState(null);
+    // 삭제 확인 모달 상태
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    // 삭제할 일정 ID
+    const [scheduleToDelete, setScheduleToDelete] = useState(null);
+
 
     const handleEditClick = (schedule) => {
         if (!permission) {
@@ -36,17 +42,39 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
         }
     };
 
-    const handleDelete = async (id) => {
+    // 삭제 버튼 클릭 시 삭제 확인 모달 표시
+    const handleDeleteClick = (id) => {
+        if (!permission) {
+            setError("삭제 권한이 없습니다.");
+            return;
+        }
+        setScheduleToDelete(id);
+        setShowDeleteModal(true);
+    };
+
+    // 삭제 확인 시 실제 삭제 처리
+    const confirmDelete = async () => {
         try {
-            const isSuccess = await removeSchedule(id);
+            const isSuccess = await removeSchedule(scheduleToDelete);
             if (isSuccess) {
-                // 성공 시 아무것도 하지 않음 (이미 removeSchedule에서 상태 업데이트)
-                console.log('일정 삭제 성공:', id);
+                console.log('일정 삭제 성공:', scheduleToDelete);
             }
         } catch (error) {
             console.error('삭제 처리 중 오류:', error);
+        } finally {
+            setShowDeleteModal(false);
+            setScheduleToDelete(null);
         }
     };
+
+    // 삭제 취소
+    const cancelDelete = () => {
+        setShowDeleteModal(false);
+        setScheduleToDelete(null);
+    };
+
+
+
 
     const closeErrorModal = () => {
         setError(null);
@@ -76,6 +104,12 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
     return (
       <div className={styles.scheduleList}>
           {error && <ErrorModal title="입력 오류" message={error} onClose={closeErrorModal}/>}
+          {showDeleteModal && (<DeleteConfirmModal
+          title ="일정삭제"
+          message ="일정을 삭제하시겠습니까?"
+          onConfirm={confirmDelete}
+          onClose={cancelDelete}
+          />)}
           {Object.keys(groupedSchedules).length === 0 ? (
             <p>등록된 일정이 없습니다 일정을 등록해주세요</p>
           ) : (
@@ -118,7 +152,7 @@ const ScheduleList = ({schedules, removeSchedule, modifySchedule, tripStartDate,
                                       {permission &&
                                       <section>
                                           <button onClick={() => handleEditClick(schedule)}>✏️ 수정</button>
-                                          <button onClick={() => handleDelete(schedule.id)}>❌ 삭제</button>
+                                          <button onClick={() => handleDeleteClick(schedule.id)}>❌ 삭제</button>
                                       </section>
                                       }
                                   </>
