@@ -100,6 +100,7 @@ input:focus {
   margin-right: 10px;
   text-align: left;
   padding: 0 0 0 10px;
+  cursor: auto;
 }
 
 .button-send {
@@ -112,4 +113,9 @@ input:focus {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+}
+
+.error-message{
+  color: #c0392b;
+  margin-bottom: 0;
 }

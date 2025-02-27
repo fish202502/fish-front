@@ -16,6 +16,8 @@ const ShowUrl = ({ data, onBack, after }) => {
   const [roomCode, setRoomCode] = useState("");
   const emailInput = useRef(null);
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
 
   const [confrimModal, setConfirmModal] = useState(false);
@@ -61,6 +63,16 @@ const ShowUrl = ({ data, onBack, after }) => {
   };
 
   const handleSendEmail = async () => {
+
+    const email = emailInput.current.value.trim();
+
+    // 이메일 정규식 검증
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("올바른 이메일 주소를 입력하세요.");
+      return;
+    }
+
     try {
       const response = await fetch(
         "http://localhost:8999/api/fish/rooms/mail",
@@ -68,7 +80,7 @@ const ShowUrl = ({ data, onBack, after }) => {
           method: "POST",
           headers: { "Content-type": "application/json" },
           body: JSON.stringify({
-            email: emailInput.current.value,
+            email: email,
             readUrl: readUrl,
             writeUrl: writeUrl,
             roomCode: roomCode,
@@ -78,6 +90,7 @@ const ShowUrl = ({ data, onBack, after }) => {
       const result = await response.json();
       if (response.ok) {
         setConfirmModal(true);
+        setErrorMessage("");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -106,7 +119,7 @@ const ShowUrl = ({ data, onBack, after }) => {
           </button>}
         </div>
       {(fromHome || permission) && <div className="url-group">
-        <p>✍️ 쓰기 전용 링크 </p>
+        <p>✍️ 쓰기 가능 링크 </p>
         <input
           type="text"
           value={writeUrl}
@@ -123,6 +136,7 @@ const ShowUrl = ({ data, onBack, after }) => {
           메일로 전송하기
         </button>
       </div>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
       {fromHome && (
         <div className="button-group">
           <button className="exit-btn" onClick={handleExit}>
