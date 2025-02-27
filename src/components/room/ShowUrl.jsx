@@ -100,11 +100,12 @@ const ShowUrl = ({ data, onBack, after }) => {
   const closeModal = () => {
     setConfirmModal(false);
   };
-  return (<div className="fullContainer">
-
+  return (
+    <>
+    {confrimModal && <SendModal onModal={closeModal} />}
+<div className="fullContainer">
 
     <div className="container-Show">
-      {confrimModal && <SendModal onModal={closeModal} />}
       {fromHome ? <h1 className="showTitle">방 생성 완료!</h1> : ""}
       <p className="copy-info">📌 링크를 클릭하면 복사됩니다.</p>{" "}
       {/* 안내 문구 추가 */}
@@ -150,6 +151,7 @@ const ShowUrl = ({ data, onBack, after }) => {
       )}
     </div>
   </div>
+  </>
   );
 };
 
