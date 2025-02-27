@@ -15,6 +15,10 @@ const Header = () => {
   const { roomCode, url } = useParams();
   const permissionData = usePermission();
 
+  const HomeMoveHandler = () => {
+    navigate("/")
+    
+  }
   useEffect(() => {
     setPermission(permissionData.permission);
   }, []);
@@ -50,7 +54,7 @@ const Header = () => {
   return (
     <>
       <nav className="header-nav">
-      <img src={logo} alt="로고이미지" className='logo-size'/>
+      <img src={logo} alt="로고이미지" className='logo-size' onClick={HomeMoveHandler}/>
         <ul className="nav-list">
           {[
             { id: "schedule", name: "일정" },

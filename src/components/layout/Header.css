@@ -5,7 +5,7 @@
   border-radius: 10px;
   display: flex;
   align-items: center;
-  /* justify-content: right; 왼쪽/오른쪽 끝으로 정렬 */
+  justify-content: right; 
   justify-content: space-between;
 }
 
@@ -81,8 +81,9 @@
 
 /* 로고 사이즈 조절 */
 .logo-size{
-  width: 100px;
+  margin-left: 24%;
+  width: 65px;
   max-width: 100px;
-  
+  cursor: pointer;
 }
 
