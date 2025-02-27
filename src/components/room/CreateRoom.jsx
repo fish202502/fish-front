@@ -24,7 +24,7 @@ const CreateRoom = () => {
   //       const data = await response.json();
   //       setData(data);
   //       setCreateFlag(true);
-        
+
   //       if (!response.ok) {
   //         throw new Error("서버 요청 실패");
   //       }
@@ -52,6 +52,10 @@ const CreateRoom = () => {
     }
   };
 
+  const toCreateRoom = () => {
+    setCreateFlag(false);
+  };
+
   return (
     <div className="container">
       {!createFlag ? (
@@ -59,9 +63,9 @@ const CreateRoom = () => {
           + 방 만들기
         </div>
       ) : (
-      data && <ShowUrl
-      after={true}
-      handlecreateBtn={handleCreateBtn} data={data} />
+        data && (
+          <ShowUrl after={true} onBack={toCreateRoom} data={data} />
+        )
       )}
     </div>
   );

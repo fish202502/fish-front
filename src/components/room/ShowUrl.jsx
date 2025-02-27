@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import UrlContext from "../../context/url-context";
 import { usePermission } from "../../pages/MainLayout";
 
-const ShowUrl = ({ data, handlecreateBtn, after }) => {
+const ShowUrl = ({ data, onBack, after }) => {
   const [readUrl, setReadUrl] = useState("");
   const [writeUrl, setWriteUrl] = useState("");
 
@@ -57,7 +57,7 @@ const ShowUrl = ({ data, handlecreateBtn, after }) => {
 
   // 나가기 버튼 기능
   const handleExit = () => {
-    handlecreateBtn();
+    onBack();
   };
 
   const handleSendEmail = async () => {
