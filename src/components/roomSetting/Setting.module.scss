@@ -1,3 +1,7 @@
+.settingFullFrame{
+  // border: 1px solid #000;
+}
+
 .mainFrame {
   display: flex;
   flex-direction: column;
@@ -6,6 +10,7 @@
   padding: 20px;
   border-radius: 8px;
   margin-top: 30px;
+  
 }
 
 .deleteContainer {

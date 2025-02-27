@@ -107,6 +107,7 @@ const Setting = () => {
 
   return (
     <>
+      <div className={styles.settingFullFrame}>
       <div className={styles.mainFrame}>
         <div className={styles.currentRoomContainer}>
           <p className={styles.currentRoom}> 현재 방 권한 : {currentRoom} 권한</p>
@@ -137,7 +138,9 @@ const Setting = () => {
             </div>
           </div>
         </div>
+        
       )}
+      </div>
     </>
   );
 };
