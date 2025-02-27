@@ -1,20 +1,33 @@
 /* CreateRoom.css */
-.container {
+.Createcontainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 80vh;
   padding: 20px;
  
 }
 
 .container p{
-  color:#524f4f
+  color:#524f4f;
+  
+}
+.roomContent{
+  text-align: center;
+  
 }
 
+.urlImg{
+  position: absolute;
+  top: 10;
+  left: 300px;
+  width: 200px;
 
+}
 .title {
+  margin-top: 30px;
+  text-align: center;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
