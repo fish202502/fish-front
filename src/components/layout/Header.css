@@ -8,9 +8,7 @@
   justify-content: right;
   font-size: 10px;
 }
-.header-nav img{
 
-}
 
 .nav-list {
   width: 60%;
@@ -88,7 +86,6 @@
   top: 10;
   left: 300px;
   width: 200px;
-  
   cursor: pointer;
 }
 
