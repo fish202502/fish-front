@@ -23,7 +23,20 @@
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
+    animation: glow 2s;
 }
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 5px rgb(222, 227, 64);
+    }
+    50% {
+        box-shadow: 0 0 20px rgb(149, 150, 15);
+    }
+    100% {
+        box-shadow: 0 0 5px rgb(235, 236, 91);
+    }
+}
+
 
 .uploadLabel:hover {
     background-color: rgba(159, 159, 159, 0.3);
