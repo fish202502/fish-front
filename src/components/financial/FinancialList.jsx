@@ -255,9 +255,9 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial, hasPermis
                           <button
                             type="button"
                             onClick={handleImageDelete}
-                            className="financialButton"
+                            className="deleteButton"
                           >
-                            ❌ 삭제
+                            삭제
                           </button>
                         )}
                       </div>
@@ -302,15 +302,13 @@ const FinancialList = ({ financials, removeFinancial, modifyFinancial, hasPermis
                       <div className="button-group">
                         <button
                           onClick={() => handleEditClick(financial)}
-                          className="financialButton"
-                        >
-                          ✏ 수정
+                          className="modifyButton"
+                        >수정
                         </button>
                         <button
                           onClick={() => handleDeleteClick(financial.id)}
-                          className="financialButton"
-                        >
-                          ❌ 삭제
+                          className="deleteButton"
+                        >삭제
                         </button>
                       </div>
                     )}
