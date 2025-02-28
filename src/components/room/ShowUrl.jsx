@@ -144,7 +144,7 @@ const ShowUrl = ({ data, onBack, after }) => {
                 바로가기
               </button>
             )}
-            {fromHome && (
+            {(
               <button className="go-btn" onClick={handleShareReadLink}>
                 공유하기
               </button>
@@ -165,7 +165,7 @@ const ShowUrl = ({ data, onBack, after }) => {
                   바로가기
                 </button>
               )}
-              {fromHome && (
+              {(
                 <button className="go-btn" onClick={handleShareWriteLink}>
                   공유하기
                 </button>
