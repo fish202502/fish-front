@@ -44,7 +44,7 @@ li {
 
 .button-group {
   display: flex;
-  gap: 5px;
+
 }
 
 .Amount {
@@ -57,24 +57,44 @@ li {
   border-radius: 8px;
 }
 
-.financialButton {
-  margin-top: 10px;
-  background-color: #ff8f8f;
+.deleteButton {
+  width: 60px;
+  height:30px;
+  background-color: #ff7675;
   color: white;
-  font-size: 16px;
-  padding: 10px;
+  font-size: 14px;
+  padding: 6px 12px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-    cursor: pointer;
+  flex-shrink: 0; /* 버튼 크기 유지 */
 }
 
-.financialButton:hover {
-  background-color: #f1a5a5;
+.deleteButton:hover {
+  background-color: #f14f4e;
+}
+
+.modifyButton {
+  width: 60px;
+  height: 30px;
+  background-color:#7BD3EA;
+  color: white;
+  font-size: 14px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  flex-shrink: 0; /* 버튼 크기 유지 */
+}
+
+.modifyButton:hover {
+  background-color: #34b3d2;
 }
 
 .modifiImage{
   display: block !important;
+  width: auto;
+
 }
 .list-image{
   

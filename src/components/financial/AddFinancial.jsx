@@ -167,7 +167,7 @@ const AddFinancial = ({ addFinancial, disabled }) => {
             />
             <button 
               type="button" 
-              className={`financialButton ${disabled ? 'disabled-button' : ''}`}
+              className={`deleteButton ${disabled ? 'disabled-button' : ''}`}
               onClick={() => {
                 if (!disabled) {
                   setPreviewImg(null);
@@ -176,7 +176,7 @@ const AddFinancial = ({ addFinancial, disabled }) => {
               }}
               disabled={disabled}
             >
-              ❌ 삭제
+               삭제
             </button>
           </div>
         )}
