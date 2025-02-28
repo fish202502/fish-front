@@ -1,0 +1,22 @@
+.kakao-share-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.kakao-share-button button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.kakao-share-button img {
+  width: 40px;  /* 원하는 크기로 조정 */
+  height: auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+.kakao-share-button img:hover {
+  transform: scale(1.1);
+}

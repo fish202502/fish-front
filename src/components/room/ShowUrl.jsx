@@ -4,6 +4,8 @@ import { SendModal } from "./SendModal";
 import { useNavigate } from "react-router-dom";
 import UrlContext from "../../context/url-context";
 import { usePermission } from "../../pages/MainLayout";
+import KakaoShareButton from "../../utils/kakao";
+import ShareModal from "../../utils/ShareModal";
 
 const ShowUrl = ({ data, onBack, after }) => {
   const [readUrl, setReadUrl] = useState("");
@@ -18,6 +20,9 @@ const ShowUrl = ({ data, onBack, after }) => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [share, setShare] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
+
   const navigate = useNavigate();
 
   const [confrimModal, setConfirmModal] = useState(false);
@@ -28,7 +33,7 @@ const ShowUrl = ({ data, onBack, after }) => {
       `http://localhost:5173/room/schedule/${roomData.roomCode}/${roomData.readUrl}`
     );
 
-    if(data || permissionData.permission){
+    if (data || permissionData.permission) {
       setWriteUrl(
         `http://localhost:5173/room/schedule/${roomData.roomCode}/${roomData.writeUrl}`
       );
@@ -36,7 +41,7 @@ const ShowUrl = ({ data, onBack, after }) => {
     setRoomCode(roomData.roomCode);
     emailInput.current.focus();
     setFromHome(after);
-    if(permissionData){
+    if (permissionData) {
       setPermission(permissionData.permission);
     }
   }, []);
@@ -63,7 +68,6 @@ const ShowUrl = ({ data, onBack, after }) => {
   };
 
   const handleSendEmail = async () => {
-
     const email = emailInput.current.value.trim();
 
     // 이메일 정규식 검증
@@ -98,60 +102,93 @@ const ShowUrl = ({ data, onBack, after }) => {
   };
 
   const closeModal = () => {
+    
     setConfirmModal(false);
+
   };
+
+  const handleShareReadLink = () => {
+    setShareUrl(readUrl);
+    setShare(true);
+  };
+
+  const handleShareWriteLink = () => {
+    setShareUrl(writeUrl);
+    setShare(true);
+  };
+
+  const closeShareModal= ()=>{
+    setShare(false);
+  }
+
   return (
     <>
-    {confrimModal && <SendModal onModal={closeModal} />}
-<div className="fullContainer">
-
-    <div className="container-Show">
-      {fromHome ? <h1 className="showTitle">방 생성 완료!</h1> : ""}
-      <p className="copy-info">📌 링크를 클릭하면 복사됩니다.</p>{" "}
-      {/* 안내 문구 추가 */}
-        <div className="url-group">
-          <p>📖 읽기 전용 링크 : </p>
-          <input
-            className="readUrlInput"
-            type="text"
-            value={readUrl}
-            readOnly
-            onClick={(e) => handleCopy(e.target.value)} // 클릭하면 복사
-          />
-          {fromHome && <button className="go-btn" onClick={handleOpenReadLink}>
-            바로가기
-          </button>}
+      {share && <ShareModal url={shareUrl} onClose={closeShareModal} />}
+      {confrimModal && <SendModal onModal={closeModal} />}
+      <div className="fullContainer">
+        <div className="container-Show">
+          {fromHome ? <h1 className="showTitle">방 생성 완료!</h1> : ""}
+          <p className="copy-info">📌 링크를 클릭하면 복사됩니다.</p>{" "}
+          {/* 안내 문구 추가 */}
+          <div className="url-group">
+            <p>📖 읽기 전용 링크 : </p>
+            <input
+              className="readUrlInput"
+              type="text"
+              value={readUrl}
+              readOnly
+              onClick={(e) => handleCopy(e.target.value)} // 클릭하면 복사
+            />
+            {fromHome && (
+              <button className="go-btn" onClick={handleOpenReadLink}>
+                바로가기
+              </button>
+            )}
+            {fromHome && (
+              <button className="go-btn" onClick={handleShareReadLink}>
+                공유하기
+              </button>
+            )}
+          </div>
+          {(fromHome || permission) && (
+            <div className="url-group">
+              <p>✍️ 쓰기 가능 링크 </p>
+              <input
+                className="writeUrlInput"
+                type="text"
+                value={writeUrl}
+                readOnly
+                onClick={(e) => handleCopy(e.target.value)} // 클릭하면 복사
+              />
+              {fromHome && (
+                <button className="go-btn" onClick={handleOpenWriteLink}>
+                  바로가기
+                </button>
+              )}
+              {fromHome && (
+                <button className="go-btn" onClick={handleShareWriteLink}>
+                  공유하기
+                </button>
+              )}
+            </div>
+          )}
+          <div className="email-wrapper">
+            <input type="text" className="email-input" ref={emailInput} />
+            <button className="button-send" onClick={handleSendEmail}>
+              메일로 전송하기
+            </button>
+          </div>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {fromHome && (
+            <div className="button-group">
+              <button className="exit-btn" onClick={handleExit}>
+                새로 방만들기
+              </button>
+            </div>
+          )}
         </div>
-      {(fromHome || permission) && <div className="url-group">
-        <p>✍️ 쓰기 가능 링크 </p>
-        <input
-            className="writeUrlInput"
-          type="text"
-          value={writeUrl}
-          readOnly
-          onClick={(e) => handleCopy(e.target.value)} // 클릭하면 복사
-        />
-        {fromHome && <button className="go-btn" onClick={handleOpenWriteLink}>
-          바로가기
-        </button>}
-      </div>}
-      <div className="email-wrapper">
-        <input type="text" className="email-input" ref={emailInput} />
-        <button className="button-send" onClick={handleSendEmail}>
-          메일로 전송하기
-        </button>
       </div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-      {fromHome && (
-        <div className="button-group">
-          <button className="exit-btn" onClick={handleExit}>
-           새로 방만들기
-          </button>
-        </div>
-      )}
-    </div>
-  </div>
-  </>
+    </>
   );
 };
 
